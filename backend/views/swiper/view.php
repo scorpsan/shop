@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\components\widgets\DetailView;
+use yii\widgets\DetailView;
 
 $this->title = Yii::t('backend', 'Slider') . ' <small>' . $model->title . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Sliders'), 'url' => ['index']];
@@ -39,17 +39,32 @@ $this->params['breadcrumbs'][] = $model->title;
                         'description',
                         [
                             'attribute' => 'player',
-                            'value' => ($model->player)
-                                ? '<span class="label label-success">' . Yii::$app->formatter->asBoolean($model->player) . '</span>'
-                                : '<span class="label label-danger">' . Yii::$app->formatter->asBoolean($model->player) . '</span>',
+                            'value' => Html::tag('span', Yii::$app->formatter->asBoolean($model->player), ['class' => 'label label-' . ($model->player) ? 'success' : 'danger']),
                             'format' => 'html',
                         ],
                         [
                             'attribute' => 'published',
-                            'value' => ($model->published)
-                                ? '<span class="label label-success">' . Yii::$app->formatter->asBoolean($model->published) . '</span>'
-                                : '<span class="label label-danger">' . Yii::$app->formatter->asBoolean($model->published) . '</span>',
-                            'format' => 'html',
+                            'value' => function($data) {
+                                if ($data->published) {
+                                    return Html::a(
+                                        Yii::$app->formatter->asBoolean($data->published),
+                                        ['/swiper/unpublish', 'id' => $data->id],
+                                        [
+                                            'class' => 'btn btn-xs btn-success',
+                                            'data-method' => 'post',
+                                        ]
+                                    );
+                                }
+                                return Html::a(
+                                    Yii::$app->formatter->asBoolean($data->published),
+                                    ['/swiper/publish', 'id' => $data->id],
+                                    [
+                                        'class' => 'btn btn-xs btn-danger',
+                                        'data-method' => 'post',
+                                    ]
+                                );
+                            },
+                            'format' => 'raw',
                         ],
                     ],
                 ]) ?>

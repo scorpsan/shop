@@ -9,6 +9,7 @@ use backend\models\Categories;
 use backend\models\CategoriesLng;
 use backend\models\Language;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\helpers\ArrayHelper;
 
@@ -39,10 +40,19 @@ class PagesCategoriesController extends AppController {
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'publish' => ['POST'],
+                    'unpublish' => ['POST'],
                     'delete' => ['POST'],
                 ],
             ],
         ];
+    }
+
+    public function beforeAction($action) {
+        if (in_array($action->id, ['index', 'view', 'update'], true)) {
+            Url::remember('', 'actions-redirect');
+        }
+        return parent::beforeAction($action);
     }
 
     public function actionIndex() {
@@ -185,8 +195,7 @@ class PagesCategoriesController extends AppController {
     }
 
     public function actionDelete($id) {
-        $model = Categories::findOne($id);
-        if (!empty($model)) {
+        if (($model = Categories::findOne($id)) !== null) {
 //            CategoriesLng::deleteAll(['item_id' => $id]);
 //            Pages::updateAll(['category_id' => 0], ['category_id' => $id]);
             $model->delete();
@@ -252,36 +261,28 @@ class PagesCategoriesController extends AppController {
         return $this->redirect(['index']);
     }
 
-    public function actionPublish() {
-        if (Yii::$app->request->isAjax) {
-            $id = Yii::$app->request->post('id', null);
-            Categories::updateAll(['published' => 1], ['id' => $id]);
-            $languages = Language::getLanguages();
-            foreach ($languages as $language) {
-                Yii::$app->cache->delete('basicTreeCategories' . 'pages' . $language->url);
-                Yii::$app->cache->delete('listTreeCategories' . 'pages' . $language->url);
-                Yii::$app->cache->delete('menuTreeCategories' . 'pages' . $language->url);
-            }
-            return true;
+    public function actionPublish($id) {
+        Categories::updateAll(['published' => 1], ['id' => $id]);
+        $languages = Language::getLanguages();
+        foreach ($languages as $language) {
+            Yii::$app->cache->delete('basicTreeCategories' . 'pages' . $language->url);
+            Yii::$app->cache->delete('listTreeCategories' . 'pages' . $language->url);
+            Yii::$app->cache->delete('menuTreeCategories' . 'pages' . $language->url);
         }
-        return false;
+        return $this->redirect(Url::previous('actions-redirect'));
     }
 
-    public function actionUnpublish() {
-        if (Yii::$app->request->isAjax) {
-            $id = Yii::$app->request->post('id', null);
-            $category = Categories::find()->where(['id' => $id])->limit(1)->one();
-            $categoryChildren = array_merge([$id], $category->children()->select('id')->column());
-            Categories::updateAll(['published' => 0], ['in', 'id', $categoryChildren]);
-            $languages = Language::getLanguages();
-            foreach ($languages as $language) {
-                Yii::$app->cache->delete('basicTreeCategories' . 'pages' . $language->url);
-                Yii::$app->cache->delete('listTreeCategories' . 'pages' . $language->url);
-                Yii::$app->cache->delete('menuTreeCategories' . 'pages' . $language->url);
-            }
-            return true;
+    public function actionUnpublish($id) {
+        $category = Categories::find()->where(['id' => $id])->limit(1)->one();
+        $categoryChildren = array_merge([$id], $category->children()->select('id')->column());
+        Categories::updateAll(['published' => 0], ['in', 'id', $categoryChildren]);
+        $languages = Language::getLanguages();
+        foreach ($languages as $language) {
+            Yii::$app->cache->delete('basicTreeCategories' . 'pages' . $language->url);
+            Yii::$app->cache->delete('listTreeCategories' . 'pages' . $language->url);
+            Yii::$app->cache->delete('menuTreeCategories' . 'pages' . $language->url);
         }
-        return false;
+        return $this->redirect(Url::previous('actions-redirect'));
     }
 
     public function actionUp() {

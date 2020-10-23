@@ -1,9 +1,12 @@
 <?php
+/**
+ * @var $sections      backend\models\PagesSection
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\components\widgets\DetailView;
-?>
-<?php foreach ($sections as $model) { ?>
+use yii\widgets\DetailView;
+
+foreach ($sections as $model) { ?>
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
@@ -23,18 +26,16 @@ use backend\components\widgets\DetailView;
                             [
                                 'attribute' => 'published',
                                 'value' => function($data) {
-                                    if ($data->published)
+                                    if ($data->published) {
                                         return Html::a('<span class="label label-success">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/pages-section/unpublish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
-                                    else
-                                        return Html::a('<span class="label label-danger">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/pages-section/publish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
+                                    }
+                                    return Html::a('<span class="label label-danger">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/pages-section/publish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
                                 },
                                 'format' => 'raw',
                             ],
                             [
                                 'attribute' => 'show_title',
-                                'value' => ($model->show_title)
-                                    ? '<span class="label label-success">' . Yii::$app->formatter->asBoolean($model->show_title) . '</span>'
-                                    : '<span class="label label-danger">' . Yii::$app->formatter->asBoolean($model->show_title) . '</span>',
+                                'value' => Html::tag('span', Yii::$app->formatter->asBoolean($model->show_title), ['class' => 'label label-' . ($model->show_title) ? 'success' : 'danger']),
                                 'format' => (!$model->widget || Yii::$app->params['widgetsList'][$model->widget_type]['params']['show_title'])?'html':'hidden',
                             ],
                             [
@@ -49,9 +50,7 @@ use backend\components\widgets\DetailView;
                             ],
                             [
                                 'attribute' => 'parallax',
-                                'value' => ($model->parallax)
-                                    ? '<span class="label label-success">' . Yii::$app->formatter->asBoolean($model->parallax) . '</span>'
-                                    : '<span class="label label-danger">' . Yii::$app->formatter->asBoolean($model->parallax) . '</span>',
+                                'value' => Html::tag('span', Yii::$app->formatter->asBoolean($model->parallax), ['class' => 'label label-' . ($model->parallax) ? 'success' : 'danger']),
                                 'format' => (!$model->widget || Yii::$app->params['widgetsList'][$model->widget_type]['params']['parallax'])?'html':'hidden',
                             ],
                             [

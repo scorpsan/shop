@@ -224,7 +224,7 @@ use yii\helpers\Html;
 <!-- POPUP REGISTER -->
 <!-- MENU POPUP -->
 
-<header class="js-header header-destop header-<?= (Yii::$app->layout == 'error') ? 'v1' : 'v2' ?> ">
+<header class="js-header header-destop header-top header--<?= (Yii::$app->layout == 'pagesite') ? 'v1' : 'v2' ?> ">
     <div class="my-container">
         <div class="row  align-items-center justify-content-between">
             <div class="col-xl-8 col-lg-8">
@@ -594,6 +594,9 @@ use yii\helpers\Html;
                         </div>
                     </div>
                 </form>
+                <a href="javascript:void(0)" class="btn-login-icon js-popup-login">
+                    <i class="fas fa-user"></i>
+                </a>
                 <div class="js-cart-pull-right cart">
                     <div class="shopping-cart">
                         <i class="fas fa-shopping-cart" style="color:#fff"></i>

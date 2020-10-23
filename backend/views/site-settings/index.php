@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-//use backend\components\widgets\DetailView;
 
 $this->title = Yii::t('backend', 'Settings');
 $this->params['breadcrumbs'][] = $this->title;

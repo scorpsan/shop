@@ -1,66 +1,62 @@
 <?php
 use frontend\widgets\Menu;
 use yii\helpers\Html;
-
-$items = \frontend\models\Menus::getMenuItems('footermenu');
 ?>
 <!-- Page Footer-->
 <footer>
     <section class="section-footer footer-home2">
         <div class="my-container">
             <div class="row no-gutters">
-                <div class="col-xl-3 col-lg-3 col-md-6 padding-bot-30">
+                <div class="col-xl-3 col-lg-3 col-md-6 padding-bot-30 order-sm-4 order-md-1">
                     <h3><?= Yii::t('frontend', 'Contacts') ?></h3>
                     <ul class="navbar-nav">
-                        <li><i class="lnr lnr-home"></i>1234 Heaven Stress, Beverly Hill</li>
-                        <li><i class="lnr lnr-phone"></i>Telephone: +01 234 567 89</li>
-                        <li><i class="lnr lnr-envelope"></i>Email: <a href="#">example@domain.com</a></li>
-                        <li><i class="lnr lnr-clock"></i>8:00 - 19:00, Monday - Saturday</li>
+                        <?php if (!empty(Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address)) { ?>
+                            <li><i class="fas fa-home"></i><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address) ?></li>
+                        <?php } ?>
+                        <li><i class="fas fa-phone"></i>
+                            <?= Yii::t('frontend', 'Phones') ?>: <?= Html::a(Yii::$app->params['siteSettings']->phone, 'callto:'.preg_replace('/[^+0-9]/', '', Yii::$app->params['siteSettings']->phone)) ?><br>
+                            <?php if (!empty(Yii::$app->params['siteSettings']->contact_phone)) {
+                                $contactPhone = explode("\n", Yii::$app->params['siteSettings']->contact_phone);
+                                foreach ($contactPhone as $phone) {
+                                    echo Html::a($phone, 'callto:'.preg_replace('/[^+0-9]/', '', $phone)) . '<br>';
+                                }
+                            } ?>
+                        </li>
+                        <li><i class="fas fa-envelope"></i>Email: <?= Html::a(Yii::$app->params['supportEmail'], 'mailto:'.Yii::$app->params['supportEmail']) ?></li>
+                        <?php if (!empty(Yii::$app->params['siteSettings']->translates[Yii::$app->language]->opening_hours_full)) { ?>
+                            <li><i class="fas fa-clock"></i><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->opening_hours_full) ?></li>
+                        <?php } ?>
                         <li>
-                            <ul class="list-child">
-                                <li>
-                                    <img src="/images/f-01.png" alt="_img-footer">
-                                </li>
-                                <li>
-                                    <img src="/images/f-02.png" alt="_img-footer">
-                                </li>
-                                <li>
-                                    <img src="/images/f-03.png" alt="_img-footer">
-                                </li>
-                                <li>
-                                    <img src="/images/f-04.png" alt="_img-footer">
-                                </li>
-                            </ul>
+                            <a href="<?= \yii\helpers\Url::to(['page/view', 'alias' => 'delivery']) ?>" class="images">
+                                <img src="/files/payment-white.png" class="img-fluid" alt="payment">
+                            </a>
                         </li>
                     </ul>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-6 padding-bot-30">
-                    <h3>my account</h3>
-                    <ul>
-                        <li><a href="#">my account</a></li>
-                        <li><a href="#">login</a></li>
-                        <li><a href="#">my cart</a></li>
-                        <li><a href="#">wishlist</a></li>
-                        <li><a href="#">checkout</a></li>
-                    </ul>
+                <div class="col-xl-3 col-lg-3 col-md-6 padding-bot-30 order-sm-1 order-md-2">
+                    <?php if (($items = \frontend\models\Menus::getMenuItems('accountmenu')) !== null) { ?>
+                    <h3><?= Yii::t('frontend', 'my account') ?></h3>
+                    <?= Menu::widget([
+                        'items' => $items,
+                        'activateParents' => true,
+                    ]); ?>
+                    <?php } ?>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-6 padding-bot-30">
-                    <h3>information</h3>
-                    <ul>
-                        <li><a href="about-us.html">about us</a></li>
-                        <li><a href="#">careers</a></li>
-                        <li><a href="#">delivery information</a></li>
-                        <li><a href="#">privacy policy </a></li>
-                        <li><a href="#">terms & condition</a></li>
-                    </ul>
+                <div class="col-xl-3 col-lg-3 col-md-6 padding-bot-30 order-sm-2 order-md-3">
+                    <?php if (($items = \frontend\models\Menus::getMenuItems('footermenu')) !== null) { ?>
+                    <h3><?= Yii::t('frontend', 'information') ?></h3>
+                    <?= Menu::widget([
+                        'items' => $items,
+                        'activateParents' => true,
+                    ]); ?>
+                    <?php } ?>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-6 image-effect-home2 padding-bot-30">
+                <div class="col-xl-3 col-lg-3 col-md-6 image-effect-home2 padding-bot-30 order-sm-3 order-md-4">
                     <?= Yii::$app->params['siteSettings']->translates[Yii::$app->language]->about_footer ?>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="section-copyright">
         <div class="my-container copyright2019">
             <div>Copyright <i class="fa fa-copyright"></i> <?= date('Y') ?> by <a href="#"><?= Yii::$app->name ?></a>. All Rights Reserved. Powered by <a href="https://web-made.biz" target="_blank">Web-Made.biz</a></div>
@@ -109,84 +105,3 @@ $items = \frontend\models\Menus::getMenuItems('footermenu');
         </a>
     </span>
 </div>
-<?php if(Yii::$app->layout == 'error_old') { ?>
-<section class="pre-footer-corporate">
-    <div class="container">
-        <div class="row justify-content-sm-center justify-content-lg-start row-30 row-md-60">
-            <div class="col-sm-10 col-md-6 col-lg-10 <?= (!empty($items))?'col-xl-3':'col-xl-6' ?>">
-                <h6><?= Yii::t('frontend', 'About') ?></h6>
-                <p><?= Yii::$app->params['siteSettings']->translates[Yii::$app->language]->about_footer ?></p>
-            </div>
-            <?php if (!empty($items)) { ?>
-            <div class="col-sm-10 col-md-6 col-lg-3 col-xl-3">
-                <?= Menu::widget([
-                    'items' => $items,
-                    'options' => ['class' => 'list-linked'],
-                    'activateParents' => true,
-                ]); ?>
-            </div>
-            <?php } ?>
-            <div class="col-sm-10 col-md-6 col-lg-5 col-xl-3">
-                <h6><?= Yii::t('frontend', 'Recent Comments') ?></h6>
-                <ul class="list-sm">
-                    <li>
-                        <article class="post-inline">
-                            <div class="post-inline__header"><a class="post-inline__author meta-author" href="standard-post.html">Brian on</a>
-                                <p class="post-inline__link"><a href="standard-post.html">Kylie Jenner’s Sexy Wrap Dress is Still Available for under $70</a></p>
-                            </div>
-                        </article>
-                    </li>
-                    <li>
-                        <article class="post-inline">
-                            <div class="post-inline__header"><a class="post-inline__author meta-author" href="standard-post.html">Brian on</a>
-                                <p class="post-inline__link"><a href="standard-post.html">Person of the Week: Mark Armstrong Peddigrew</a></p>
-                            </div>
-                        </article>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-sm-10 col-md-6 col-lg-4 col-xl-3">
-                <h6><?= Yii::t('frontend', 'Contacts') ?></h6>
-                <ul class="list-xs">
-                    <li>
-                        <dl class="list-terms-minimal">
-                            <dt><?= Yii::t('frontend', 'Address') ?></dt>
-                            <dd><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address) ?></dd>
-                        </dl>
-                    </li>
-                    <li>
-                        <dl class="list-terms-minimal">
-                            <dt><?= Yii::t('frontend', 'Phones') ?></dt>
-                            <dd>
-                                <ul class="list-semicolon">
-                                    <?= '<li>' . Html::a(Yii::$app->params['siteSettings']->phone, 'callto:'.preg_replace('/[^+0-9]/', '', Yii::$app->params['siteSettings']->phone)) . '</li>' ?>
-                                    <?php if (!empty(Yii::$app->params['siteSettings']->contact_phone)) {
-                                        $contactPhone = explode("\n", Yii::$app->params['siteSettings']->contact_phone);
-                                        foreach ($contactPhone as $phone) {
-                                            echo '<li>' . Html::a($phone, 'callto:'.preg_replace('/[^+0-9]/', '', $phone)) . '</li>';
-                                        }
-                                    } ?>
-                                </ul>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li>
-                        <dl class="list-terms-minimal">
-                            <dt><?= Yii::t('frontend', 'Email') ?></dt>
-                            <dd><?= Html::a(Yii::$app->params['supportEmail'], 'mailto:'.Yii::$app->params['supportEmail']) ?></dd>
-                        </dl>
-                    </li>
-                    <?php if (!empty(Yii::$app->params['siteSettings']->translates[Yii::$app->language]->opening_hours_full)) { ?>
-                    <li>
-                        <dl class="list-terms-minimal">
-                            <dt><?= Yii::t('frontend', 'We are open') ?></dt>
-                            <dd><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->opening_hours_full) ?></dd>
-                        </dl>
-                    </li>
-                    <?php } ?>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-<?php } ?>

@@ -1,9 +1,12 @@
 <?php
+/**
+ * @var $slides      backend\models\SwiperSlides
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\components\widgets\DetailView;
-?>
-<?php foreach ($slides as $model) { ?>
+use yii\widgets\DetailView;
+
+foreach ($slides as $model) { ?>
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
@@ -22,10 +25,10 @@ use backend\components\widgets\DetailView;
                             [
                                 'attribute' => 'published',
                                 'value' => function($data) {
-                                    if ($data->published)
+                                    if ($data->published) {
                                         return Html::a('<span class="label label-success">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/swiper-slides/unpublish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
-                                    else
-                                        return Html::a('<span class="label label-danger">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/swiper-slides/publish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
+                                    }
+                                    return Html::a('<span class="label label-danger">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/swiper-slides/publish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
                                 },
                                 'format' => 'raw',
                             ],
@@ -33,19 +36,17 @@ use backend\components\widgets\DetailView;
                                 'attribute' => 'lng',
                                 'label' => Yii::t('backend', 'Language'),
                                 'content' => ($model->lng)
-                                    ? '<span class="label label-success">' . $model->lng . '</span>'
-                                    : '<span class="label label-primary">' . Yii::t('backend', 'All') . '</span>',
+                                    ? Html::tag('span', $model->lng, ['class' => 'label label-success'])
+                                    : Html::tag('span', Yii::t('backend', 'All'), ['class' => 'label label-primary']),
                                 'format' => 'html',
                             ],
                             [
                                 'attribute' => 'text_align',
                                 'value' => Yii::$app->params['textAlignList'][$model->text_align],
-                                'format' => 'html',
                             ],
                             [
                                 'attribute' => 'style',
                                 'value' => Yii::$app->params['sectionStyle'][$model->style],
-                                'format' => 'html',
                             ],
                             [
                                 'attribute' => 'sort',

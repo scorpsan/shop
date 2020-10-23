@@ -15,8 +15,10 @@ class AppAsset extends AssetBundle
         '//fonts.googleapis.com/css?family=Barlow:400,700&display=swap',
         '//fonts.googleapis.com/css?family=Roboto&display=swap',
         '/css/style.css',
+        '/css/themes.css',
     ];
     public $js = [
+        '/js/store.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
@@ -33,7 +35,7 @@ class AppAsset extends AssetBundle
     public function init() {
         parent::init();
         // resetting Assets to not load own files
-        Yii::$app->assetManager->bundles['yii\\bootstrap\\BootstrapAsset'] = false;
-        Yii::$app->assetManager->bundles['yii\\bootstrap\\BootstrapPluginAsset'] = false;
+        //Yii::$app->assetManager->bundles['yii\\bootstrap\\BootstrapAsset'] = false;
+        //Yii::$app->assetManager->bundles['yii\\bootstrap\\BootstrapPluginAsset'] = false;
     }
 }

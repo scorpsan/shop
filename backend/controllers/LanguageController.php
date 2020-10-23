@@ -5,6 +5,7 @@ use Yii;
 use yii\filters\AccessControl;
 use backend\models\Language;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -35,10 +36,19 @@ class LanguageController extends AppController {
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'publish' => ['POST'],
+                    'unpublish' => ['POST'],
                     'delete' => ['POST'],
                 ],
             ],
         ];
+    }
+
+    public function beforeAction($action) {
+        if (in_array($action->id, ['index', 'update'], true)) {
+            Url::remember('', 'actions-redirect');
+        }
+        return parent::beforeAction($action);
     }
 
     public function actionIndex() {
@@ -85,22 +95,14 @@ class LanguageController extends AppController {
         throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
     }
 
-    public function actionPublish() {
-        if (Yii::$app->request->isAjax) {
-            $id = Yii::$app->request->post('id', null);
-            Language::updateAll(['published' => 1], ['id' => $id]);
-            return true;
-        }
-        return false;
+    public function actionPublish($id) {
+        Language::updateAll(['published' => 1], ['id' => $id]);
+        return $this->redirect(Url::previous('actions-redirect'));
     }
 
-    public function actionUnpublish() {
-        if (Yii::$app->request->isAjax) {
-            $id = Yii::$app->request->post('id', null);
-            Language::updateAll(['published' => 0], ['id' => $id, 'default' => false]);
-            return true;
-        }
-        return false;
+    public function actionUnpublish($id) {
+        Language::updateAll(['published' => 0], ['id' => $id, 'default' => false]);
+        return $this->redirect(Url::previous('actions-redirect'));
     }
 
     public function actionDelete($id) {

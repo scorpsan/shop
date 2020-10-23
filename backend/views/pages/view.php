@@ -1,7 +1,12 @@
 <?php
+/**
+ * @var $this           yii\web\View
+ * @var $model          backend\models\Pages
+ * @var $languages      backend\models\Language
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\components\widgets\DetailView;
+use yii\widgets\DetailView;
 
 $this->title = Yii::t('backend', 'Pages') . ' <small>' . $model->title . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Pages'), 'url' => ['index']];
@@ -44,16 +49,31 @@ $this->params['breadcrumbs'][] = $model->title;
                         'alias',
                         [
                             'attribute' => 'published',
-                            'value' => ($model->published)
-                                ? '<span class="label label-success">' . Yii::$app->formatter->asBoolean($model->published) . '</span>'
-                                : '<span class="label label-danger">' . Yii::$app->formatter->asBoolean($model->published) . '</span>',
-                            'format' => 'html',
+                            'value' => function($data) {
+                                if ($data->published) {
+                                    return Html::a(
+                                        Yii::$app->formatter->asBoolean($data->published),
+                                        ['/pages/unpublish', 'id' => $data->id],
+                                        [
+                                            'class' => 'btn btn-xs btn-success',
+                                            'data-method' => 'post',
+                                        ]
+                                    );
+                                }
+                                return Html::a(
+                                    Yii::$app->formatter->asBoolean($data->published),
+                                    ['/pages/publish', 'id' => $data->id],
+                                    [
+                                        'class' => 'btn btn-xs btn-danger',
+                                        'data-method' => 'post',
+                                    ]
+                                );
+                            },
+                            'format' => 'raw',
                         ],
                         [
                             'attribute' => 'main',
-                            'value' => ($model->main)
-                                ? '<span class="label label-success">' . Yii::$app->formatter->asBoolean($model->main) . '</span>'
-                                : '<span class="label label-danger">' . Yii::$app->formatter->asBoolean($model->main) . '</span>',
+                            'value' => Html::tag('span', Yii::$app->formatter->asBoolean($model->main), ['class' => 'label label-' . ($model->main) ? 'success' : 'danger']),
                             'format' => 'html',
                         ],
                         [

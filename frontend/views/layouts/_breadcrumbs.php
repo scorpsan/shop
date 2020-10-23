@@ -2,7 +2,17 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
-?>
+
+if (Yii::$app->layout == 'pagesite') { ?>
+    <?= Breadcrumbs::widget([
+        'homeLink' => ['label' => Yii::t('frontend', 'Home'), 'url' => Url::home()],
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        'tag' => 'div',
+        'options' => ['class' => 'bread-crumb'],
+        'itemTemplate' => '{link} <i>/</i>',
+        'activeItemTemplate' => '<strong class="active">{link}</strong>',
+    ]); ?>
+<?php } else { ?>
 <section class="slide-about-us" style="background-image : url(/files/testimonial.jpg)">
     <div class="title text-center">
         <h3 class="heading-3 text-white font-weight-bold"><?= Html::encode($this->context->view->title) ?></h3>
@@ -58,3 +68,4 @@ use yii\widgets\Breadcrumbs;
         </div>
     </div>
 </section>
+<?php } ?>

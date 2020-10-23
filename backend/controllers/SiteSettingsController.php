@@ -8,7 +8,6 @@ use backend\models\Language;
 use backend\models\SiteSettings;
 use backend\models\SiteSettingsLng;
 use yii\base\Model;
-use yii\web\NotFoundHttpException;
 
 class SiteSettingsController extends AppController {
 
@@ -53,7 +52,6 @@ class SiteSettingsController extends AppController {
             'model' => $model,
             'languages' => $languages,
         ]);
-        throw new NotFoundHttpException(Yii::t('backend', 'The requested page does not exist.'));
     }
 
     public function actionUpdate() {

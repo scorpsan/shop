@@ -9,7 +9,7 @@ use yii\helpers\Html;
 <!-- Google Tag Manager --
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZJGZZN');</script>
 !-- End Google Tag Manager -->
-<link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" sizes="16x16">
 <meta name="theme-color" content="#7fc9c4">
 <?= Html::csrfMetaTags() ?>
 <?php

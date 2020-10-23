@@ -22,7 +22,8 @@ return [
     'listType' => [
         'mainmenu' => 'Main Menu',
         'footermenu' => 'Footer Menu',
-        'privacymenu' => 'Privacy Menu'
+        'privacymenu' => 'Privacy Menu',
+        'accountmenu' => 'Account Menu',
     ],
     // Section style
     'sectionStyle' => [

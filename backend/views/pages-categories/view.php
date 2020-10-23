@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use backend\components\widgets\DetailView;
+use yii\widgets\DetailView;
 
 $this->title = Yii::t('backend', 'Pages Categories') . ' <small>' . $model->title . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Pages Categories'), 'url' => ['index']];
@@ -41,10 +41,27 @@ $this->params['breadcrumbs'][] = $model->title;
                         'alias',
                         [
                             'attribute' => 'published',
-                            'value' => ($model->published)
-                                ? '<span class="label label-success">' . Yii::$app->formatter->asBoolean($model->published) . '</span>'
-                                : '<span class="label label-danger">' . Yii::$app->formatter->asBoolean($model->published) . '</span>',
-                            'format' => 'html',
+                            'value' => function($data) {
+                                if ($data->published) {
+                                    return Html::a(
+                                        Yii::$app->formatter->asBoolean($data->published),
+                                        ['/pages-categories/unpublish', 'id' => $data->id],
+                                        [
+                                            'class' => 'btn btn-xs btn-success mx-5',
+                                            'data-method' => 'post',
+                                        ]
+                                    );
+                                }
+                                return Html::a(
+                                    Yii::$app->formatter->asBoolean($data->published),
+                                    ['/pages-categories/publish', 'id' => $data->id],
+                                    [
+                                        'class' => 'btn btn-xs btn-danger mx-5',
+                                        'data-method' => 'post',
+                                    ]
+                                );
+                            },
+                            'format' => 'raw',
                         ],
                     ],
                 ]) ?>

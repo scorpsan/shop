@@ -14,6 +14,8 @@ use yii\helpers\ArrayHelper;
  * @property string $alias
  * @property int $published
  * @property int $main
+ * @property int $noindex
+ * @property int $landing
  * @property int $created_at
  * @property int $updated_at
  */

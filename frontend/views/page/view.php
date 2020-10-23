@@ -23,18 +23,16 @@ if (Yii::$app->layout != 'main') {
             echo $widgetName::widget($widgetParams);
             ?>
         <?php } else { ?>
-            <section id="<?= $model->alias ?>-<?= $section->id ?>" class="section-60 <?= $section->style ?> <?= ($section->background)?'bg-image bg-overlay" style="background-image: url('.$section->background.');':''?>">
-                <div class="shell <?= $section->text_align ?>">
+            <section id="<?= $model->alias ?>-<?= $section->id ?>" class="section-<?= $model->alias ?>-<?= $section->id ?> <?= $section->style ?> <?= ($section->background)?'bg-image bg-overlay" style="background-image: url('.$section->background.');':''?>">
+                <div class="my-container <?= $section->text_align ?>">
                     <?php if ($section->show_title) { ?>
                         <?php if ($key == 0) { ?>
-                            <h1 class="text-center h3"><?= $section->title ?></h1>
+                            <h3 class="h3 heading-3 font-weight-bold text-center text-capitalize"><?= $section->title ?></h3>
                         <?php } else { ?>
-                            <h3 class="text-center"><?= $section->title ?></h3>
+                            <h3 class="heading-3 font-weight-bold text-center text-capitalize"><?= $section->title ?></h3>
                         <?php } ?>
                     <?php } ?>
-                    <div class="range <?= $section->text_align ?> <?= ($section->show_title)?'offset-top-30':'' ?>">
-                        <?= $section->content ?>
-                    </div>
+                    <?= $section->content ?>
                 </div>
             </section>
         <?php } ?>

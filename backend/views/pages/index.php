@@ -1,9 +1,14 @@
 <?php
+/**
+ * @var $this           yii\web\View
+ * @var $dataProvider   yii\data\ActiveDataProvider
+ * @var $languages      backend\models\Language
+ */
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\grid\GridView;
-use backend\components\grid\BooleanDataColumn;
 use yii\widgets\Pjax;
+use backend\components\grid\BooleanDataColumn;
+use backend\components\grid\TranslateDataColumn;
 
 $this->title = Yii::t('backend', 'Pages');
 $this->params['breadcrumbs'][] = $this->title;
@@ -23,13 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body table-responsive">
-                <?php Pjax::begin(['id' => 'backend-grid-view', 'timeout' => false]); ?>
+                <?php Pjax::begin(); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'tableOptions' => ['class' => 'table table-bordered table-striped dataTable'],
                     'columns' => [
-                        //['class' => 'yii\grid\SerialColumn'],
-
                         [
                             'attribute' => 'id',
                             'headerOptions' => ['width' => '60'],
@@ -53,33 +55,64 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'boolean',
                         ],
                         [
+                            'class' => BooleanDataColumn::className(),
+                            'attribute' => 'landing',
+                            'headerOptions' => ['width' => '90'],
+                            'format' => 'boolean',
+                        ],
+                        [
+                            'attribute' => 'noindex',
+                            'label' => Yii::t('backend', 'NoIndex'),
+                            'content' => function ($data) {
+                                return Html::tag('span', Yii::$app->formatter->asBoolean($data->noindex), ['class' => 'label label-' . ($data->noindex) ? 'danger' : 'success']);
+                            },
+                            'headerOptions' => ['width' => '90'],
+                            'format' => 'html',
+                        ],
+                        [
+                            'class' => TranslateDataColumn::className(),
                             'attribute' => 'translate',
                             'label' => Yii::t('backend', 'Translate'),
+                            /*
                             'content' => function($data) use($languages){
                                 $content = '';
                                 foreach ($languages as $key => $lang) {
                                     if (isset($data->translates[$key]))
                                         if ($lang->default)
-                                            $content .= '<span class="label label-primary">' . $key . '</span>';
+                                            $content .= Html::tag('span', $key, ['class' => 'label label-primary']);
                                         else
-                                            $content .= '<span class="label label-success">' . $key . '</span>';
+                                            $content .= Html::tag('span', $key, ['class' => 'label label-label-success']);
                                     else
-                                        $content .= '<span class="label label-danger">' . $key . '</span>';
+                                        $content .= Html::tag('span', $key, ['class' => 'label label-label-danger']);
                                 }
                                 return $content;
-                            },
+                            },*/
                             'format' => 'html',
                         ],
                         [
                             'attribute' => 'published',
                             'content' => function($data) {
-                                if ($data->published)
-                                    return Html::a('<span class="label label-success">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/pages/unpublish']), 'id' => $data->id]]);
-                                else
-                                    return Html::a('<span class="label label-danger">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/pages/publish']), 'id' => $data->id]]);
+                                if ($data->published) {
+                                    return Html::a(
+                                        Yii::$app->formatter->asBoolean($data->published),
+                                        ['/pages/unpublish', 'id' => $data->id],
+                                        [
+                                            'class' => 'btn btn-xs btn-success btn-block',
+                                            'data-method' => 'post',
+                                        ]
+                                    );
+                                }
+                                return Html::a(
+                                    Yii::$app->formatter->asBoolean($data->published),
+                                    ['/pages/publish', 'id' => $data->id],
+                                    [
+                                        'class' => 'btn btn-xs btn-danger btn-block',
+                                        'data-method' => 'post',
+                                    ]
+                                );
                             },
                             'headerOptions' => ['width' => '90'],
-                            'format' => 'boolean',
+                            'format' => 'raw',
                         ],
                         [
                             'class' => 'backend\components\grid\CombinedDataColumn',
@@ -122,24 +155,3 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-<?php
-$script = <<< JS
-$(document).on('click', '.actionButton', function(e) {
-    e.preventDefault();
-    var data = $(this).data();
-    $.ajax({
-        type: "POST",
-        url: data.url,
-        data: {id: data.id},
-        cache: false
-    }).done(function(result) {
-        if (result) {
-            $.pjax.reload({container: '#backend-grid-view'});
-        } else {
-            alert( "Request failed");
-        }
-    });
-});
-JS;
-$this->registerJs($script, yii\web\View::POS_READY);
-?>

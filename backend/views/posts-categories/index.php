@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var $this           yii\web\View
+ * @var $dataProvider   yii\data\ActiveDataProvider
+ * @var $languages      backend\models\Language
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;

@@ -2,16 +2,17 @@
 namespace backend\controllers;
 
 use backend\models\Categories;
-use Yii;
-use yii\filters\AccessControl;
-use yii\base\Model;
 use backend\models\Pages;
 use backend\models\PagesLng;
 use backend\models\Language;
+use Yii;
+use yii\helpers\Url;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 class PagesController extends AppController {
 
@@ -40,10 +41,19 @@ class PagesController extends AppController {
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'publish' => ['POST'],
+                    'unpublish' => ['POST'],
                     'delete' => ['POST'],
                 ],
             ],
         ];
+    }
+
+    public function beforeAction($action) {
+        if (in_array($action->id, ['index', 'view', 'update'], true)) {
+            Url::remember('', 'actions-redirect');
+        }
+        return parent::beforeAction($action);
     }
 
     public function actionIndex() {
@@ -60,25 +70,26 @@ class PagesController extends AppController {
     }
 
     public function actionView($id) {
-        $model = Pages::find()->where(['id' => $id])
+        if (($model = Pages::find()->where(['id' => $id])
             ->with('category')
             ->with('translate')
             ->with('translates')
-            ->limit(1)->one();
-        $languages = Language::getLanguages();
-        if ($model !== null) {
+            ->limit(1)->one()) !== null) {
+            $languages = Language::getLanguages();
             return $this->render('view', [
                 'model' => $model,
                 'languages' => $languages,
             ]);
         }
-        throw new NotFoundHttpException(Yii::t('backend', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
     }
 
     public function actionCreate() {
         $model = new Pages();
         $model->published = true;
         $model->main = false;
+        $model->landing = false;
+        $model->noindex = false;
         $languages = Language::getLanguages();
         foreach ($languages as $lang) {
             $modelLng[$lang->url] = new PagesLng();
@@ -106,54 +117,49 @@ class PagesController extends AppController {
     }
 
     public function actionUpdate($id) {
-        $model = Pages::find()->where(['id' => $id])
+        if (($model = Pages::find()->where(['id' => $id])
             ->with('translate')
-            ->limit(1)->one();
-        $modelLng = PagesLng::find()->where(['item_id' => $id])->indexBy('lng')->all();
-        $languages = Language::getLanguages();
-        foreach ($languages as $lang) {
-            if (empty($modelLng[$lang->url])) {
-                $modelLng[$lang->url] = new PagesLng();
+            ->limit(1)->one()) !== null) {
+            $modelLng = PagesLng::find()->where(['item_id' => $id])->indexBy('lng')->all();
+            $languages = Language::getLanguages();
+            foreach ($languages as $lang) {
+                if (empty($modelLng[$lang->url])) {
+                    $modelLng[$lang->url] = new PagesLng();
+                }
             }
-        }
-        if ($model->load(Yii::$app->request->post()) && Model::loadMultiple($modelLng, Yii::$app->request->post())) {
-            $model->titleDefault = $modelLng[Yii::$app->params['defaultLanguage']]->title;
-            if ($model->main)
-                Pages::updateAll(['main' => 0]);
-            $model->save();
-            foreach ($modelLng as $key => $modelL) {
-                $modelL->item_id = $model->id;
-                if ($modelL->validate())
-                    $modelL->save(false);
+            if ($model->load(Yii::$app->request->post()) && Model::loadMultiple($modelLng, Yii::$app->request->post())) {
+                $model->titleDefault = $modelLng[Yii::$app->params['defaultLanguage']]->title;
+                if ($model->main)
+                    Pages::updateAll(['main' => 0]);
+                if ($model->save()) {
+                    foreach ($modelLng as $key => $modelL) {
+                        $modelL->item_id = $model->id;
+                        if ($modelL->validate())
+                            $modelL->save(false);
+                    }
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            $root = Categories::find()->where(['alias' => 'pages'])->limit(1)->one();
+            $parentList = ArrayHelper::map($root->listTreeCategories('pages'), 'id', 'title');
+            return $this->render('update', [
+                'model' => $model,
+                'modelLng' => $modelLng,
+                'languages' => $languages,
+                'parentList' => $parentList,
+            ]);
         }
-        $root = Categories::find()->where(['alias' => 'pages'])->limit(1)->one();
-        $parentList = ArrayHelper::map($root->listTreeCategories('pages'), 'id', 'title');
-        return $this->render('update', [
-            'model' => $model,
-            'modelLng' => $modelLng,
-            'languages' => $languages,
-            'parentList' => $parentList,
-        ]);
+        throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
     }
 
-    public function actionPublish() {
-        if (Yii::$app->request->isAjax) {
-            $id = Yii::$app->request->post('id', null);
-            Pages::updateAll(['published' => 1], ['id' => $id]);
-            return true;
-        }
-        return false;
+    public function actionPublish($id) {
+        Pages::updateAll(['published' => 1], ['id' => $id]);
+        return $this->redirect(Url::previous('actions-redirect'));
     }
 
-    public function actionUnpublish() {
-        if (Yii::$app->request->isAjax) {
-            $id = Yii::$app->request->post('id', null);
-            Pages::updateAll(['published' => 0], ['id' => $id]);
-            return true;
-        }
-        return false;
+    public function actionUnpublish($id) {
+        Pages::updateAll(['published' => 0], ['id' => $id]);
+        return $this->redirect(Url::previous('actions-redirect'));
     }
 
     public function actionDelete($id) {

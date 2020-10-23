@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use backend\components\widgets\DetailView;
+use yii\widgets\DetailView;
 
 $this->title = Yii::t('backend', 'Posts Categories') . ' <small>' . $model->title . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Posts Categories'), 'url' => ['index']];

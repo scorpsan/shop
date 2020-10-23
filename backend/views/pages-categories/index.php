@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var $this           yii\web\View
+ * @var $dataProvider   yii\data\ActiveDataProvider
+ * @var $languages      backend\models\Language
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -22,13 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body table-responsive">
-                <?php Pjax::begin(['id' => 'backend-grid-view', 'timeout' => false]); ?>
+                <?php Pjax::begin(); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'tableOptions' => ['class' => 'table table-bordered table-striped dataTable'],
                     'columns' => [
-                        //['class' => 'yii\grid\SerialColumn'],
-
                         [
                             'attribute' => 'id',
                             'headerOptions' => ['width' => '60'],
@@ -70,11 +72,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 foreach ($languages as $key => $lang) {
                                     if (isset($data->translates[$key]))
                                         if ($lang->default)
-                                            $content .= '<span class="label label-primary">' . $key . '</span>';
+                                            $content .= Html::tag('span', $key, ['class' => 'label label-primary']);
                                         else
-                                            $content .= '<span class="label label-success">' . $key . '</span>';
+                                            $content .= Html::tag('span', $key, ['class' => 'label label-label-success']);
                                     else
-                                        $content .= '<span class="label label-danger">' . $key . '</span>';
+                                        $content .= Html::tag('span', $key, ['class' => 'label label-label-danger']);
                                 }
                                 return $content;
                             },
@@ -83,13 +85,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'published',
                             'content' => function($data) {
-                                if ($data->published)
-                                    return Html::a('<span class="label label-success">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/backend/pages-categories/unpublish']), 'id' => $data->id]]);
-                                else
-                                    return Html::a('<span class="label label-danger">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/backend/pages-categories/publish']), 'id' => $data->id]]);
+                                if ($data->published) {
+                                    return Html::a(
+                                        Yii::$app->formatter->asBoolean($data->published),
+                                        ['/pages-categories/unpublish', 'id' => $data->id],
+                                        [
+                                            'class' => 'btn btn-xs btn-success btn-block',
+                                            'data-method' => 'post',
+                                        ]
+                                    );
+                                }
+                                return Html::a(
+                                    Yii::$app->formatter->asBoolean($data->published),
+                                    ['/pages-categories/publish', 'id' => $data->id],
+                                    [
+                                        'class' => 'btn btn-xs btn-danger btn-block',
+                                        'data-method' => 'post',
+                                    ]
+                                );
                             },
                             'headerOptions' => ['width' => '90'],
-                            'format' => 'boolean',
+                            'format' => 'raw',
                         ],
 
                         ['class' => 'yii\grid\ActionColumn',

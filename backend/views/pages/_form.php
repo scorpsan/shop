@@ -66,6 +66,10 @@ use kartik\datetime\DateTimePicker;
                 <?= $form->field($model, 'published')->checkbox() ?>
 
                 <?= $form->field($model, 'main')->checkbox() ?>
+
+                <?= $form->field($model, 'noindex')->checkbox() ?>
+
+                <?= $form->field($model, 'landing')->checkbox() ?>
             </div>
         </div>
     </div>

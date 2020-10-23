@@ -9,6 +9,7 @@ use backend\models\SwiperSlides;
 use backend\models\Language;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -39,10 +40,19 @@ class SwiperController extends AppController {
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'publish' => ['POST'],
+                    'unpublish' => ['POST'],
                     'delete' => ['POST'],
                 ],
             ],
         ];
+    }
+
+    public function beforeAction($action) {
+        if (in_array($action->id, ['index', 'view', 'update'], true)) {
+            Url::remember('', 'actions-redirect');
+        }
+        return parent::beforeAction($action);
     }
 
     public function actionIndex() {
@@ -57,13 +67,12 @@ class SwiperController extends AppController {
     }
 
     public function actionView($id) {
-        $model = Swiper::find()->where(['id' => $id])->limit(1)->one();
-        if ($model !== null) {
+        if (($model = Swiper::find()->where(['id' => $id])->limit(1)->one()) !== null) {
             return $this->render('view', [
                 'model' => $model,
             ]);
         }
-        throw new NotFoundHttpException(Yii::t('backend', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
     }
 
     public function actionCreate() {
@@ -81,33 +90,27 @@ class SwiperController extends AppController {
     }
 
     public function actionUpdate($id) {
-        $model = Swiper::find()->where(['id' => $id])->limit(1)->one();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if (($model = Swiper::find()->where(['id' => $id])->limit(1)->one()) !== null) {
+            if ($model->load(Yii::$app->request->post())) {
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
+            return $this->render('update', [
+                'model' => $model,
+            ]);
         }
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
     }
 
-    public function actionPublish() {
-        if (Yii::$app->request->isAjax) {
-            $id = Yii::$app->request->post('id', null);
-            Swiper::updateAll(['published' => 1], ['id' => $id]);
-            return true;
-        }
-        return false;
+    public function actionPublish($id) {
+        Swiper::updateAll(['published' => 1], ['id' => $id]);
+        return $this->redirect(Url::previous('actions-redirect'));
     }
 
-    public function actionUnpublish() {
-        if (Yii::$app->request->isAjax) {
-            $id = Yii::$app->request->post('id', null);
-            Swiper::updateAll(['published' => 0], ['id' => $id]);
-            return true;
-        }
-        return false;
+    public function actionUnpublish($id) {
+        Swiper::updateAll(['published' => 0], ['id' => $id]);
+        return $this->redirect(Url::previous('actions-redirect'));
     }
 
     public function actionDelete($id) {

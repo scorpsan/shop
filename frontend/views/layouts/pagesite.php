@@ -19,11 +19,15 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
 
     <?= $this->render('_header') ?>
     <!-- Page-->
-    <main>
-        <?= $this->render('_alert') ?>
+    <section class="page-static">
+        <div class="container-fluid my-container">
+            <?= $this->render('_breadcrumbs') ?>
 
-        <?= $content ?>
-    </main>
+            <?= $this->render('_alert') ?>
+
+            <?= $content ?>
+        </div>
+    </section>
     <?= $this->render('_footer') ?>
 
 <?php $this->endBody() ?>
