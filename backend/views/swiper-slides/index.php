@@ -26,9 +26,9 @@ foreach ($slides as $model) { ?>
                                 'attribute' => 'published',
                                 'value' => function($data) {
                                     if ($data->published) {
-                                        return Html::a('<span class="label label-success">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/swiper-slides/unpublish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
+                                        return Html::a('<span class="label label-success">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['unpublish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
                                     }
-                                    return Html::a('<span class="label label-danger">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/swiper-slides/publish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
+                                    return Html::a('<span class="label label-danger">' . Yii::$app->formatter->asBoolean($data->published) . '</span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['publish']), 'id' => $data->id, 'item_id' => $data->item_id]]);
                                 },
                                 'format' => 'raw',
                             ],
@@ -53,12 +53,12 @@ foreach ($slides as $model) { ?>
                                 'value' => function($data) {
                                     $content = '';
                                     if (!$data->getIsFirst())
-                                        $content .= Html::a('<span class="fa fa-arrow-circle-up"></span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/swiper-slides/up']), 'id' => $data->id, 'item_id' => $data->item_id]]);
+                                        $content .= Html::a('<span class="fa fa-arrow-circle-up"></span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['up']), 'id' => $data->id, 'item_id' => $data->item_id]]);
                                     else
                                         $content .= '<span class="fa fa-arrow-circle-up"></span>';
                                     $content .= ' / ';
                                     if (!$data->getIsLast())
-                                        $content .= Html::a('<span class="fa fa-arrow-circle-down"></span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['/swiper-slides/down']), 'id' => $data->id, 'item_id' => $data->item_id]]);
+                                        $content .= Html::a('<span class="fa fa-arrow-circle-down"></span>', '#', ['class' => 'actionButton', 'data' => ['url' => Url::to(['down']), 'id' => $data->id, 'item_id' => $data->item_id]]);
                                     else
                                         $content .= '<span class="fa fa-arrow-circle-down"></span>';
                                     return $content;

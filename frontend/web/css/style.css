@@ -622,14 +622,8 @@ button, button:focus {outline:none;}
         flex:0 0  37.26114649681529%;
         max-width:37.26114649681529%; }
 }
-header {
-    z-index:1;
-    width:100%;
-    font-family:"Barlow", sans-serif;
-    background:#222;}
-.header-absolute {
-    position:absolute;
-    background:transparent;}
+header {z-index:1;width:100%;font-family:"Barlow", sans-serif;background:#222;}
+.header-absolute {position:absolute;background:transparent;}
 header .header-option {
     display:-webkit-box;
     display:-ms-flexbox;
@@ -733,8 +727,9 @@ header .cart .number {
     align-content:center; }
 header .cart .number-home3 {
     color:#222; }
-.header-top {
-    padding:30px 0; }
+.section {
+    padding-top:115px;
+    padding-bottom:69px;}
 .section-slide-v1 {
     position:relative; }
 .section-slide-v1 .slick-dotted.slick-slider {
@@ -1458,8 +1453,9 @@ header .cart .number-home3 {
 .section-footer {
     padding-top:115px;
     padding-bottom:69px;
-    background:#222;
-    font-family:"Roboto", sans-serif; }
+    font-family:"Roboto", sans-serif;
+    background:#111;
+    border-bottom:1px solid #222;}
 .section-footer .navbar li a {
     text-transform:unset; }
 .section-footer h3 {
@@ -1551,6 +1547,9 @@ header .cart .number-home3 {
     -o-transition:all .4s;
     transition:all .4s; }
 @media only screen and (max-width:576px) {
+    .section {
+        padding-top:45px;
+        padding-bottom:0; }
     .product-slick-child {
         display:none; }
     .header-destop {
@@ -1724,6 +1723,9 @@ header .cart .number-home3 {
         font-size:16px; }
 }
 @media only screen and (max-width:480px) {
+    .section {
+        padding-top:40px;
+        padding-bottom:0; }
     .section-slide-v1 .title .caption {
         top:35%;
         -webkit-transform:translateY(-50%);
@@ -1845,6 +1847,9 @@ header .cart .number-home3 {
         font-size:30px; }
 }
 @media only screen and (min-width:576px) {
+    .section {
+        padding-top:113px;
+        padding-bottom:50px; }
     .header-destop {
         display:none; }
     .section-slide-v1 .slider-child .social {
@@ -2218,8 +2223,7 @@ header .cart .number-home3 {
         font-size:50px; }
 }
 @media only screen and (min-width:1600px) {
-    .header-top {
-        padding-top:51px; }
+    .section {padding-top:113px;}
     .section-slide-v1 .slider-child .social {
         bottom:76px;
         left:10.06%; }
@@ -2351,9 +2355,12 @@ header .cart .number-home3 {
     .section-newsletter-v1 .caption p {
         font-size:18px;
         word-spacing:1px; }
-    .section-footer {
-        padding-top:113px; }
+    .section-footer {padding-top:113px;}
 }
+.section-footer.white {border-top:1px solid #f4f4f4;background:#fff;}
+.section-footer.white h3 {color:#222;}
+.section-footer.white ul li,
+.section-footer.white ul li a {color:#444;}
 .header-destop ul li a.top-nav-link {
     font-size:20px;
     color:#fff;
@@ -2730,9 +2737,6 @@ header .cart .number-home3 {
     cursor:pointer; }
 .section-slide-v2 .slick-child-header-h2 .slick-prev:before {
     display:none; }
-.footer-home2 {
-    background:#111;
-    border-bottom:1px solid #222; }
 .image-show {
     position:relative; }
 .image-title {
@@ -4263,13 +4267,6 @@ header .cart .number-home3 {
     font-family:"Roboto", sans-serif;
     color:#313131;
     line-height:1.5; }
-.section-footer-page-3 {
-    border-top:1px solid #f4f4f4;
-    background:#fff; }
-.section-footer-page-3 h3 {
-    color:#222; }
-.section-footer-page-3 ul li, .section-footer-page-3 ul li a {
-    color:#444; }
 .section-best-seller-h3 {
     margin-bottom:20px; }
 @media only screen and (max-width:576px) {
@@ -10357,23 +10354,7 @@ header .cart .number-home3 {
 @media only screen and (min-width:1200px) {
     .header-v2 {padding:0;}
 }
-
-@-webkit-keyframes myAnimation3 {
-    from {
-        -webkit-transform:translateY(-100%);
-        transform:translateY(-100%); }
-    to {
-        -webkit-transform:translateY(0);
-        transform:translateY(0); }
-}
-@keyframes myAnimation3 {
-    from {
-        -webkit-transform:translateY(-100%);
-        transform:translateY(-100%); }
-    to {
-        -webkit-transform:translateY(0);
-        transform:translateY(0); }
-}
+.header-v3 {background:#fff;}
 .mobile-nav-search-form {
     position:fixed;
     height:60px;

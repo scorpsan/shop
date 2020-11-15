@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var $this           yii\web\View
+ * @var $model          \backend\models\SiteSettings
+ * @var $languages      \backend\models\Language
+ */
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 

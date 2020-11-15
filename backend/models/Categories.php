@@ -17,6 +17,8 @@ use yii\db\Expression;
  * @property int $rgt
  * @property int $depth
  * @property int $published
+ * @property int $noindex
+ * @property int $page_style
  */
 class Categories extends \yii\db\ActiveRecord {
 
@@ -65,8 +67,11 @@ class Categories extends \yii\db\ActiveRecord {
             [['alias'], 'unique'],
             [['alias'], 'filter', 'filter'=>'strtolower'],
             [['tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
-            [['published'], 'boolean'],
+            [['published', 'noindex'], 'boolean'],
             [['published'], 'default', 'value' => true],
+            [['noindex'], 'default', 'value' => false],
+            [['page_style'], 'integer'],
+            [['page_style'], 'default', 'value' => 6],
             [['sorting'], 'safe'],
         ];
     }
@@ -77,6 +82,8 @@ class Categories extends \yii\db\ActiveRecord {
             'alias' => Yii::t('backend', 'Alias'),
             'parent_id' => Yii::t('backend', 'Parent Category'),
             'sorting' => Yii::t('backend', 'Sort After'),
+            'noindex' => Yii::t('backend', 'NoIndex'),
+            'page_style' => Yii::t('backend', 'Page Style'),
             'published' => Yii::t('backend', 'Published'),
         ];
     }
@@ -101,13 +108,17 @@ class Categories extends \yii\db\ActiveRecord {
         return (isset($this->translate->description)) ? $this->translate->description : null;
     }
 
-    public function getTranslates() {
-        return $this->hasMany(CategoriesLng::className(), ['item_id' => 'id'])->indexBy('lng');
+    public function getBreadbg() {
+        return (isset($this->translate->breadbg)) ? $this->translate->breadbg : null;
     }
 
     public function getTranslate() {
         $langDef = Yii::$app->params['defaultLanguage'];
         return $this->hasOne(CategoriesLng::className(), ['item_id' => 'id'])->alias('translate')->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])->indexBy('lng');
+    }
+
+    public function getTranslates() {
+        return $this->hasMany(CategoriesLng::className(), ['item_id' => 'id'])->indexBy('lng');
     }
 
 }

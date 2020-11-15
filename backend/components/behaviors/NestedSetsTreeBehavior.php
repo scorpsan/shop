@@ -105,15 +105,15 @@ class NestedSetsTreeBehavior extends \yii\base\Behavior {
         return $trees;
     }
 
-    public function listTreeCategories($controller) {
-        $makeNode = function ($node) {
+    public function listTreeCategories($controller, $clearRoot = true) {
+        $makeNode = function ($node, $cRoot) {
             if ($node[$this->depthAttribute] == 0) {
                 $newData = [
                     $this->labelOutAttribute => Yii::t('backend', 'Choose category...'),
                 ];
             } else {
                 $newData = [
-                    $this->labelOutAttribute => ($node[$this->depthAttribute] - 1 > 0) ? str_pad('', ($node[$this->depthAttribute] - 1), '-') . ' ' . $node['translate'][$this->labelAttribute] : $node['translate'][$this->labelAttribute],
+                    $this->labelOutAttribute => ($node[$this->depthAttribute] - (int)$cRoot > 0) ? str_pad('', ($node[$this->depthAttribute] - (int)$cRoot), '-') . ' ' . $node['translate'][$this->labelAttribute] : $node['translate'][$this->labelAttribute],
                 ];
             }
             return array_merge($node, $newData);
@@ -124,7 +124,7 @@ class NestedSetsTreeBehavior extends \yii\base\Behavior {
             // Trees mapped
             $trees = $this->owner->find()->andWhere(['tree' => $this->owner->tree])->with('translate')->orderBy('lft')->asArray()->all();
             if (count($trees) > 0) {
-                foreach ($trees as &$col) $col = $makeNode($col);
+                foreach ($trees as &$col) $col = $makeNode($col, $clearRoot);
             }
             // set cache
             Yii::$app->cache->set('listTreeCategories' . $controller . Yii::$app->language, $trees, 3600);

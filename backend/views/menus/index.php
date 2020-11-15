@@ -2,12 +2,13 @@
 /**
  * @var $this           yii\web\View
  * @var $dataProvider   yii\data\ActiveDataProvider
- * @var $languages      backend\models\Language
+ * @var $languages      \backend\models\Language
  */
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use backend\components\grid\TranslatesDataColumn;
 
 $this->title = Yii::t('backend', 'Site Menu');
 $this->params['breadcrumbs'][] = $this->title;
@@ -76,24 +77,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'raw',
                         ],
                         [
-                            'attribute' => 'translate',
+                            'class' => TranslatesDataColumn::className(),
+                            'attribute' => 'translates',
                             'label' => Yii::t('backend', 'Translate'),
-                            'content' => function($data) use($languages){
-                                $content = '';
-                                if ($data->depth != 0) {
-                                    foreach ($languages as $key => $lang) {
-                                        if (isset($data->translates[$key]))
-                                            if ($lang->default)
-                                                $content .= '<span class="label label-primary">' . $lang->url . '</span>';
-                                            else
-                                                $content .= '<span class="label label-success">' . $lang->url . '</span>';
-                                        else
-                                            $content .= '<span class="label label-danger">' . $lang->url . '</span>';
-                                    }
-                                }
-                                return $content;
-                            },
                             'format' => 'html',
+                            'visible' => (count($languages) > 1),
                         ],
                         [
                             'attribute' => 'url',
@@ -140,20 +128,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 if ($data->published) {
                                     return Html::a(
                                         Yii::$app->formatter->asBoolean($data->published),
-                                        ['/menus/unpublish', 'id' => $data->id],
-                                        [
-                                            'class' => 'btn btn-xs btn-success btn-block',
-                                            'data-method' => 'post',
-                                        ]
+                                        ['unpublish', 'id' => $data->id],
+                                        ['class' => 'btn btn-xs btn-success btn-block',]
                                     );
                                 }
                                 return Html::a(
                                     Yii::$app->formatter->asBoolean($data->published),
-                                    ['/menus/publish', 'id' => $data->id],
-                                    [
-                                        'class' => 'btn btn-xs btn-danger btn-block',
-                                        'data-method' => 'post',
-                                    ]
+                                    ['publish', 'id' => $data->id],
+                                    ['class' => 'btn btn-xs btn-danger btn-block',]
                                 );
                             },
                             'headerOptions' => ['width' => '90'],
@@ -161,6 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
 
                         ['class' => 'yii\grid\ActionColumn',
+                            'template' => '{update} {delete}',
                             'headerOptions' => ['width' => '90'],
                             'visibleButtons' => [
                                 'view' => Yii::$app->user->can('viewPages'),

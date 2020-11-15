@@ -20,6 +20,8 @@ class m190604_143017_create_categories_table extends Migration
             'rgt' => $this->integer(11)->notNull(),
             'depth' => $this->integer(11)->notNull(),
             'published' => $this->boolean()->notNull()->defaultValue(1),
+            'noindex' => $this->boolean()->notNull()->defaultValue(0),
+            'page_style' => $this->tinyInteger(1)->notNull()->defaultValue(0),
         ]);
     }
 

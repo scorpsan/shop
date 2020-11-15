@@ -14,6 +14,7 @@ use Yii;
  * @property string $keywords
  * @property string $description
  * @property string $seo_text
+ * @property string $breadbg
  */
 class PagesLng extends \yii\db\ActiveRecord {
 
@@ -28,9 +29,10 @@ class PagesLng extends \yii\db\ActiveRecord {
             [['item_id', 'lng', 'title'], 'required'],
             [['item_id'], 'integer'],
             [['lng'], 'string', 'max' => 5],
-            [['title', 'seotitle', 'keywords', 'description'], 'string', 'max' => 255],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pages::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['title', 'seotitle', 'keywords', 'description', 'breadbg'], 'string', 'max' => 255],
             [['seo_text'], 'string'],
+            [['lng'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['lng' => 'url']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pages::className(), 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
 
@@ -44,6 +46,7 @@ class PagesLng extends \yii\db\ActiveRecord {
             'keywords' => Yii::t('backend', 'Keywords'),
             'description' => Yii::t('backend', 'Description'),
             'seo_text' => Yii::t('backend', 'SEO Text'),
+            'breadbg' => Yii::t('backend', 'Breadcrumbs Section Background'),
         ];
     }
 

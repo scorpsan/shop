@@ -18,6 +18,9 @@ class AppAsset extends AssetBundle
         '/css/themes.css',
     ];
     public $js = [
+        '/js/jquery.barrating.min.js',
+        '/js/jquery.countdown.min.js',
+        '/js/slick.js',
         '/js/store.js'
     ];
     public $depends = [

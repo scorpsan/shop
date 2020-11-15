@@ -21,6 +21,7 @@ class m190605_163930_create_pages_lng_table extends Migration
             'keywords' => $this->string(255),
             'description' => $this->string(255),
             'seo_text' => $this->text(),
+            'breadbg' => $this->string(255),
         ]);
 
         $this->createIndex('pages_lng_pages_id_fk', '{{%pages_lng}}', 'item_id');

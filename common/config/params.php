@@ -25,16 +25,57 @@ return [
         'privacymenu' => 'Privacy Menu',
         'accountmenu' => 'Account Menu',
     ],
+    // Page and Category style
+    'pageStyle' => [
+        '0' => [
+            'key' => 0,
+            'title' => 'Landing with slider (dark bg)',
+            'breadbg' => false,
+            'layouts' => 'page',
+            'headclass' => 'header-v2 header-absolute',
+        ],
+        '1' => [
+            'key' => 1,
+            'title' => 'Landing with slider (light bg)',
+            'breadbg' => false,
+            'layouts' => 'page',
+            'headclass' => 'header-v2 header-absolute',
+        ],
+        '6' => [
+            'key' => 6,
+            'title' => 'Landing without slider but with breadcrumb section',
+            'breadbg' => true,
+            'layouts' => 'page',
+            'headclass' => 'header-v2 header-absolute',
+        ],
+        '2' => [
+            'key' => 2,
+            'title' => 'Landing without slider and breadcrumb section',
+            'breadbg' => false,
+            'layouts' => 'pagesite',
+            'headclass' => 'header-v1',
+        ],
+    ],
+    'categoryStyle' => [
+        '6' => [
+            'key' => 6,
+            'title' => 'With breadcrumb section',
+            'breadbg' => true,
+            'layouts' => 'page',
+            'headclass' => 'header-v2 header-absolute',
+        ],
+        '2' => [
+            'key' => 2,
+            'title' => 'Without breadcrumb section',
+            'breadbg' => false,
+            'layouts' => 'pagesite',
+            'headclass' => 'header-v1',
+        ],
+    ],
     // Section style
     'sectionStyle' => [
         'bg-white' => 'White',
-        'bg-primary' => 'Primary',
-        'bg-gray-lighter' => 'Gray Lighter',
-        'bg-gray-darker' => 'Gray Darker',
-        'bg-white text-center' => 'White Center',
-        'bg-primary text-center' => 'Primary Center',
-        'bg-gray-lighter text-center' => 'Gray Lighter Center',
-        'bg-gray-darker text-center' => 'Gray Darker Center',
+        'bg-smoke' => 'Smoke',
     ],
     // Text Align List
     'textAlignList' => [

@@ -1,10 +1,11 @@
 <?php
-use yii\helpers\Url;
-use frontend\assets\AppAsset;
 /**
  * @var $this       \yii\web\View
  * @var $content    string
  */
+use yii\helpers\Url;
+use frontend\assets\AppAsset;
+
 AppAsset::register($this);
 $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
 ?>

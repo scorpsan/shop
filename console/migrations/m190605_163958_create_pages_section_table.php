@@ -25,7 +25,7 @@ class m190605_163958_create_pages_section_table extends Migration
             'text_align' => $this->string(25),
             'background' => $this->string(255),
             'parallax' => $this->boolean()->notNull()->defaultValue(0),
-            'sort' => $this->integer(11)->notNull(),
+            'sort' => $this->integer(3)->notNull(),
             'widget' => $this->boolean()->notNull()->defaultValue(0),
             'widget_type' => $this->string(255),
             'content' => $this->getDb()->getSchema()->createColumnSchemaBuilder('longtext'),

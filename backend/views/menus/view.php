@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $model->title;
                         'access',
                         [
                             'attribute' => 'target_blank',
-                            'value' => Html::tag('span', Yii::$app->formatter->asBoolean($model->target_blank), ['class' => 'label label-' . ($model->target_blank) ? 'success' : 'danger']),
+                            'value' => Html::tag('span', Yii::$app->formatter->asBoolean($model->target_blank), ['class' => 'label label-' . (($model->target_blank) ? 'success' : 'danger')]),
                             'format' => 'html',
                         ],
                         'anchor',

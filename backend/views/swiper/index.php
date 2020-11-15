@@ -2,7 +2,6 @@
 /**
  * @var $this           yii\web\View
  * @var $dataProvider   yii\data\ActiveDataProvider
- * @var $languages      backend\models\Language
  */
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -49,20 +48,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 if ($data->published) {
                                     return Html::a(
                                         Yii::$app->formatter->asBoolean($data->published),
-                                        ['/swiper/unpublish', 'id' => $data->id],
-                                        [
-                                            'class' => 'btn btn-xs btn-success btn-block',
-                                            'data-method' => 'post',
-                                        ]
+                                        ['unpublish', 'id' => $data->id],
+                                        ['class' => 'btn btn-xs btn-success btn-block',]
                                     );
                                 }
                                 return Html::a(
                                     Yii::$app->formatter->asBoolean($data->published),
-                                    ['/swiper/publish', 'id' => $data->id],
-                                    [
-                                        'class' => 'btn btn-xs btn-danger btn-block',
-                                        'data-method' => 'post',
-                                    ]
+                                    ['publish', 'id' => $data->id],
+                                    ['class' => 'btn btn-xs btn-danger btn-block',]
                                 );
                             },
                             'headerOptions' => ['width' => '90'],

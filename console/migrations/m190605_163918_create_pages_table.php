@@ -19,7 +19,7 @@ class m190605_163918_create_pages_table extends Migration
             'published' => $this->boolean()->notNull()->defaultValue(1),
             'main' => $this->boolean()->notNull()->defaultValue(0),
             'noindex' => $this->boolean()->notNull()->defaultValue(0),
-            'landing' => $this->boolean()->notNull()->defaultValue(0),
+            'page_style' => $this->tinyInteger(1)->notNull()->defaultValue(0),
             'created_at' => $this->integer(11)->notNull(),
             'updated_at' => $this->integer(11)->notNull(),
         ]);

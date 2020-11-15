@@ -6,7 +6,7 @@ use yii\helpers\Html;
 <!-- Page header-->
 <!-- BOX MOBILE MENU  -->
 <div class="box-mobile-menu">
-    <span class="box-title"><img src="img/logo_eurotas.png" alt="_img logo"></span>
+    <span class="box-title"><?= Html::img(['/images/logo-dark.png'], ['alt' => Yii::$app->name]) ?><img src="img/logo_eurotas.png" alt="_img logo"></span>
     <a href="javascript:void(0)" class="close-menu" id="pull-closemenu">
         <i class="fas fa-times"></i>
     </a>
@@ -20,7 +20,7 @@ use yii\helpers\Html;
     <div class="menu-clone">
         <ul class="main-menu">
             <li class="menu-item menu-item-has-children">
-                <a href="javascript:void(0)" class="slide-dropdown">Home <span class="fas fa-chevron-right down"></span></a>
+                <a href="javascript:void(0)"  class="slide-dropdown">Home <span class="fas fa-chevron-right down"></span></a>
                 <div class="submenu">
                     <ul class="menu-shop-style">
                         <li class="style-item"><a class="menu-link nav-link" href="homepage-v1.html">Home 1</a></li>
@@ -67,7 +67,7 @@ use yii\helpers\Html;
                     <ul class="menu-shop-style">
                         <li class="style-item"><a class="menu-link nav-link" href="about-us.html">About us</a></li>
                         <li class="style-item"><a class="menu-link nav-link" href="contact-us.html">Contact us</a></li>
-                        <li class="style-item"><a class="menu-link nav-link" href="#">Wishlist</a></li>
+                        <li class="style-item"><a class="menu-link nav-link" href="#">wishlist</a></li>
                     </ul>
                 </div>
             </li>
@@ -81,25 +81,8 @@ use yii\helpers\Html;
 </div>
 <div class="menu-overlay"></div>
 
-<!-- box search mobile -->
-<div class="form-search__destop">
-    <form action="/search" method="POST" role="search" class="mobile-nav-search-form">
-        <div class="search">
-            <span class="fas fa-search"></span>
-        </div>
-        <div class="mobile-nav-search-close">
-            <span class="fas fa-times"></span>
-        </div>
-        <input type="search" name="search" class="input-block-level search-query" placeholder="Search" autocomplete="off" data-old-term="search">
-        <div class="autocomplete-results">
-            <ul class="ui-autocomplete ui-front"></ul>
-        </div>
-        <input type="hidden" name="type" value="product">
-    </form>
-</div>
-
 <!-- add to cart  -->
-<div class="js-cart-popup product-checkout">
+<div class="js-cart-popup product-checkout " >
     <div class="mini-content ">
         <h3 class="mini-cart-title text-center">Your Cart</h3>
         <span class="minicart-numbers-items">1</span>
@@ -108,11 +91,11 @@ use yii\helpers\Html;
             <div class="product-cart ">
                 <ol class="minicart-item" style="list-style: none">
                     <li class="product-cart-item">
-                        <a href="javascript:void(0)" class="product-media"><img class="img-fluid" width="100" height="100" src="img/12.jpg" alt="_img-add to cart"></a>
+                        <a href="#" class="product-media"><img class="img-fluid" width="100" height="100" src="img/12.jpg" alt="_img-add to cart"></a>
                     </li>
                     <li class="product-detail">
                         <h3 class="product-name">
-                            <a href="javascript:void(0)">Wilfred Madine Blouse</a>
+                            <a href="">Wilfred Madine Blouse</a>
                         </h3>
                         <div class="product-detail-info">
                             <span class="product-quantity">Women's Tank : </span>
@@ -159,6 +142,22 @@ use yii\helpers\Html;
     </div>
     <div class="bg-search">
     </div>
+</div>
+<!-- box search mobile -->
+<div class="form-search__destop">
+    <form action="/search" method="POST" role="search" class="mobile-nav-search-form">
+        <div class="search">
+            <span class="fas fa-search"></span>
+        </div>
+        <div class="mobile-nav-search-close">
+            <span class="fas fa-times"></span>
+        </div>
+        <input type="search" name="search" class="input-block-level search-query" placeholder="Search" autocomplete="off" data-old-term="search">
+        <div class="autocomplete-results">
+            <ul class="ui-autocomplete ui-front"></ul>
+        </div>
+        <input type="hidden" name="type" value="product">
+    </form>
 </div>
 <!-- POPUP LOGIN -->
 <div class="popup-login__eurotas">
@@ -222,88 +221,185 @@ use yii\helpers\Html;
     <div class="bg__popup-login"></div>
 </div>
 <!-- POPUP REGISTER -->
-<!-- MENU POPUP -->
-
-<header class="js-header header-destop header-top header--<?= (Yii::$app->layout == 'pagesite') ? 'v1' : 'v2' ?> ">
-    <div class="my-container">
+<header class="js-header <?= $this->context->headerClass ?> header-destop">
+    <div class="my-container container-fluid">
         <div class="row  align-items-center justify-content-between">
-            <div class="col-xl-8 col-lg-8">
-                <div class="row align-items-center">
-                    <div class="col-4__header-home2 logo">
-                        <?= Html::a(Html::img(['/images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
-                    </div>
-                    <div class="col-8__header-home2 navbar-home2">
-                        <ul class="nav">
-                            <li class="nav-item top-nav-items">
-                                <a href="javascript:void(0)" class="js-menu-header nav-link top-nav-link" >Home</a>
-                                <div class="submenu-header" >
-                                    <div class="my-container">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <ul>
-                                                    <li><a href="homepage-v1.html">Home 1</a></li>
-                                                    <li><a href="homepage-v2.html">Home 2</a></li>
-                                                    <li><a href="homepage-v3.html">Home 3</a></li>
-                                                    <li><a href="homepage-v4.html">Home 4</a></li>
-                                                    <li><a href="homepage-v5.html">Home 5</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3">
-                                                <h4>Product</h4>
-                                                <ul>
-                                                    <li><a href="product-detail-v1.html">Product Detail 1</a></li>
-                                                    <li><a href="product-detail-v2.html">Product Detail 2</a></li>
-                                                    <li><a href="product-detail-v3.html">Product Detail 3</a></li>
-                                                </ul>
-                                                <h4 class="mt-3">
-                                                    Our Blog
-                                                </h4>
-                                                <ul>
-                                                    <li><a href="our-blog-v1.html">Our Blog 1</a></li>
-                                                    <li><a href="our-blog-v2.html">Our Blog 2</a></li>
-                                                    <li><a href="blog-post.html">Blog Post</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3">
-                                                <h4>Collection</h4>
-                                                <ul>
-                                                    <li><a href="grid-slidebar-left.html">Grid Slidebar Left</a></li>
-                                                    <li><a href="list-slidebar-left.html">List Slidebar Left</a></li>
-                                                    <li><a href="shop-page.html">Shop Page</a></li>
-                                                </ul>
-                                                <h4 class="mt-3">
-                                                    Page
-                                                </h4>
-                                                <ul>
-                                                    <li><a href="about-us.html">About Us</a></li>
-                                                    <li><a href="contact-us.html">Contact Us</a></li>
-                                                    <li><a href="#">wishlist</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3">
-                                                <div class="img image-effect">
-                                                    <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
-                                                </div>
-                                            </div>
+            <div class="col-header-2 logo">
+                <?= Html::a(Html::img(['/images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
+            </div>
+            <div class="col-header-10 navbar-home2 d-flex justify-content-end">
+                <ul class="nav">
+                    <li class="nav-item top-nav-items">
+                        <a href="javascript:void(0)" class="js-menu-header nav-link top-nav-link" >Home</a>
+                        <div class="submenu-header submenu-header-v5" >
+                            <div class="my-container">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <ul>
+                                            <li><a href="homepage-v1.html">Home 1</a></li>
+                                            <li><a href="homepage-v2.html">Home 2</a></li>
+                                            <li><a href="homepage-v3.html">Home 3</a></li>
+                                            <li><a href="homepage-v4.html">Home 4</a></li>
+                                            <li><a href="homepage-v15.html">Home 5</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <h4>Product</h4>
+                                        <ul>
+                                            <li><a href="product-detail-v1.html">Product Detail 1</a></li>
+                                            <li><a href="product-detail-v2.html">Product Detail 2</a></li>
+                                            <li><a href="product-detail-v3.html">Product Detail 3</a></li>
+                                        </ul>
+                                        <h4 class="mt-3">
+                                            Our Blog
+                                        </h4>
+                                        <ul>
+                                            <li><a href="our-blog-v1.html">Our Blog 1</a></li>
+                                            <li><a href="our-blog-v2.html">Our Blog 2</a></li>
+                                            <li><a href="blog-post.html">Blog Post</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <h4>Collection</h4>
+                                        <ul>
+                                            <li><a href="grid-slidebar-left.html">Grid Slidebar Left</a></li>
+                                            <li><a href="list-slidebar-left.html">List Slidebar Left</a></li>
+                                            <li><a href="shop-page.html">Shop Page</a></li>
+                                        </ul>
+                                        <h4 class="mt-3">
+                                            Page
+                                        </h4>
+                                        <ul>
+                                            <li><a href="about-us.html">About Us</a></li>
+                                            <li><a href="contact-us.html">Contact Us</a></li>
+                                            <li><a href="#">Wishlist</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="img image-effect">
+                                            <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                            <li class="nav-item top-nav-items">
-                                <a href="javascript:void(0)" class="nav-link top-nav-link">Men</a>
-                                <div class="submenu-header" >
-                                    <div class="my-container">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <ul>
-                                                    <li><a href="javascript:void(0)">New Arrival</a></li>
-                                                    <li><a href="javascript:void(0)">Best Sellers</a></li>
-                                                    <li><a href="javascript:void(0)">Release Dates</a></li>
-                                                    <li><a href="javascript:void(0)">Resolution Ready</a></li>
-                                                    <li><a href="javascript:void(0)">Sale</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item top-nav-items">
+                        <a href="javascript:void(0)" class="nav-link top-nav-link">Men</a>
+                        <div class="submenu-header" >
+                            <div class="my-container">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <ul>
+                                            <li><a href="javascript:void(0)">New Arrival</a></li>
+                                            <li><a href="javascript:void(0)">Best Sellers</a></li>
+                                            <li><a href="javascript:void(0)">Release Dates</a></li>
+                                            <li><a href="javascript:void(0)">Resolution Ready</a></li>
+                                            <li><a href="javascript:void(0)">Sale</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <h4>Shoes</h4>
+                                        <ul>
+                                            <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
+                                            <li><a href="javascript:void(0)">Life style</a></li>
+                                            <li><a href="javascript:void(0)">Running</a></li>
+                                            <li><a href="javascript:void(0)">Training & Gym</a></li>
+                                            <li><a href="javascript:void(0)">Basketball</a></li>
+                                            <li><a href="javascript:void(0)">Jordan</a></li>
+                                            <li><a href="javascript:void(0)">Football</a></li>
+                                            <li><a href="javascript:void(0)">Soccer</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <h4>Clothing</h4>
+                                        <ul>
+                                            <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
+                                            <li><a href="javascript:void(0)">Shorts</a></li>
+                                            <li><a href="javascript:void(0)">Polos</a></li>
+                                            <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
+                                            <li><a href="javascript:void(0)">Jacket & Vests</a></li>
+                                            <li><a href="javascript:void(0)">Pants & Tights </a></li>
+                                            <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
+                                            <li><a href="javascript:void(0)">Nike Pro & Compression</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="img image-effect">
+                                            <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item top-nav-items">
+                        <a href="javascript:void(0)" class="nav-link top-nav-link">Women</a>
+                        <div class="submenu-header">
+                            <div class="my-container">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <h4>Featured</h4>
+                                        <ul>
+                                            <li><a href="javascript:void(0)">New Arrival</a></li>
+                                            <li><a href="javascript:void(0)">Best Sellers</a></li>
+                                            <li><a href="javascript:void(0)">Release Dates</a></li>
+                                            <li><a href="javascript:void(0)">Sale</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <h4>Shoes</h4>
+                                        <ul>
+                                            <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
+                                            <li><a href="javascript:void(0)">Life style</a></li>
+                                            <li><a href="javascript:void(0)">Running</a></li>
+                                            <li><a href="javascript:void(0)">Training & Gym</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <h4>Clothing</h4>
+                                        <ul>
+                                            <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
+                                            <li><a href="javascript:void(0)">Shorts</a></li>
+                                            <li><a href="javascript:void(0)">Polos</a></li>
+                                            <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-3">
+                                        <h4>Sports</h4>
+                                        <ul>
+                                            <li><a href="javascript:void(0)">Running</a></li>
+                                            <li><a href="javascript:void(0)">Soccer</a></li>
+                                            <li><a href="javascript:void(0)">Basketball</a></li>
+                                            <li><a href="javascript:void(0)">Football</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="img-banne image-effectr">
+                                    <a href="javascript:void(0)">
+                                        <img src="img/megamenu-banner2.jpg" alt="_img banner megamenu" class="img-fluid w-100">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item top-nav-items">
+                        <a href="javascript:void(0)" class="nav-link top-nav-link">Kids</a>
+                        <div class="submenu-header" >
+                            <div class="my-container">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <ul class="tabs">
+                                            <li class="tabs-link current" data-tab="tab-4">New Arrival</li>
+                                            <li class="tabs-link" data-tab="tab-5">Best Sellers</li>
+                                            <li class="tabs-link" data-tab="tab-6">Release Dates</li>
+                                            <li class="tabs-link" data-tab="tab-7">Resolution Ready</li>
+                                            <li class="tabs-link" data-tab="tab-8">Sale</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-9 tab-content current p-0" id="tab-4">
+                                        <div class="row w-100 m-0">
+                                            <div class="col-4">
                                                 <h4>Shoes</h4>
                                                 <ul>
                                                     <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
@@ -316,7 +412,7 @@ use yii\helpers\Html;
                                                     <li><a href="javascript:void(0)">Soccer</a></li>
                                                 </ul>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-4">
                                                 <h4>Clothing</h4>
                                                 <ul>
                                                     <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
@@ -329,7 +425,143 @@ use yii\helpers\Html;
                                                     <li><a href="javascript:void(0)">Nike Pro & Compression</a></li>
                                                 </ul>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-4">
+                                                <div class="img image-effect">
+                                                    <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 tab-content p-0" id="tab-5">
+                                        <div class="row w-100 m-0">
+                                            <div class="col-4">
+                                                <h4>Shoes</h4>
+                                                <ul>
+                                                    <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
+                                                    <li><a href="javascript:void(0)">Life style</a></li>
+                                                    <li><a href="javascript:void(0)">Running</a></li>
+                                                    <li><a href="javascript:void(0)">Training & Gym</a></li>
+                                                    <li><a href="javascript:void(0)">Basketball</a></li>
+                                                    <li><a href="javascript:void(0)">Jordan</a></li>
+                                                    <li><a href="javascript:void(0)">Football</a></li>
+                                                    <li><a href="javascript:void(0)">Soccer</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4">
+                                                <h4>Clothing</h4>
+                                                <ul>
+                                                    <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
+                                                    <li><a href="javascript:void(0)">Shorts</a></li>
+                                                    <li><a href="javascript:void(0)">Polos</a></li>
+                                                    <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
+                                                    <li><a href="javascript:void(0)">Jacket & Vests</a></li>
+                                                    <li><a href="javascript:void(0)">Pants & Tights </a></li>
+                                                    <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="img ">
+                                                    <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 tab-content p-0" id="tab-6">
+                                        <div class="row w-100 m-0">
+                                            <div class="col-4">
+                                                <h4>Featured</h4>
+                                                <ul>
+                                                    <li><a href="javascript:void(0)">New Arrival</a></li>
+                                                    <li><a href="javascript:void(0)">Best Sellers</a></li>
+                                                    <li><a href="javascript:void(0)">Release Dates</a></li>
+                                                    <li><a href="javascript:void(0)">Sale</a></li>
+                                                    <li><a href="javascript:void(0)">Deal Of The Day</a></li>
+                                                    <li><a href="javascript:void(0)">Gender Neureal</a></li>
+                                                    <li><a href="javascript:void(0)">Resolution Ready </a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4">
+                                                <h4>Clothing</h4>
+                                                <ul>
+                                                    <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
+                                                    <li><a href="javascript:void(0)">Shorts</a></li>
+                                                    <li><a href="javascript:void(0)">Polos</a></li>
+                                                    <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
+                                                    <li><a href="javascript:void(0)">Jacket & Vests</a></li>
+                                                    <li><a href="javascript:void(0)">Pants & Tights </a></li>
+                                                    <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="img ">
+                                                    <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 tab-content p-0" id="tab-7">
+                                        <div class="row w-100 m-0">
+                                            <div class="col-4">
+                                                <h4>Shoes</h4>
+                                                <ul>
+                                                    <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
+                                                    <li><a href="javascript:void(0)">Life style</a></li>
+                                                    <li><a href="javascript:void(0)">Running</a></li>
+                                                    <li><a href="javascript:void(0)">Training & Gym</a></li>
+                                                    <li><a href="javascript:void(0)">Basketball</a></li>
+                                                    <li><a href="javascript:void(0)">Jordan</a></li>
+                                                    <li><a href="javascript:void(0)">Football</a></li>
+                                                    <li><a href="javascript:void(0)">Soccer</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4">
+                                                <h4>Clothing</h4>
+                                                <ul>
+                                                    <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
+                                                    <li><a href="javascript:void(0)">Shorts</a></li>
+                                                    <li><a href="javascript:void(0)">Polos</a></li>
+                                                    <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
+                                                    <li><a href="javascript:void(0)">Jacket & Vests</a></li>
+                                                    <li><a href="javascript:void(0)">Pants & Tights </a></li>
+                                                    <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
+                                                    <li><a href="javascript:void(0)">Nike Pro & Compression</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="img image-effect">
+                                                    <a href="javascript:void(0)"><img src="img/page2_footer.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 tab-content p-0" id="tab-8">
+                                        <div class="row w-100 m-0">
+                                            <div class="col-4">
+                                                <h4>Shoes</h4>
+                                                <ul>
+                                                    <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
+                                                    <li><a href="javascript:void(0)">Life style</a></li>
+                                                    <li><a href="javascript:void(0)">Running</a></li>
+                                                    <li><a href="javascript:void(0)">Training & Gym</a></li>
+                                                    <li><a href="javascript:void(0)">Basketball</a></li>
+                                                    <li><a href="javascript:void(0)">Jordan</a></li>
+                                                    <li><a href="javascript:void(0)">Football</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4">
+                                                <h4>Clothing</h4>
+                                                <ul>
+                                                    <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
+                                                    <li><a href="javascript:void(0)">Shorts</a></li>
+                                                    <li><a href="javascript:void(0)">Polos</a></li>
+                                                    <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
+                                                    <li><a href="javascript:void(0)">Jacket & Vests</a></li>
+                                                    <li><a href="javascript:void(0)">Pants & Tights </a></li>
+                                                    <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
+                                                    <li><a href="javascript:void(0)">Nike Pro & Compression</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4">
                                                 <div class="img image-effect">
                                                     <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
                                                 </div>
@@ -337,283 +569,36 @@ use yii\helpers\Html;
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                            <li class="nav-item top-nav-items">
-                                <a href="javascript:void(0)" class="nav-link top-nav-link">Women</a>
-                                <div class="submenu-header">
-                                    <div class="my-container">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <h4>Featured</h4>
-                                                <ul>
-                                                    <li><a href="javascript:void(0)">New Arrival</a></li>
-                                                    <li><a href="javascript:void(0)">Best Sellers</a></li>
-                                                    <li><a href="javascript:void(0)">Release Dates</a></li>
-                                                    <li><a href="javascript:void(0)">Sale</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3">
-                                                <h4>Shoes</h4>
-                                                <ul>
-                                                    <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
-                                                    <li><a href="javascript:void(0)">Life style</a></li>
-                                                    <li><a href="javascript:void(0)">Running</a></li>
-                                                    <li><a href="javascript:void(0)">Training & Gym</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3">
-                                                <h4>Clothing</h4>
-                                                <ul>
-                                                    <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
-                                                    <li><a href="javascript:void(0)">Shorts</a></li>
-                                                    <li><a href="javascript:void(0)">Polos</a></li>
-                                                    <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3">
-                                                <h4>Sports</h4>
-                                                <ul>
-                                                    <li><a href="javascript:void(0)">Running</a></li>
-                                                    <li><a href="javascript:void(0)">Soccer</a></li>
-                                                    <li><a href="javascript:void(0)">Basketball</a></li>
-                                                    <li><a href="javascript:void(0)">Football</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="img-banne image-effectr">
-                                            <a href="javascript:void(0)">
-                                                <img src="img/megamenu-banner2.jpg" alt="_img banner megamenu" class="img-fluid w-100">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item top-nav-items">
-                                <a href="javascript:void(0)" class="nav-link top-nav-link">Kids</a>
-                                <div class="submenu-header" >
-                                    <div class="my-container">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <ul class="tabs">
-                                                    <li class="tabs-link current" data-tab="tab-4">New Arrival</li>
-                                                    <li class="tabs-link" data-tab="tab-5">Best Sellers</li>
-                                                    <li class="tabs-link" data-tab="tab-6">Release Dates</li>
-                                                    <li class="tabs-link" data-tab="tab-7">Resolution Ready</li>
-                                                    <li class="tabs-link" data-tab="tab-8">Sale</li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-9 tab-content current p-0" id="tab-4">
-                                                <div class="row w-100 m-0">
-                                                    <div class="col-4">
-                                                        <h4>Shoes</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
-                                                            <li><a href="javascript:void(0)">Life style</a></li>
-                                                            <li><a href="javascript:void(0)">Running</a></li>
-                                                            <li><a href="javascript:void(0)">Training & Gym</a></li>
-                                                            <li><a href="javascript:void(0)">Basketball</a></li>
-                                                            <li><a href="javascript:void(0)">Jordan</a></li>
-                                                            <li><a href="javascript:void(0)">Football</a></li>
-                                                            <li><a href="javascript:void(0)">Soccer</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <h4>Clothing</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
-                                                            <li><a href="javascript:void(0)">Shorts</a></li>
-                                                            <li><a href="javascript:void(0)">Polos</a></li>
-                                                            <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
-                                                            <li><a href="javascript:void(0)">Jacket & Vests</a></li>
-                                                            <li><a href="javascript:void(0)">Pants & Tights </a></li>
-                                                            <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
-                                                            <li><a href="javascript:void(0)">Nike Pro & Compression</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="img image-effect">
-                                                            <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-9 tab-content p-0" id="tab-5">
-                                                <div class="row w-100 m-0">
-                                                    <div class="col-4">
-                                                        <h4>Shoes</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
-                                                            <li><a href="javascript:void(0)">Life style</a></li>
-                                                            <li><a href="javascript:void(0)">Running</a></li>
-                                                            <li><a href="javascript:void(0)">Training & Gym</a></li>
-                                                            <li><a href="javascript:void(0)">Basketball</a></li>
-                                                            <li><a href="javascript:void(0)">Jordan</a></li>
-                                                            <li><a href="javascript:void(0)">Football</a></li>
-                                                            <li><a href="javascript:void(0)">Soccer</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <h4>Clothing</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
-                                                            <li><a href="javascript:void(0)">Shorts</a></li>
-                                                            <li><a href="javascript:void(0)">Polos</a></li>
-                                                            <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
-                                                            <li><a href="javascript:void(0)">Jacket & Vests</a></li>
-                                                            <li><a href="javascript:void(0)">Pants & Tights </a></li>
-                                                            <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="img ">
-                                                            <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-9 tab-content p-0" id="tab-6">
-                                                <div class="row w-100 m-0">
-                                                    <div class="col-4">
-                                                        <h4>Featured</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">New Arrival</a></li>
-                                                            <li><a href="javascript:void(0)">Best Sellers</a></li>
-                                                            <li><a href="javascript:void(0)">Release Dates</a></li>
-                                                            <li><a href="javascript:void(0)">Sale</a></li>
-                                                            <li><a href="javascript:void(0)">Deal Of The Day</a></li>
-                                                            <li><a href="javascript:void(0)">Gender Neureal</a></li>
-                                                            <li><a href="javascript:void(0)">Resolution Ready </a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <h4>Clothing</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
-                                                            <li><a href="javascript:void(0)">Shorts</a></li>
-                                                            <li><a href="javascript:void(0)">Polos</a></li>
-                                                            <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
-                                                            <li><a href="javascript:void(0)">Jacket & Vests</a></li>
-                                                            <li><a href="javascript:void(0)">Pants & Tights </a></li>
-                                                            <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="img ">
-                                                            <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-9 tab-content p-0" id="tab-7">
-                                                <div class="row w-100 m-0">
-                                                    <div class="col-4">
-                                                        <h4>Shoes</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
-                                                            <li><a href="javascript:void(0)">Life style</a></li>
-                                                            <li><a href="javascript:void(0)">Running</a></li>
-                                                            <li><a href="javascript:void(0)">Training & Gym</a></li>
-                                                            <li><a href="javascript:void(0)">Basketball</a></li>
-                                                            <li><a href="javascript:void(0)">Jordan</a></li>
-                                                            <li><a href="javascript:void(0)">Football</a></li>
-                                                            <li><a href="javascript:void(0)">Soccer</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <h4>Clothing</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
-                                                            <li><a href="javascript:void(0)">Shorts</a></li>
-                                                            <li><a href="javascript:void(0)">Polos</a></li>
-                                                            <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
-                                                            <li><a href="javascript:void(0)">Jacket & Vests</a></li>
-                                                            <li><a href="javascript:void(0)">Pants & Tights </a></li>
-                                                            <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
-                                                            <li><a href="javascript:void(0)">Nike Pro & Compression</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="img image-effect">
-                                                            <a href="javascript:void(0)"><img src="img/page2_footer.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-9 tab-content p-0" id="tab-8">
-                                                <div class="row w-100 m-0">
-                                                    <div class="col-4">
-                                                        <h4>Shoes</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">SNKRS Launch Calendar</a></li>
-                                                            <li><a href="javascript:void(0)">Life style</a></li>
-                                                            <li><a href="javascript:void(0)">Running</a></li>
-                                                            <li><a href="javascript:void(0)">Training & Gym</a></li>
-                                                            <li><a href="javascript:void(0)">Basketball</a></li>
-                                                            <li><a href="javascript:void(0)">Jordan</a></li>
-                                                            <li><a href="javascript:void(0)">Football</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <h4>Clothing</h4>
-                                                        <ul>
-                                                            <li><a href="javascript:void(0)">Tops & T-Shirts</a></li>
-                                                            <li><a href="javascript:void(0)">Shorts</a></li>
-                                                            <li><a href="javascript:void(0)">Polos</a></li>
-                                                            <li><a href="javascript:void(0)">Hoodies & Sweatshirts</a></li>
-                                                            <li><a href="javascript:void(0)">Jacket & Vests</a></li>
-                                                            <li><a href="javascript:void(0)">Pants & Tights </a></li>
-                                                            <li><a href="javascript:void(0)">Surt & Swimwear</a></li>
-                                                            <li><a href="javascript:void(0)">Nike Pro & Compression</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="img image-effect">
-                                                            <a href="javascript:void(0)"><img src="img/banner-submenu.jpg" alt="_img banner submenu" class="img-fluid w-100"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item top-nav-items"><a href="javascript:void(0)" class="nav-link top-nav-link">Sports</a></li>
-                            <li class="nav-item top-nav-items"><a href="javascript:void(0)" class="nav-link top-nav-link">Holiday</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-10 col-10 header-right">
-                <form action="/action_page.php" method="POST">
-                    <div class="input-group">
-                        <input type="search" class="form-control" name="search" placeholder="Search">
-                        <div class="input-group-append">
-                            <span class="input-group-text">
-                                <i class="fas fa-search"></i>
-                            </span>
+                            </div>
                         </div>
-                    </div>
-                </form>
-                <a href="javascript:void(0)" class="btn-login-icon js-popup-login">
-                    <i class="fas fa-user"></i>
-                </a>
+                    </li>
+                    <li class="nav-item top-nav-items">
+                        <a href="javascript:void(0)" class="nav-link top-nav-link">Sports</a>
+                    </li>
+                    <li class="nav-item top-nav-items"><a href="javascript:void(0)" class="nav-link top-nav-link">Holiday</a></li>
+                </ul>
+            </div>
+            <div class="col-header-2 header-right">
+                <div class="search d-flex" >
+                    <a href="#search" class="js-search fas fa-search"></a>
+                </div>
                 <div class="js-cart-pull-right cart">
                     <div class="shopping-cart">
-                        <i class="fas fa-shopping-cart" style="color:#fff"></i>
+                        <i class="fas fa-shopping-cart" style="color: #fff"></i>
                     </div>
                     <div class="number">
                         <span>1</span>
                     </div>
                 </div>
-                <div class="js-click-megamenu header-menu">
-                    <i class="fas fa-bars" style="color:#fff"></i>
+                <div class="js-click-megamenu header-menu" >
+                    <i class="fas fa-bars" style="color: #fff"></i>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<div class="menu-mobile">
+<div class="menu-mobile ">
     <header class="header-mobile nav-down">
         <div class="header-menu">
             <div class="menu">
@@ -623,10 +608,10 @@ use yii\helpers\Html;
                 <?= Html::a(Html::img(['/images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
             </div>
             <div class="add-to-cart">
-                <div class="search">
+                <div class="search" >
                     <a href="javascript:void(0)" class="js-search fas fa-search"></a>
                 </div>
-                <div class="js-cart-pull-right cart">
+                <div class="js-cart-pull-right  cart" >
                     <div class="shopping-cart">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
@@ -638,6 +623,8 @@ use yii\helpers\Html;
         </div>
     </header>
 </div>
+
+
 <?php /*
 <header class="page-header">
     <!-- RD Navbar-->

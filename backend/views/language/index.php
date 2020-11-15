@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body table-responsive">
-                <?php Pjax::begin(); ?>
+                <?php Pjax::begin(['enablePushState' => false]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function($data) {
                                 return Html::a(Html::encode($data->title), ['update', 'id' => $data->id]);
                             },
-                            'format' => 'html',
+                            'format' => 'raw',
                         ],
                         'url',
                         'local',
@@ -56,20 +56,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 if ($data->published) {
                                     return Html::a(
                                         Yii::$app->formatter->asBoolean($data->published),
-                                        ['/language/unpublish', 'id' => $data->id],
-                                        [
-                                            'class' => 'btn btn-xs btn-success btn-block',
-                                            'data-method' => 'post',
-                                        ]
+                                        ['unpublish', 'id' => $data->id],
+                                        ['class' => 'btn btn-xs btn-success btn-block']
                                     );
                                 }
                                 return Html::a(
                                     Yii::$app->formatter->asBoolean($data->published),
-                                    ['/language/publish', 'id' => $data->id],
-                                    [
-                                        'class' => 'btn btn-xs btn-danger btn-block',
-                                        'data-method' => 'post',
-                                    ]
+                                    ['publish', 'id' => $data->id],
+                                    ['class' => 'btn btn-xs btn-danger btn-block']
                                 );
                             },
                             'headerOptions' => ['width' => '90'],
@@ -80,6 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'template' => '{update} {delete}',
                             'headerOptions' => ['width' => '60'],
                             'visibleButtons' => [
+                                'view' => Yii::$app->user->can('viewSettings'),
                                 'update' => Yii::$app->user->can('editSettings'),
                                 'delete' => Yii::$app->user->can('deleteSettings'),
                             ],

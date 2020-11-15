@@ -1,179 +1,137 @@
-.header-v1 {
-    background: #222222
-}
-
-.header-v2 {
-    background: #222
-}
-
-.header-v3 {
-    background: #fff
-}
-
 a {
     color: #555
 }
-
 a:hover, a:focus {
     color: #000;
     text-decoration: none
 }
-
 .border {
     border: 1px solid #e5e5e5
 }
-
 .border-left {
     border-left: 1px solid #e5e5e5
 }
-
 .border-right {
     border-right: 1px solid #e5e5e5
 }
-
 .border-top {
     border-top: 1px solid #e5e5e5
 }
-
 .border-bottom {
     border-bottom: 1px solid #e5e5e5
 }
-
 .desc {
     color: #555
 }
-
 .white {
     color: #fff
 }
-
 .black {
     color: #000
 }
-
 .dark {
     color: #000
 }
-
 .gray {
     color: #555
 }
-
 .silver {
     color: #999
 }
-
 .navi {
     color: #1b2b3a
 }
-
 .bg-navi {
     background: #1b2b3a
 }
-
 .blue {
     color: #43567e
 }
-
 .bg-blue {
     background: #43567e
 }
-
 .smoke {
     color: #ccc
 }
-
 .bg-white {
     background: #fff
 }
-
 .bg-dark {
     background: #000
 }
-
+.bg-smoke {
+    background: #f7f6f4;
+}
 body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     font-family: "Barlow", sans-serif;
     line-height: 28px;
     font-size: 18px;
     font-weight: 400
 }
-
-
-.section-service-v1 .service-v1 {
+.service-v1 {
     margin: 0;
     padding: 50px 0
 }
-
-.section-service-v1 .service {
+.service-v1 .service {
     line-height: 23px;
     display: flex;
     justify-content: center;
-    padding: 40px 0;
+    padding: 40px 25px;
     border: 2px solid #f4f4f4
 }
-
 @media screen and (max-width: 767px) {
-    .section-service-v1 .service {
+    .service-v1 .service {
         padding: 30px 20px;
         margin-bottom: 20px
     }
 }
-
 @media (min-width: 576px) and (max-width: 1199px) {
-    .section-service-v1 .service {
+    .service-v1 .service {
         margin-bottom: 30px
     }
 }
-
 @media (min-width: 1200px) and (max-width: 1400px) {
-    .section-service-v1 .service {
+    .service-v1 .service {
         padding: 30px 20px
     }
 }
-
-.section-service-v1 .service a {
+.service-v1 .service a {
     text-decoration: none;
     line-height: 50px;
     margin-right: 20px;
     color: #222;
     font-size: 40px
 }
-
 @media screen and (max-width: 767px) {
-    .section-service-v1 .service a {
+    .service-v1 .service a {
         font-size: 30px;
         line-height: 74px
     }
 }
-
 @media (min-width: 1200px) and (max-width: 1400px) {
-    .section-service-v1 .service a {
+    .service-v1 .service a {
         line-height: 74px
     }
 }
-
-.section-service-v1 .service .service-info h4 {
+.service-v1 .service .service-info h4 {
     font-family: "Barlow", sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: #222
 }
-
 @media screen and (max-width: 767px) {
-    .section-service-v1 .service .service-info h4 {
+    .service-v1 .service .service-info h4 {
         font-size: 18px
     }
 }
-
-.section-service-v1 .service .service-info p {
+.service-v1 .service .service-info p {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     color: #c90215;
     font-size: 18px
 }
-
 @media screen and (max-width: 767px) {
-    .section-service-v1 .service .service-info p {
+    .service-v1 .service .service-info p {
         font-size: 16px
     }
 }
@@ -191,13 +149,11 @@ body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, 
     border-bottom: 1px solid #eaeaea;
     width: 100%
 }
-
 @media screen and (max-width: 767px) {
     .myaccount .engoc-account-heading {
         margin-bottom: 20px
     }
 }
-
 .myaccount .engoc-account-heading h3 {
     font-family: "Barlow", sans-serif;
     text-transform: uppercase;
@@ -206,51 +162,42 @@ body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, 
     letter-spacing: 1px;
     font-weight: 700
 }
-
 .myaccount .account-element.login {
     background-color: #f1f5f8
 }
-
 .myaccount .account-element {
     max-width: 560px;
     width: 560px;
     border: 2px solid #f0f0f0;
     margin: 0 auto
 }
-
 @media screen and (max-width: 1199px) {
     .myaccount .account-element {
         max-width: 100%
     }
 }
-
 @media (max-width: 991px) {
     .myaccount .account-element.e-left {
         margin-top: 70px
     }
 }
-
 @media (max-width: 575px) {
     .myaccount .account-element.e-left {
         margin-top: 50px
     }
 }
-
 .myaccount form {
     padding: 0 40px;
     width: 100%
 }
-
 @media screen and (max-width: 767px) {
     .myaccount form {
         padding: 0 20px
     }
 }
-
 .myaccount .form-groups {
     margin-bottom: 42px
 }
-
 .myaccount .form-groups label {
     font-family: "Barlow", sans-serif;
     font-size: 16px;
@@ -258,7 +205,6 @@ body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, 
     margin-bottom: 17px;
     font-weight: 700
 }
-
 .myaccount .form-groups input {
     height: 54px;
     border: 1px solid #eaeaea;
@@ -269,32 +215,26 @@ body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, 
     font-weight: 400;
     border-radius: 0
 }
-
 .myaccount .form-groups input:focus {
     outline: none;
     box-shadow: none
 }
-
 .myaccount .form-groups input::-webkit-input-placeholder {
     color: #999999;
     font-size: 14px
 }
-
 .myaccount .form-groups input:-moz-placeholder {
     color: #999999;
     font-size: 14px
 }
-
 .myaccount .form-groups input::-moz-placeholder {
     color: #999999;
     font-size: 14px
 }
-
 .myaccount .form-groups input:-ms-input-placeholder {
     color: #999999;
     font-size: 14px
 }
-
 .myaccount .btn-submit {
     font-family: "Barlow", sans-serif;
     font-size: 14px;
@@ -311,15 +251,12 @@ body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, 
     text-transform: uppercase;
     transition: .3s
 }
-
 .myaccount .btn-submit:hover {
     background: #c50215
 }
-
 .myaccount .checkbox label {
     color: #666666
 }
-
 .myaccount .checkbox label:before {
     border-radius: 50%;
     content: "";
@@ -336,7 +273,6 @@ body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, 
     -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
     transition: border 0.15s ease-in-out, color 0.15s ease-in-out
 }
-
 .myaccount .checkbox label:after {
     display: inline-block;
     position: absolute;
@@ -350,18 +286,15 @@ body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, 
     font-size: 11px;
     color: #555555
 }
-
 .myaccount .checkbox.checkbox-default input[type="checkbox"], .myaccount .checkbox.checkbox-default input[type="radio"] {
     opacity: 0;
     z-index: 1;
     cursor: pointer
 }
-
 .myaccount .checkbox.checkbox-default input[type="checkbox"]:checked + label:after, .myaccount .checkbox.checkbox-default input[type="radio"]:checked + label:after {
     font-family: 'FontAwesome Free';
     content: "\f00c"
 }
-
 .btn-lostpwd {
     font-family: "Barlow",sans-serif;
     font-size: 16px;
@@ -371,4 +304,108 @@ body, h1, .h1, h2, .h2, .tab-products .nav-tabs, h3, .h3, h4, .h4, h5, .h5, h6, 
     margin: 0 auto;
     position: relative;
     transition: .3s;
+}
+
+#back-to-top {
+    display: inline-block;
+    background-color: #c50215;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 60px;
+    right: 30px;
+    transition: background-color .3s, opacity .5s, visibility .5s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 10;
+    cursor: pointer
+}
+#back-to-top i {
+    line-height: 50px;
+    font-size: 20px;
+    color: #fff
+}
+#back-to-top i:after {
+    position: absolute;
+    content: "";
+    background-color: transparent;
+    width: 50px;
+    top: 0;
+    left: 0;
+    height: 50px;
+    box-shadow: 0 0 4px #222;
+    outline: none;
+    border-radius: 50%;
+    animation: myAnimation 1.5s infinite;
+    -webkit-animation: myAnimation 1.5s infinite;
+    -o-animation: myAnimation 1.5s infinite;
+    -moz-animation: myAnimation 1.5s infinite
+}
+#back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    cursor: pointer
+}
+
+@keyframes myAnimation {
+    0% {transform:scale(1);opacity:1}
+    100% {transform:scale(1.5);opacity:0}
+}
+@keyframes myAnimation1 {
+    0% {transform:scale(0);opacity:1}
+    50% {transform:scale(1.4)}
+    100% {transform:scale(1.4);opacity:0}
+}
+@keyframes myAnimation2 {
+    0% {transform:rotate(0) scale(1);opacity:0.5}
+    20% {transform:rotate(30deg) scale(1.2);opacity:0.6}
+    40% {transform:rotate(-30deg) scale(1.3);opacity:0.7}
+    60% {transform:rotate(30deg) scale(1.4);opacity:0.8}
+    80% {transform:rotate(-30deg) scale(1.5);opacity:0.9}
+}
+@keyframes myAnimation3 {
+    from {transform:translateY(-100%)}
+    to {transform:translateY(0)}
+}
+@-moz-keyframes myAnimation3 {
+    from {transform:translateY(-100%)}
+    to {transform:translateY(0)}
+}
+@-webkit-keyframes myAnimation3 {
+    from {transform:translateY(-100%)}
+    to {transform:translateY(0)}
+}
+@-o-keyframes myAnimation3 {
+    from {transform:translateY(-100%)}
+    to {transform:translateY(0)}
+}
+@keyframes aniName {
+    0% {transform:translate(0)}
+    25% {transform:translate(2%)}
+    50% {transform:translate(0)}
+    75% {transform:translate(-2%)}
+    100% {transform:translate(0)}
+}
+@-moz-keyframes aniName {
+    0% {left:0}
+    50% {left:2%}
+    100% {left:0}
+}
+@-webkit-keyframes aniName {
+    0% {left:0}
+    50% {left:2%}
+    100% {left:0}
+}
+@-o-keyframes aniName {
+    0% {left:0}
+    50% {left:2%}
+    100% {left:0}
+}
+@keyframes shine {
+    100% {left:125%}
+}
+@-webkit-keyframes shine {
+    100% {left:125%}
 }

@@ -1,4 +1,11 @@
 <?php
+/**
+ * @var $model          \backend\models\SiteSettings
+ * @var $modelLng       \backend\models\SiteSettingsLng
+ * @var $languages      \backend\models\Language
+ * @var $parentList     array
+ * @var $clearRoot      bool
+ */
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 

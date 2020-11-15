@@ -43,14 +43,13 @@ class SiteSettingsController extends AppController {
             ->with('translate')
             ->with('translates')
             ->limit(1)->one();
-        $languages = Language::getLanguages();
         if (empty($model)) {
             $model = new SiteSettings();
             $model->save(false);
         }
         return $this->render('index', [
             'model' => $model,
-            'languages' => $languages,
+            'languages' => Language::getLanguages(),
         ]);
     }
 

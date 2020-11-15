@@ -63,7 +63,7 @@ return [
             'enableLocaleUrls' => true,
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'enableStrictParsing' => true,
+            //'enableStrictParsing' => true,
             /**
              * @var array list of route and URL regex patterns to ignore during
              * language processing. The keys of the array are patterns for routes, the

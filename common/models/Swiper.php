@@ -18,6 +18,9 @@ use yii\helpers\ArrayHelper;
  */
 class Swiper extends \yii\db\ActiveRecord {
 
+    public $params;
+    public $options;
+
     public static function tableName() {
         return '{{%swiper}}';
     }

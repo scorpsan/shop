@@ -20,8 +20,9 @@ class m190604_143509_create_categories_lng_table extends Migration
             'seotitle' => $this->string(255),
             'keywords' => $this->string(255),
             'description' => $this->string(255),
+            'seo_text' => $this->text(),
             'content' => $this->text(),
-            'img' => $this->string(255),
+            'breadbg' => $this->string(255),
         ]);
 
         $this->createIndex('categories_lng_categories_id_fk', '{{%categories_lng}}', 'item_id');

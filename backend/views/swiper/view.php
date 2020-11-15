@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var $this           yii\web\View
+ * @var $model          backend\models\Swiper
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
@@ -39,7 +43,7 @@ $this->params['breadcrumbs'][] = $model->title;
                         'description',
                         [
                             'attribute' => 'player',
-                            'value' => Html::tag('span', Yii::$app->formatter->asBoolean($model->player), ['class' => 'label label-' . ($model->player) ? 'success' : 'danger']),
+                            'value' => Html::tag('span', Yii::$app->formatter->asBoolean($model->player), ['class' => 'label label-' . (($model->player) ? 'success' : 'danger')]),
                             'format' => 'html',
                         ],
                         [
@@ -48,7 +52,7 @@ $this->params['breadcrumbs'][] = $model->title;
                                 if ($data->published) {
                                     return Html::a(
                                         Yii::$app->formatter->asBoolean($data->published),
-                                        ['/swiper/unpublish', 'id' => $data->id],
+                                        ['unpublish', 'id' => $data->id],
                                         [
                                             'class' => 'btn btn-xs btn-success',
                                             'data-method' => 'post',
@@ -57,7 +61,7 @@ $this->params['breadcrumbs'][] = $model->title;
                                 }
                                 return Html::a(
                                     Yii::$app->formatter->asBoolean($data->published),
-                                    ['/swiper/publish', 'id' => $data->id],
+                                    ['publish', 'id' => $data->id],
                                     [
                                         'class' => 'btn btn-xs btn-danger',
                                         'data-method' => 'post',

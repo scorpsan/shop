@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
  * @property int $published
  * @property int $main
  * @property int $noindex
- * @property int $landing
+ * @property int $page_style
  * @property int $created_at
  * @property int $updated_at
  */
@@ -43,9 +43,11 @@ class Pages extends \yii\db\ActiveRecord {
             [['alias'], 'string', 'max' => 255],
             [['alias'], 'unique'],
             [['alias'], 'filter', 'filter'=>'strtolower'],
-            [['published', 'main'], 'boolean'],
+            [['published', 'main', 'noindex'], 'boolean'],
             [['published'], 'default', 'value' => true],
-            [['main'], 'default', 'value' => false],
+            [['main', 'noindex'], 'default', 'value' => false],
+            [['page_style'], 'integer'],
+            [['page_style'], 'default', 'value' => 6],
             [['created_at', 'updated_at'], 'safe'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
@@ -58,6 +60,8 @@ class Pages extends \yii\db\ActiveRecord {
             'alias' => Yii::t('backend', 'Alias'),
             'published' => Yii::t('backend', 'Published'),
             'main' => Yii::t('backend', 'Main'),
+            'noindex' => Yii::t('backend', 'NoIndex'),
+            'page_style' => Yii::t('backend', 'Page Style'),
             'created_at' => Yii::t('backend', 'Created At'),
             'updated_at' => Yii::t('backend', 'Updated At'),
         ];
@@ -116,13 +120,17 @@ class Pages extends \yii\db\ActiveRecord {
         return $this->hasOne(Categories::className(), ['id' => 'category_id'])->with('translate');
     }
 
-    public function getTranslates() {
-        return $this->hasMany(PagesLng::className(), ['item_id' => 'id'])->indexBy('lng');
+    public function getBreadbg() {
+        return (isset($this->translate->breadbg)) ? $this->translate->breadbg : null;
     }
 
     public function getTranslate() {
         $langDef = Yii::$app->params['defaultLanguage'];
         return $this->hasOne(PagesLng::className(), ['item_id' => 'id'])->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])->indexBy('lng');
+    }
+
+    public function getTranslates() {
+        return $this->hasMany(PagesLng::className(), ['item_id' => 'id'])->indexBy('lng');
     }
 
 }

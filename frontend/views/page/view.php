@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var $model \frontend\models\Pages
+ */
 $this->title = $model->title;
 if (Yii::$app->layout != 'main') {
     $this->params['breadcrumbs'][] = $this->title;
@@ -23,7 +26,7 @@ if (Yii::$app->layout != 'main') {
             echo $widgetName::widget($widgetParams);
             ?>
         <?php } else { ?>
-            <section id="<?= $model->alias ?>-<?= $section->id ?>" class="section-<?= $model->alias ?>-<?= $section->id ?> <?= $section->style ?> <?= ($section->background)?'bg-image bg-overlay" style="background-image: url('.$section->background.');':''?>">
+            <section id="<?= $model->alias ?>-<?= $section->id ?>" class="section section-<?= $model->alias ?>-<?= $section->id ?> <?= $section->style ?> <?= ($section->background)?'bg-image bg-overlay" style="background-image: url('.$section->background.');':''?>">
                 <div class="my-container <?= $section->text_align ?>">
                     <?php if ($section->show_title) { ?>
                         <?php if ($key == 0) { ?>

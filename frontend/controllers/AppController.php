@@ -1,13 +1,16 @@
 <?php
 namespace frontend\controllers;
 
+use Yii;
 use yii\helpers\HtmlPurifier;
 
 class AppController extends \yii\web\Controller {
 
     public $backBreadcrumbs;
+    public $headerClass;
 
     public function init() {
+        $this->backBreadcrumbs = Yii::getAlias('@files/breadcrumbs-image-default.jpg');
         parent::init();
     }
 

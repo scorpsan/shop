@@ -1,14 +1,11 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\SwiperSlides;
 use Yii;
 use yii\filters\AccessControl;
-use yii\base\Model;
 use backend\models\Swiper;
-use backend\models\SwiperSlides;
-use backend\models\Language;
 use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,8 +37,6 @@ class SwiperController extends AppController {
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'publish' => ['POST'],
-                    'unpublish' => ['POST'],
                     'delete' => ['POST'],
                 ],
             ],
@@ -105,17 +100,25 @@ class SwiperController extends AppController {
 
     public function actionPublish($id) {
         Swiper::updateAll(['published' => 1], ['id' => $id]);
+        if (Yii::$app->request->isAjax) return $this->actionIndex();
         return $this->redirect(Url::previous('actions-redirect'));
     }
 
     public function actionUnpublish($id) {
         Swiper::updateAll(['published' => 0], ['id' => $id]);
+        if (Yii::$app->request->isAjax) return $this->actionIndex();
         return $this->redirect(Url::previous('actions-redirect'));
     }
 
     public function actionDelete($id) {
         if (($model = Swiper::findOne($id)) !== null) {
-            $model->delete();
+            try {
+                SwiperSlides::deleteAll(['item_id' => $id]);
+                $model->delete();
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
         return $this->redirect(['index']);
     }

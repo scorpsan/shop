@@ -43,8 +43,6 @@ class MenusController extends \backend\controllers\AppController {
                 'actions' => [
                     'lists' => ['POST'],
                     'params' => ['POST'],
-                    'publish' => ['POST'],
-                    'unpublish' => ['POST'],
                     'delete' => ['POST'],
                 ],
             ],
@@ -60,7 +58,6 @@ class MenusController extends \backend\controllers\AppController {
 
     public function actionIndex() {
         $root = Menus::find()->select('url')->where(['depth' => 0])->column();
-        $languages = Language::getLanguages();
         foreach (Yii::$app->params['listType'] as $key => $name) {
             if (!in_array($key, $root)) {
                 $rootEl = new Menus();
@@ -68,12 +65,16 @@ class MenusController extends \backend\controllers\AppController {
                 $rootEl->parent_id = 0;
                 $rootEl->published = 0;
                 $rootEl->makeRoot();
-                $rootEl->save();
-                $rootLng = new MenusLng();
-                $rootLng->item_id = $rootEl->id;
-                $rootLng->lng = Yii::$app->params['defaultLanguage'];
-                $rootLng->title = $name;
-                $rootLng->save();
+                if (!$this->clearRoot) {
+                    $languages = Language::getLanguages();
+                    foreach ($languages as $lang) {
+                        $rootLng = new MenusLng();
+                        $rootLng->item_id = $rootEl->id;
+                        $rootLng->lng = $lang->url;
+                        $rootLng->title = $name;
+                        $rootLng->save();
+                    }
+                }
             }
         }
         $dataProvider = new ActiveDataProvider([
@@ -86,7 +87,7 @@ class MenusController extends \backend\controllers\AppController {
         ]);
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'languages' => $languages,
+            'languages' => Language::getLanguages(),
         ]);
     }
 
@@ -332,12 +333,8 @@ class MenusController extends \backend\controllers\AppController {
 
     public function actionPublish($id) {
         Menus::updateAll(['published' => 1], ['id' => $id]);
-        $languages = Language::getLanguages();
-        foreach (Yii::$app->params['listType'] as $key => $name) {
-            foreach ($languages as $language) {
-                Yii::$app->cache->delete('menuTree' . $key . $language->url);
-            }
-        }
+        $this->clearCache();
+        if (Yii::$app->request->isAjax) return $this->actionIndex();
         return $this->redirect(Url::previous('actions-redirect'));
     }
 
@@ -345,12 +342,8 @@ class MenusController extends \backend\controllers\AppController {
         $category = Menus::find()->where(['id' => $id])->limit(1)->one();
         $categoryChildren = array_merge([$id], $category->children()->select('id')->column());
         Menus::updateAll(['published' => 0], ['in', 'id', $categoryChildren]);
-        $languages = Language::getLanguages();
-        foreach (Yii::$app->params['listType'] as $key => $name) {
-            foreach ($languages as $language) {
-                Yii::$app->cache->delete('menuTree' . $key . $language->url);
-            }
-        }
+        $this->clearCache();
+        if (Yii::$app->request->isAjax) return $this->actionIndex();
         return $this->redirect(Url::previous('actions-redirect'));
     }
 
@@ -361,12 +354,7 @@ class MenusController extends \backend\controllers\AppController {
             $prev = $model->prev()->one();
             if (!empty($prev))
                 $model->insertBefore($prev);
-            $languages = Language::getLanguages();
-            foreach (Yii::$app->params['listType'] as $key => $name) {
-                foreach ($languages as $language) {
-                    Yii::$app->cache->delete('menuTree' . $key . $language->url);
-                }
-            }
+            $this->clearCache();
             return true;
         }
         return false;
@@ -379,15 +367,19 @@ class MenusController extends \backend\controllers\AppController {
             $next = $model->next()->one();
             if (!empty($next))
                 $model->insertAfter($next);
-            $languages = Language::getLanguages();
-            foreach (Yii::$app->params['listType'] as $key => $name) {
-                foreach ($languages as $language) {
-                    Yii::$app->cache->delete('menuTree' . $key . $language->url);
-                }
-            }
+            $this->clearCache();
             return true;
         }
         return false;
+    }
+
+    private function clearCache() {
+        $languages = Language::getLanguages();
+        foreach (Yii::$app->params['listType'] as $key => $name) {
+            foreach ($languages as $language) {
+                Yii::$app->cache->delete('menuTree' . $key . $language->url);
+            }
+        }
     }
 
 }

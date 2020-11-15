@@ -13,8 +13,9 @@ use Yii;
  * @property string $seotitle
  * @property string $keywords
  * @property string $description
+ * @property string $seo_text
  * @property string $content
- * @property string $img
+ * @property string $breadbg
  */
 class CategoriesLng extends \yii\db\ActiveRecord {
 
@@ -28,8 +29,9 @@ class CategoriesLng extends \yii\db\ActiveRecord {
             [['item_id'], 'integer'],
             [['content'], 'string'],
             [['lng'], 'string', 'max' => 5],
-            [['title', 'seotitle', 'keywords', 'description', 'img'], 'string', 'max' => 255],
+            [['title', 'seotitle', 'keywords', 'description', 'breadbg'], 'string', 'max' => 255],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['seo_text'], 'string'],
         ];
     }
 
@@ -43,7 +45,8 @@ class CategoriesLng extends \yii\db\ActiveRecord {
             'content' => Yii::t('backend', 'Content'),
             'keywords' => Yii::t('backend', 'Keywords'),
             'description' => Yii::t('backend', 'Description'),
-            'img' => Yii::t('backend', 'Image'),
+            'seo_text' => Yii::t('backend', 'SEO Text'),
+            'breadbg' => Yii::t('backend', 'Breadcrumbs Section Background and Category Image'),
         ];
     }
 

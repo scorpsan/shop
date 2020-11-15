@@ -2,7 +2,8 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-$this->params['breadcrumbs'][] = $this->context->headerTitle;
+$this->title = Yii::t('app', 'Search results');
+$this->params['breadcrumbs'][] = $this->title;
 $search_text = Html::encode($s);
 ?>
 <section class="section-85">

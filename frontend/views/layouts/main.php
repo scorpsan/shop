@@ -1,10 +1,7 @@
 <?php
 use frontend\assets\AppAsset;
 use yii\helpers\Url;
-/**
- * @var $this       \yii\web\View
- * @var $content    string
- */
+
 AppAsset::register($this);
 $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
 ?>

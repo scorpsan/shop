@@ -36,8 +36,6 @@ class LanguageController extends AppController {
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'publish' => ['POST'],
-                    'unpublish' => ['POST'],
                     'delete' => ['POST'],
                 ],
             ],
@@ -45,7 +43,7 @@ class LanguageController extends AppController {
     }
 
     public function beforeAction($action) {
-        if (in_array($action->id, ['index', 'update'], true)) {
+        if (in_array($action->id, ['index'], true)) {
             Url::remember('', 'actions-redirect');
         }
         return parent::beforeAction($action);
@@ -66,12 +64,17 @@ class LanguageController extends AppController {
         $model = new Language();
         $model->published = true;
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->default) {
-                $model->published = true;
-                Language::updateAll(['default' => 0]);
-            }
-            if ($model->save())
+            try {
+                if ($model->default) {
+                    $model->published = true;
+                    Language::updateAll(['default' => 0]);
+                }
+                $model->save();
                 return $this->redirect(['index']);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
         return $this->render('create', [
             'model' => $model,
@@ -81,12 +84,17 @@ class LanguageController extends AppController {
     public function actionUpdate($id) {
         if (($model = Language::findOne($id)) !== null) {
             if ($model->load(Yii::$app->request->post())) {
-                if ($model->default) {
-                    $model->published = true;
-                    Language::updateAll(['default' => 0]);
-                }
-                if ($model->save())
+                try {
+                    if ($model->default) {
+                        $model->published = true;
+                        Language::updateAll(['default' => 0]);
+                    }
+                    $model->save();
                     return $this->redirect(['index']);
+                } catch (\DomainException $e) {
+                    Yii::$app->errorHandler->logException($e);
+                    Yii::$app->session->setFlash('error', $e->getMessage());
+                }
             }
             return $this->render('update', [
                 'model' => $model,
@@ -95,21 +103,28 @@ class LanguageController extends AppController {
         throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
     }
 
+    public function actionDelete($id) {
+        if (($model = Language::findOne($id)) !== null) {
+            try {
+                $model->delete();
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+        return $this->redirect(['index']);
+    }
+
     public function actionPublish($id) {
         Language::updateAll(['published' => 1], ['id' => $id]);
+        if (Yii::$app->request->isAjax) return $this->actionIndex();
         return $this->redirect(Url::previous('actions-redirect'));
     }
 
     public function actionUnpublish($id) {
         Language::updateAll(['published' => 0], ['id' => $id, 'default' => false]);
+        if (Yii::$app->request->isAjax) return $this->actionIndex();
         return $this->redirect(Url::previous('actions-redirect'));
-    }
-
-    public function actionDelete($id) {
-        if (($model = Language::findOne($id)) !== null) {
-            $model->delete();
-        }
-        return $this->redirect(['index']);
     }
 
 }
