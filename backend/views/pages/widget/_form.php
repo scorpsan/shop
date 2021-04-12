@@ -57,7 +57,7 @@ if ($model->scenario === PagesSection::SCENARIO_WIDGET1) {
 <?php } elseif ($model->scenario === PagesSection::SCENARIO_WIDGET2) { ?>
     <div class="row">
         <div class="col-xs-12">
-            <?= $form->field($model, 'widget_type')->dropDownList(\yii\helpers\ArrayHelper::map(Yii::$app->params['widgetsList'], 'id', 'title'), ['prompt' => Yii::t('backend', 'Choose Widget...'), 'disabled' => true]) ?>
+            <?= $form->field($model, 'widget_type')->textInput(['readonly' => true]) ?>
         </div>
         <div class="col-xs-12">
             <?php

@@ -153,10 +153,10 @@ class SectionController extends \backend\controllers\AppController {
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     if (($model = PagesSection::findOne($id)) !== null && $delmodel->delete) {
                         $model->delete();
-                        return ['success' => true];
+                        return true;
                     }
                     Yii::info($model->errors);
-                    return ['success' => false];
+                    return false;
                 }
                 return $this->renderAjax('_delete', [
                     'model' => $delmodel,

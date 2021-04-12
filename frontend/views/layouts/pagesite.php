@@ -3,8 +3,9 @@
  * @var $this       \yii\web\View
  * @var $content    string
  */
-use yii\helpers\Url;
 use frontend\assets\AppAsset;
+use yii\helpers\Url;
+use yii\widgets\Breadcrumbs;
 
 AppAsset::register($this);
 $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
@@ -18,17 +19,26 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
 <body>
 <?php $this->beginBody() ?>
 
+    <?= $this->render('_18plus') ?>
+
     <?= $this->render('_header') ?>
     <!-- Page-->
-    <section class="page-static">
-        <div class="container-fluid my-container">
-            <?= $this->render('_breadcrumbs') ?>
-
-            <?= $this->render('_alert') ?>
+    <main>
+        <section class="page-static">
+            <div class="container-fluid my-container">
+                <?= Breadcrumbs::widget([
+                    'homeLink' => ['label' => Yii::t('frontend', 'Home'), 'url' => Url::home()],
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    'tag' => 'p',
+                    'options' => ['class' => 'bread-crumb'],
+                    'itemTemplate' => '{link}<i> / </i>',
+                    'activeItemTemplate' => '{link}',
+                ]); ?>
+            </div>
 
             <?= $content ?>
-        </div>
-    </section>
+        </section>
+    </main>
     <?= $this->render('_footer') ?>
 
 <?php $this->endBody() ?>

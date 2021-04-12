@@ -3,6 +3,7 @@
  * @var $this           yii\web\View
  * @var $dataProvider   yii\data\ActiveDataProvider
  */
+use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body table-responsive">
-                <?php Pjax::begin(['enablePushState' => false]); ?>
+                <?php Pjax::begin(['id' => 'pjax-grid']); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -45,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'url',
                         'local',
                         [
-                            'class' => BooleanDataColumn::className(),
+                            'class' => BooleanDataColumn::class,
                             'attribute' => 'default',
                             'headerOptions' => ['width' => '130'],
                             'format' => 'boolean',
@@ -57,13 +58,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return Html::a(
                                         Yii::$app->formatter->asBoolean($data->published),
                                         ['unpublish', 'id' => $data->id],
-                                        ['class' => 'btn btn-xs btn-success btn-block']
+                                        ['class' => 'btn btn-xs btn-success btn-block ajaxAction']
                                     );
                                 }
                                 return Html::a(
                                     Yii::$app->formatter->asBoolean($data->published),
                                     ['publish', 'id' => $data->id],
-                                    ['class' => 'btn btn-xs btn-danger btn-block']
+                                    ['class' => 'btn btn-xs btn-danger btn-block ajaxAction']
                                 );
                             },
                             'headerOptions' => ['width' => '90'],
@@ -71,12 +72,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
 
                         ['class' => 'yii\grid\ActionColumn',
-                            'template' => '{update} {delete}',
                             'headerOptions' => ['width' => '60'],
+                            'template' => '{update} {delete}',
                             'visibleButtons' => [
-                                'view' => Yii::$app->user->can('viewSettings'),
-                                'update' => Yii::$app->user->can('editSettings'),
-                                'delete' => Yii::$app->user->can('deleteSettings'),
+                                'update' => Yii::$app->user->can('editPages'),
+                                'delete' => Yii::$app->user->can('deletePages'),
+                            ],
+                            'buttons' => [
+                                'delete' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                        'class' => 'ajaxDelete',
+                                        'title' => Yii::t('backend', 'Delete')
+                                    ]);
+                                }
                             ],
                         ],
                     ],
@@ -86,3 +94,41 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php
+$script = <<< JS
+$.pjax.reload({container: '#pjax-grid'});
+$(document).on('ready pjax:success', function () {
+    $('.ajaxDelete').on('click', function (e) {
+        e.preventDefault();
+        var deleteUrl = $(this).attr('href');
+        bootbox.confirm('Are you sure you want to delete this item?', function (result) {
+            if (result) {
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'post',
+                    error: function (xhr, status, error) {
+                        bootbox.alert('There was an error with your request.' + xhr.responseText);
+                    }
+                }).done(function (data) {
+                    $.pjax.reload({container: '#pjax-grid', timeout: false, async:false});
+                });
+            }
+        });
+    });
+    $('.ajaxAction').on('click', function (e) {
+        e.preventDefault();
+        var actionUrl = $(this).attr('href');
+        $.ajax({
+            url: actionUrl,
+            type: 'post',
+            error: function (xhr, status, error) {
+                bootbox.alert('There was an error with your request.' + xhr.responseText);
+            }
+        }).done(function (data) {
+            $.pjax.reload({container: '#pjax-grid', timeout: false, async:false});
+        });
+    });
+});
+JS;
+$this->registerJs($script, View::POS_READY);
+?>

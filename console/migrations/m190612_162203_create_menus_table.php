@@ -12,6 +12,8 @@ class m190612_162203_create_menus_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%menus}}', [
             'id' => $this->primaryKey(),
             'tree' => $this->integer(11),
@@ -24,7 +26,7 @@ class m190612_162203_create_menus_table extends Migration
             'published' => $this->boolean()->notNull()->defaultValue(1),
             'target_blank' => $this->boolean()->notNull()->defaultValue(0),
             'anchor' => $this->string(25),
-        ]);
+        ], $tableOptions);
     }
 
     /**

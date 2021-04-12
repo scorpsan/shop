@@ -1,10 +1,12 @@
 <?php
 namespace backend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 use yii\behaviors\SluggableBehavior;
-use yii\db\Expression;
+use Yii;
 use yii\helpers\ArrayHelper;
+use yii\db\Expression;
+use Exception;
 
 /**
  * This is the model class for table "{{%pages}}".
@@ -18,19 +20,33 @@ use yii\helpers\ArrayHelper;
  * @property int $page_style
  * @property int $created_at
  * @property int $updated_at
+ *
+ * @property-read string|null $title
+ * @property-read mixed $category
+ * @property-read mixed $translate
+ * @property-read mixed $translates
+ * @property-read string|null $breadbg
  */
-class Pages extends \yii\db\ActiveRecord {
-
+class Pages extends ActiveRecord
+{
     public $titleDefault;
 
-    public static function tableName() {
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%pages}}';
     }
 
-    public function behaviors() {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
             'sluggable' => [
-                'class' => SluggableBehavior::className(),
+                'class' => SluggableBehavior::class,
                 'attribute' => 'titleDefault',
                 'slugAttribute' => 'alias',
                 'immutable' => true,
@@ -38,10 +54,15 @@ class Pages extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function rules() {
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
         return [
             [['alias'], 'string', 'max' => 255],
             [['alias'], 'unique'],
+            [['alias'], 'filter', 'filter'=>'trim'],
             [['alias'], 'filter', 'filter'=>'strtolower'],
             [['published', 'main', 'noindex'], 'boolean'],
             [['published'], 'default', 'value' => true],
@@ -49,11 +70,15 @@ class Pages extends \yii\db\ActiveRecord {
             [['page_style'], 'integer'],
             [['page_style'], 'default', 'value' => 6],
             [['created_at', 'updated_at'], 'safe'],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'category_id' => Yii::t('backend', 'Category'),
@@ -67,7 +92,23 @@ class Pages extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function beforeSave($insert) {
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            $this->alias = str_replace(' ', '_', $this->alias);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeSave($insert)
+    {
         if ($this->isNewRecord) {
             if ($this->created_at) {
                 $this->created_at = Yii::$app->formatter->asTimestamp($this->created_at);
@@ -85,28 +126,26 @@ class Pages extends \yii\db\ActiveRecord {
         return parent::beforeSave($insert);
     }
 
-    public function beforeDelete() {
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeDelete()
+    {
         PagesLng::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
     }
 
-    public function getTitle() {
-        return (isset($this->translate->title)) ? $this->translate->title : null;
+    /**
+     * @return string|null
+     * @throws Exception
+     */
+    public function getTitle()
+    {
+        return ArrayHelper::getValue($this->translate, 'title');
     }
 
-    public function getSeotitle() {
-        return (isset($this->translate->seo_title)) ? $this->translate->seo_title : $this->getTitle();
-    }
-
-    public function getKeywords() {
-        return (isset($this->translate->keywords)) ? $this->translate->keywords : null;
-    }
-
-    public function getDescription() {
-        return (isset($this->translate->description)) ? $this->translate->description : null;
-    }
-
-    public static function getCategoriesList() {
+    public static function getCategoriesList()
+    {
         $categories = Pages::find()
             ->with('category')
             ->distinct(true)
@@ -116,21 +155,28 @@ class Pages extends \yii\db\ActiveRecord {
         return $categorieslist;
     }
 
-    public function getCategory() {
-        return $this->hasOne(Categories::className(), ['id' => 'category_id'])->with('translate');
+    public function getCategory()
+    {
+        return $this->hasOne(Categories::class, ['id' => 'category_id'])->with('translate');
     }
 
-    public function getBreadbg() {
-        return (isset($this->translate->breadbg)) ? $this->translate->breadbg : null;
+    public function getBreadbg()
+    {
+        return ArrayHelper::getValue($this->translate, 'breadbg');
     }
 
-    public function getTranslate() {
+    public function getTranslate()
+    {
         $langDef = Yii::$app->params['defaultLanguage'];
-        return $this->hasOne(PagesLng::className(), ['item_id' => 'id'])->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])->indexBy('lng');
+        return $this->hasOne(PagesLng::class, ['item_id' => 'id'])
+            ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
+            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
+            ->indexBy('lng');
     }
 
-    public function getTranslates() {
-        return $this->hasMany(PagesLng::className(), ['item_id' => 'id'])->indexBy('lng');
+    public function getTranslates()
+    {
+        return $this->hasMany(PagesLng::class, ['item_id' => 'id'])->indexBy('lng');
     }
 
 }

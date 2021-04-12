@@ -4,8 +4,8 @@ use yii\helpers\Html;
  * @var $this       \yii\web\View
  * @var $content    string
  */
-\dmstr\web\AdminLteAsset::register($this);
-\backend\assets\AdminLtePluginAsset::register($this);
+dmstr\web\AdminLteAsset::register($this);
+backend\assets\AddonsAsset::register($this);
 
 $js = <<< JS
     $('input[type="checkbox"], input[type="radio"]').iCheck({

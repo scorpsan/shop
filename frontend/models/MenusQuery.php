@@ -1,13 +1,22 @@
 <?php
 namespace frontend\models;
 
+use yii\db\ActiveQuery;
 use creocoder\nestedsets\NestedSetsQueryBehavior;
 
-class MenusQuery extends \yii\db\ActiveQuery {
-
-    public function behaviors() {
+/**
+ * Class MenusQuery
+ * @package frontend\models
+ */
+class MenusQuery extends ActiveQuery
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
-            NestedSetsQueryBehavior::className(),
+            NestedSetsQueryBehavior::class,
         ];
     }
 

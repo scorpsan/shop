@@ -1,9 +1,13 @@
 <?php
 namespace backend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use yii\behaviors\SluggableBehavior;
+use Yii;
+use yii\helpers\ArrayHelper;
 use yii\db\Expression;
+use Exception;
 
 /**
  * This is the model class for table "{{%shop_brands}}".
@@ -13,19 +17,31 @@ use yii\db\Expression;
  * @property int $published
  * @property string|null $logo
  * @property string|null $breadbg
+ *
+ * @property-read mixed $translate
+ * @property-read null $title
+ * @property-read mixed $translates
  */
-class ShopBrands extends \yii\db\ActiveRecord {
-
+class ShopBrands extends ActiveRecord
+{
     public $titleDefault;
 
-    public static function tableName() {
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%shop_brands}}';
     }
 
-    public function behaviors() {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
             'sluggable' => [
-                'class' => SluggableBehavior::className(),
+                'class' => SluggableBehavior::class,
                 'attribute' => 'titleDefault',
                 'slugAttribute' => 'alias',
                 'immutable' => true,
@@ -33,17 +49,26 @@ class ShopBrands extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function rules() {
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
         return [
-            [['alias'], 'required'],
+            [['alias'], 'unique'],
+            [['alias'], 'filter', 'filter'=>'trim'],
+            [['alias'], 'filter', 'filter'=>'strtolower'],
             [['published'], 'boolean'],
             [['published'], 'default', 'value' => true],
             [['alias', 'logo', 'breadbg'], 'string', 'max' => 255],
-            [['alias'], 'unique'],
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'alias' => Yii::t('backend', 'Alias'),
@@ -53,34 +78,54 @@ class ShopBrands extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function beforeDelete() {
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            $this->alias = str_replace(' ', '_', $this->alias);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeDelete()
+    {
         ShopBrandsLng::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
     }
 
-    public function getTitle() {
-        return (isset($this->translate->title)) ? $this->translate->title : null;
+    /**
+     * @return string|null
+     * @throws Exception
+     */
+    public function getTitle()
+    {
+        return ArrayHelper::getValue($this->translate, 'title');
     }
 
-    public function getSeotitle() {
-        return (isset($this->translate->seo_title)) ? $this->translate->seo_title : $this->getTitle();
-    }
-
-    public function getKeywords() {
-        return (isset($this->translate->keywords)) ? $this->translate->keywords : null;
-    }
-
-    public function getDescription() {
-        return (isset($this->translate->description)) ? $this->translate->description : null;
-    }
-
-    public function getTranslate() {
+    /**
+     * @return ActiveQuery
+     */
+    public function getTranslate()
+    {
         $langDef = Yii::$app->params['defaultLanguage'];
-        return $this->hasOne(ShopBrandsLng::className(), ['item_id' => 'id'])->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])->indexBy('lng');
+        return $this->hasOne(ShopBrandsLng::class, ['item_id' => 'id'])
+            ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
+            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
+            ->indexBy('lng');
     }
 
-    public function getTranslates() {
-        return $this->hasMany(ShopBrandsLng::className(), ['item_id' => 'id'])->indexBy('lng');
+    /**
+     * @return ActiveQuery
+     */
+    public function getTranslates()
+    {
+        return $this->hasMany(ShopBrandsLng::class, ['item_id' => 'id'])->indexBy('lng');
     }
 
 }

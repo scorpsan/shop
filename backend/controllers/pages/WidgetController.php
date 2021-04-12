@@ -110,10 +110,10 @@ class WidgetController extends \backend\controllers\AppController {
                         $model->moveLast();
                     else
                         $model->moveToPosition($model->sorting + 1);
-                    return ['success' => true];
+                    return true;
                 }
                 Yii::info($model->errors);
-                return ['success' => false];
+                return false;
             }
             return $this->renderAjax('_form', [
                 'model' => $model,

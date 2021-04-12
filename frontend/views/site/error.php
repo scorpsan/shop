@@ -7,7 +7,6 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-Yii::$app->layout = 'pagesite';
 $this->title = Yii::t('error', 'error') . ' ' . $exception->statusCode . ' - ' . Yii::t('error', 'error' . $exception->statusCode . ' title');
 ?>
 <div class="error-page text-center">

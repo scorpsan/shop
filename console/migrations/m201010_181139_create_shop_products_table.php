@@ -6,6 +6,8 @@ class m201010_181139_create_shop_products_table extends Migration
 {
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%shop_products}}', [
             'id' => $this->primaryKey(),
             'category_id' => $this->integer()->notNull(),
@@ -22,7 +24,7 @@ class m201010_181139_create_shop_products_table extends Migration
             'sale' => $this->float(),
             'created_at' => $this->integer(11)->notNull(),
             'updated_at' => $this->integer(11)->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('shop_products_categories_id_fk', '{{%shop_products}}', 'category_id');
 

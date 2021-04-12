@@ -1,6 +1,8 @@
 <?php
 namespace backend\models;
 
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use Yii;
 
 /**
@@ -15,28 +17,42 @@ use Yii;
  * @property string $description
  * @property string $seo_text
  * @property string $breadbg
+ *
+ * @property-read mixed $content
  */
-class PagesLng extends \yii\db\ActiveRecord {
-
+class PagesLng extends ActiveRecord
+{
     public $sections;
 
-    public static function tableName() {
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%pages_lng}}';
     }
 
-    public function rules() {
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
         return [
             [['item_id', 'lng', 'title'], 'required'],
             [['item_id'], 'integer'],
             [['lng'], 'string', 'max' => 5],
             [['title', 'seotitle', 'keywords', 'description', 'breadbg'], 'string', 'max' => 255],
             [['seo_text'], 'string'],
-            [['lng'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['lng' => 'url']],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pages::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['lng'], 'exist', 'skipOnError' => true, 'targetClass' => Language::class, 'targetAttribute' => ['lng' => 'url']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pages::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'item_id' => Yii::t('backend', 'Item ID'),
@@ -50,13 +66,21 @@ class PagesLng extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function beforeDelete() {
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeDelete()
+    {
         PagesSection::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
     }
 
-    public function getContent() {
-        return $this->hasMany(PagesSection::className(), ['item_id' => 'id'])->orderBy(['sort' => SORT_ASC]);
+    /**
+     * @return ActiveQuery
+     */
+    public function getContent()
+    {
+        return $this->hasMany(PagesSection::class, ['item_id' => 'id'])->orderBy(['sort' => SORT_ASC]);
     }
 
 }

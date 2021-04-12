@@ -12,6 +12,8 @@ class m190604_143017_create_categories_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%categories}}', [
             'id' => $this->primaryKey(),
             'alias' => $this->string(255)->unique()->notNull(),
@@ -22,7 +24,7 @@ class m190604_143017_create_categories_table extends Migration
             'published' => $this->boolean()->notNull()->defaultValue(1),
             'noindex' => $this->boolean()->notNull()->defaultValue(0),
             'page_style' => $this->tinyInteger(1)->notNull()->defaultValue(0),
-        ]);
+        ], $tableOptions);
     }
 
     /**

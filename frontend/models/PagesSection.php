@@ -1,8 +1,13 @@
 <?php
 namespace frontend\models;
 
-class PagesSection extends \yii\db\ActiveRecord {
+use yii\db\ActiveRecord;
 
+class PagesSection extends ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
     public static function tableName() {
         return '{{%pages_section}}';
     }

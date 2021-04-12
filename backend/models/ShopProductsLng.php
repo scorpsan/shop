@@ -1,5 +1,4 @@
 <?php
-
 namespace backend\models;
 
 use Yii;
@@ -17,25 +16,19 @@ use Yii;
  * @property string|null $keywords
  * @property string|null $description
  * @property string|null $seo_text
- *
- * @property Language $lng0
- * @property ShopProducts $item
  */
-class ShopProductsLng extends \yii\db\ActiveRecord
-{
+class ShopProductsLng extends \yii\db\ActiveRecord {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%shop_products_lng}}';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['item_id', 'lng', 'title'], 'required'],
             [['item_id'], 'integer'],
@@ -50,8 +43,7 @@ class ShopProductsLng extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('backend', 'ID'),
             'item_id' => Yii::t('backend', 'Item ID'),
@@ -66,23 +58,4 @@ class ShopProductsLng extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Lng0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLng0()
-    {
-        return $this->hasOne(Language::className(), ['url' => 'lng']);
-    }
-
-    /**
-     * Gets query for [[Item]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItem()
-    {
-        return $this->hasOne(ShopProducts::className(), ['id' => 'item_id']);
-    }
 }

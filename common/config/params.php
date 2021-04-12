@@ -9,9 +9,16 @@ return [
     'seotitle' => '',
     'keywords' => '',
     'description' => '',
+    // User
+    'user.passwordResetTokenExpire' => 3600,
+    'user.passwordMinLength' => 8,
+    'userCountry' => 'BELARUS',
+    'userCountryCode' => 'BY',
+    'userTimeZone' => 'Europe/Minsk',
+    'userPhoneCode' => 375,
     // Coming Soon
     'comingSoon' => false,
-    'comingSoonDate' => '25-10-2020 00:00',
+    'comingSoonDate' => '31-12-2020 00:00',
     // Search
     'searchOnSite' => false,
     // Shop
@@ -53,7 +60,7 @@ return [
             'title' => 'Landing without slider and breadcrumb section',
             'breadbg' => false,
             'layouts' => 'pagesite',
-            'headclass' => 'header-v1',
+            'headclass' => 'header-v2 header-v1',
         ],
     ],
     'categoryStyle' => [
@@ -69,7 +76,7 @@ return [
             'title' => 'Without breadcrumb section',
             'breadbg' => false,
             'layouts' => 'pagesite',
-            'headclass' => 'header-v1',
+            'headclass' => 'header-v2 header-v1',
         ],
     ],
     // Section style
@@ -85,31 +92,16 @@ return [
     ],
     // Images
     'avatarImagesSize' => [99, 99],
-    'portfolioImagesSize' => [
-        'small' => [120, 90],
-        'medium' => [444, null],
-        'full' => [1920, null],
-    ],
-    'servicesImagesSize' => [
-        'small' => [120, 90],
-        'medium' => [585, 433],
-        'full' => [968, null],
-    ],
-    'postsImagesSize' => [
-        'small' => [120, 90],
-        'medium' => [570, 322],
-        'full' => [968, null],
-    ],
     // Widgets List
     'widgetsList' => [
         'SwiperWidget' => [
+            'class' => \common\models\Swiper::class,
             'id' => 'SwiperWidget',
             'title' => 'Swiper Slider',
-            'class' => \common\models\Swiper::className(),
             'params' => [
                 'show_title' => false,
                 'style' => false,
-                'text_align' => false,
+                'text_align' => true,
                 'background' => false,
                 'parallax' => false,
             ],
@@ -183,6 +175,33 @@ return [
                 'pretext' => [
                     'title' => Yii::t('backend', 'Insert PreText'),
                     'text' => '',
+                ],
+            ],
+        ],
+        'ProductsWidget' => [
+            'id' => 'ProductsWidget',
+            'title' => 'Products Widget',
+            'params' => [
+                'show_title' => true,
+                'style' => false,
+                'text_align' => false,
+                'background' => false,
+                'parallax' => false,
+            ],
+            'options' => [
+                'type' => [
+                    'title' => Yii::t('backend', 'Choose Type...'),
+                    'dropList' => [
+                        'new' => 'New Arrivals',
+                        'rnd' => 'Random Products',
+                        'hit' => 'Hits Sales',
+                        'act' => 'Actions Products',
+                        'rat' => 'High Ratings Products'
+                    ],
+                ],
+                'count' => [
+                    'title' => Yii::t('backend', 'Count Product'),
+                    'dropList' => [4 => '4 - one row', 8 => '8 - 2 rows', 12 => '12 - 3 rows'],
                 ],
             ],
         ],

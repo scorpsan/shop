@@ -1,5 +1,5 @@
 <?php
-use yii\helpers\Html;
+use yii\bootstrap4\Html;
 ?>
 <link rel="dns-prefetch" href="//www.googletagmanager.com/">
 <link rel="dns-prefetch" href="//www.google-analytics.com/">

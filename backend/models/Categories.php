@@ -1,11 +1,15 @@
 <?php
 namespace backend\models;
 
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use yii\behaviors\SluggableBehavior;
 use creocoder\nestedsets\NestedSetsBehavior;
 use backend\components\behaviors\NestedSetsTreeBehavior;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\db\Expression;
+use Exception;
 
 /**
  * This is the model class for table "{{%categories}}".
@@ -19,52 +23,79 @@ use yii\db\Expression;
  * @property int $published
  * @property int $noindex
  * @property int $page_style
+ *
+ * @property-read string|null $title
+ * @property-read ActiveQuery $translate
+ * @property-read ActiveQuery $translates
  */
-class Categories extends \yii\db\ActiveRecord {
-
+class Categories extends ActiveRecord
+{
     public $parent_id;
     public $sorting;
     public $titleDefault;
 
-    public static function tableName() {
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%categories}}';
     }
 
-    public function behaviors() {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
             'sluggable' => [
-                'class' => SluggableBehavior::className(),
+                'class' => SluggableBehavior::class,
                 'attribute' => 'titleDefault',
                 'slugAttribute' => 'alias',
                 'immutable' => true,
             ],
             'tree' => [
-                'class' => NestedSetsBehavior::className(),
+                'class' => NestedSetsBehavior::class,
                 'treeAttribute' => 'tree',
                 // 'leftAttribute' => 'lft',
                 // 'rightAttribute' => 'rgt',
                 // 'depthAttribute' => 'depth',
             ],
             'htmlTree' => [
-                'class' => NestedSetsTreeBehavior::className()
+                'class' => NestedSetsTreeBehavior::class,
             ],
         ];
     }
 
-    public function transactions() {
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
+    public function transactions()
+    {
         return [
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
 
-    public static function find() {
+    /**
+     * {@inheritdoc}
+     * @return CategoryQuery
+     */
+    public static function find()
+    {
         return new CategoryQuery(get_called_class());
     }
 
-    public function rules() {
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
         return [
             [['alias'], 'string', 'max' => 255],
             [['alias'], 'unique'],
+            [['alias'], 'filter', 'filter'=>'trim'],
             [['alias'], 'filter', 'filter'=>'strtolower'],
             [['tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
             [['published', 'noindex'], 'boolean'],
@@ -76,7 +107,11 @@ class Categories extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'alias' => Yii::t('backend', 'Alias'),
@@ -88,37 +123,49 @@ class Categories extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function getTitle() {
-        return (isset($this->translate->title)) ? $this->translate->title : null;
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            $this->alias = str_replace(' ', '_', $this->alias);
+            return true;
+        }
+        return false;
     }
 
-    public function getContent() {
-        return (isset($this->translate->content)) ? $this->translate->content : null;
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public function getTitle()
+    {
+        return ArrayHelper::getValue($this->translate, 'title');
     }
 
-    public function getSeotitle() {
-        return (isset($this->translate->seotitle)) ? $this->translate->seotitle : $this->getTitle();
-    }
-
-    public function getKeywords() {
-        return (isset($this->translate->keywords)) ? $this->translate->keywords : null;
-    }
-
-    public function getDescription() {
-        return (isset($this->translate->description)) ? $this->translate->description : null;
-    }
-
-    public function getBreadbg() {
-        return (isset($this->translate->breadbg)) ? $this->translate->breadbg : null;
-    }
-
-    public function getTranslate() {
+    /**
+     * Gets query for [[Translate]].
+     *
+     * @return ActiveQuery
+     */
+    public function getTranslate()
+    {
         $langDef = Yii::$app->params['defaultLanguage'];
-        return $this->hasOne(CategoriesLng::className(), ['item_id' => 'id'])->alias('translate')->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])->indexBy('lng');
+        return $this->hasOne(CategoriesLng::class, ['item_id' => 'id'])->alias('translate')
+            ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
+            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
+            ->indexBy('lng');
     }
 
-    public function getTranslates() {
-        return $this->hasMany(CategoriesLng::className(), ['item_id' => 'id'])->indexBy('lng');
+    /**
+     * Gets query for [[Translates]].
+     *
+     * @return ActiveQuery
+     */
+    public function getTranslates()
+    {
+        return $this->hasMany(CategoriesLng::class, ['item_id' => 'id'])->indexBy('lng');
     }
 
 }

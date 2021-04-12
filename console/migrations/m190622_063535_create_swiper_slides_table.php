@@ -12,6 +12,8 @@ class m190622_063535_create_swiper_slides_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%swiper_slides}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer(11)->notNull(),
@@ -25,7 +27,7 @@ class m190622_063535_create_swiper_slides_table extends Migration
             'lng' => $this->string(5),
             'start_at' => $this->integer(11),
             'end_at' => $this->integer(11),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('swiper_slides_swiper_id_fk', '{{%swiper_slides}}', 'item_id');
 

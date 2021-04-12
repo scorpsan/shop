@@ -1,6 +1,7 @@
 <?php
 namespace backend\models;
 
+use yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -17,25 +18,37 @@ use Yii;
  * @property string $content
  * @property string $breadbg
  */
-class CategoriesLng extends \yii\db\ActiveRecord {
-
-    public static function tableName() {
+class CategoriesLng extends ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%categories_lng}}';
     }
 
-    public function rules() {
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
         return [
             [['item_id', 'title'], 'required'],
             [['item_id'], 'integer'],
             [['content'], 'string'],
             [['lng'], 'string', 'max' => 5],
             [['title', 'seotitle', 'keywords', 'description', 'breadbg'], 'string', 'max' => 255],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['item_id' => 'id']],
             [['seo_text'], 'string'],
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'item_id' => Yii::t('backend', 'Item ID'),

@@ -12,6 +12,8 @@ class m190531_141100_create_settings_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%settings}}', [
             'id' => $this->primaryKey(),
             'phone' => $this->string(21)->notNull()->defaultValue('+123456789'),
@@ -36,7 +38,7 @@ class m190531_141100_create_settings_table extends Migration
             'coming_soon' => $this->boolean()->notNull()->defaultValue(0),
             'search_on_site' => $this->boolean()->notNull()->defaultValue(0),
             'shop_on_site' => $this->boolean()->notNull()->defaultValue(0),
-        ]);
+        ], $tableOptions);
 
         $this->insert('{{%settings}}', [
             'phone' => '+123456789',

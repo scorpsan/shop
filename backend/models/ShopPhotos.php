@@ -1,21 +1,30 @@
 <?php
-
 namespace backend\models;
 
+use yii\db\ActiveRecord;
+use Imagine\Image\ImageInterface;
 use Yii;
+use yii\helpers\FileHelper;
+use yii\imagine\Image;
 
 /**
  * This is the model class for table "{{%shop_photos}}".
  *
+ * @property image $attachment
  * @property int $id
  * @property int $product_id
- * @property string $file
+ * @property string $url
  * @property int|null $sort
- *
- * @property ShopProducts $product
+ * @property-read string $mediumImageUrl
+ * @property-read string $imageUrl
+ * @property-read string $smallImageUrl
  */
-class ShopPhotos extends \yii\db\ActiveRecord
+class ShopPhotos extends ActiveRecord
 {
+    /**
+     * @var image
+     */
+    public $attachment;
     /**
      * {@inheritdoc}
      */
@@ -30,10 +39,16 @@ class ShopPhotos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'file'], 'required'],
+            [['product_id', 'url'], 'required'],
             [['product_id', 'sort'], 'integer'],
-            [['file'], 'string', 'max' => 255],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopProducts::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['url'], 'string', 'max' => 255],
+            [['sort'], 'default', 'value' => function($model) {
+                $count = self::find()->where(['product_id' => $model->product_id])->count();
+                return $count;
+            }],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopProducts::class, 'targetAttribute' => ['product_id' => 'id']],
+            [['attachment'], 'safe'],
+            [['attachment'], 'image'],
         ];
     }
 
@@ -45,18 +60,116 @@ class ShopPhotos extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('backend', 'ID'),
             'product_id' => Yii::t('backend', 'Product ID'),
-            'file' => Yii::t('backend', 'File'),
+            'url' => Yii::t('backend', 'Photo'),
             'sort' => Yii::t('backend', 'Sort'),
         ];
     }
 
-    /**
-     * Gets query for [[Product]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProduct()
+    public function getSmallImageUrl()
     {
-        return $this->hasOne(ShopProducts::className(), ['id' => 'product_id']);
+        if (isset($this->url)) {
+            return Yii::getAlias('@files/products/' . $this->product_id . '/small_') . $this->url;
+        }
+        return Yii::getAlias('@images/nophoto.svg');
     }
+
+    public function getMediumImageUrl()
+    {
+        if (isset($this->url)) {
+            return Yii::getAlias('@files/products/' . $this->product_id . '/medium_') . $this->url;
+        }
+        return Yii::getAlias('@images/nophoto.svg');
+    }
+
+    public function getImageUrl()
+    {
+        if (isset($this->url)) {
+            return Yii::getAlias('@files/products/' . $this->product_id . '/full_') . $this->url;
+        }
+        return Yii::getAlias('@images/nophoto.svg');
+    }
+
+    public static function uploadFile($file = null, $imageSizes = null, $dirRoot)
+    {
+        if (!empty($file)) {
+            if (!file_exists($dirRoot)) {
+                FileHelper::createDirectory($dirRoot);
+            }
+            $filename = strtotime('now') . '_' . Yii::$app->getSecurity()->generateRandomString(6) . '.' . $file->extension;
+            if ($file->saveAs($dirRoot . $filename)) {
+                $imagine = Image::getImagine()->open($dirRoot . $filename);
+                if (isset($imageSizes['full'])) {
+                    if (isset($imageSizes['full'][1])) {
+                        Image::thumbnail($imagine, $imageSizes['full'][0], $imageSizes['full'][1], ImageInterface::THUMBNAIL_OUTBOUND)
+                            ->save($dirRoot . 'full_' . $filename, ['quality' => 90]);
+                    } else {
+                        $imagine->resize($imagine->getSize()->widen($imageSizes['full'][0]))
+                            ->save($dirRoot . 'full_' . $filename, ['quality' => 90]);
+                    }
+                }
+                if (isset($imageSizes['medium'])) {
+                    if (isset($imageSizes['medium'][1])) {
+                        Image::thumbnail($imagine, $imageSizes['medium'][0], $imageSizes['medium'][1], ImageInterface::THUMBNAIL_OUTBOUND)
+                            ->save($dirRoot . 'medium_' . $filename, ['quality' => 80]);
+                    } else {
+                        $imagine->resize($imagine->getSize()->widen($imageSizes['medium'][0]))
+                            ->save($dirRoot . 'medium_' . $filename, ['quality' => 80]);
+                    }
+                }
+                if (isset($imageSizes['small'])) {
+                    if (isset($imageSizes['small'][1])) {
+                        Image::thumbnail($imagine, $imageSizes['small'][0], $imageSizes['small'][1], ImageInterface::THUMBNAIL_OUTBOUND)
+                            ->save($dirRoot . 'small_' . $filename, ['quality' => 80]);
+                    } else {
+                        $imagine->resize($imagine->getSize()->widen($imageSizes['small'][0]))
+                            ->save($dirRoot . 'small_' . $filename, ['quality' => 80]);
+                    }
+                }
+                /*
+                if (isset($imageSizes['medium'])) {
+                    $imagine = Image::getImagine()->open($dirRoot . $filename);
+                    $imagine = Image::thumbnail($imagine, $imageSizes['medium'][0] *1.2, null, ImageInterface::THUMBNAIL_OUTBOUND);
+                    Image::crop($imagine, $imageSizes['medium'][0], $imageSizes['medium'][1], [$imageSizes['medium'][0] *0.1, $imageSizes['medium'][1] *0.2])
+                        ->save($dirRoot . 'medium_' . $filename, ['quality' => 80]);
+                }
+                if (isset($imageSizes['small'])) {
+                    $imagine = Image::getImagine()->open($dirRoot . $filename);
+                    $imagine = Image::thumbnail($imagine, $imageSizes['small'][0] *2, null, ImageInterface::THUMBNAIL_OUTBOUND);
+                    Image::crop($imagine, $imageSizes['small'][0], $imageSizes['small'][1], [$imageSizes['small'][0] /2, $imageSizes['small'][1] /4])
+                        ->save($dirRoot . 'small_' . $filename, ['quality' => 80]);
+                }
+                */
+                return $filename;
+            }
+        }
+        return null;
+    }
+
+    public function beforeDelete()
+    {
+        self::updateAllCounters(['sort' => -1], ['and', ['product_id' => $this->product_id], ['>', 'sort', $this->sort]]);
+        self::deleteFile($this->url, Yii::getAlias('@filesroot/products/' . $this->product_id . '/'));
+        return parent::beforeDelete();
+    }
+
+    public static function deleteFile($file = null, $dirRoot)
+    {
+        if (!empty($file)) {
+            if (file_exists($dirRoot . 'full_' . $file)) {
+                unlink($dirRoot . 'full_' . $file);
+            }
+            if (file_exists($dirRoot . 'medium_' . $file)) {
+                unlink($dirRoot . 'medium_' . $file);
+            }
+            if (file_exists($dirRoot . 'small_' . $file)) {
+                unlink($dirRoot . 'small_' . $file);
+            }
+            if (file_exists($dirRoot . $file)) {
+                unlink($dirRoot . $file);
+            }
+        } else {
+            return null;
+        }
+    }
+
 }

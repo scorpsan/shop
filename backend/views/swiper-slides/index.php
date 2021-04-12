@@ -42,11 +42,11 @@ foreach ($slides as $model) { ?>
                             ],
                             [
                                 'attribute' => 'text_align',
-                                'value' => Yii::$app->params['textAlignList'][$model->text_align],
+                                'value' => (!empty($model->text_align))?Yii::$app->params['textAlignList'][$model->text_align]:null,
                             ],
                             [
                                 'attribute' => 'style',
-                                'value' => Yii::$app->params['sectionStyle'][$model->style],
+                                'value' => (!empty($model->style))?Yii::$app->params['sectionStyle'][$model->style]:null,
                             ],
                             [
                                 'attribute' => 'sort',

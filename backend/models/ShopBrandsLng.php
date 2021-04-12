@@ -1,6 +1,7 @@
 <?php
 namespace backend\models;
 
+use yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -15,26 +16,30 @@ use Yii;
  * @property string $keywords
  * @property string $description
  * @property string $seo_text
+ * @property string $country
  */
-class ShopBrandsLng extends \yii\db\ActiveRecord {
-
-    public static function tableName() {
+class ShopBrandsLng extends ActiveRecord
+{
+    public static function tableName()
+    {
         return '{{%shop_brands_lng}}';
     }
 
-    public function rules() {
+    public function rules()
+    {
         return [
             [['item_id', 'lng', 'title'], 'required'],
             [['item_id'], 'integer'],
             [['lng'], 'string', 'max' => 5],
-            [['title', 'seotitle', 'keywords', 'description'], 'string', 'max' => 255],
+            [['title', 'seotitle', 'keywords', 'description', 'country'], 'string', 'max' => 255],
             [['content', 'seo_text'], 'string'],
-            [['lng'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['lng' => 'url']],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopBrands::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['lng'], 'exist', 'skipOnError' => true, 'targetClass' => Language::class, 'targetAttribute' => ['lng' => 'url']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopBrands::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'item_id' => Yii::t('backend', 'Item ID'),
@@ -45,6 +50,7 @@ class ShopBrandsLng extends \yii\db\ActiveRecord {
             'keywords' => Yii::t('backend', 'Keywords'),
             'description' => Yii::t('backend', 'Description'),
             'seo_text' => Yii::t('backend', 'SEO Text'),
+            'country' => Yii::t('backend', 'Country'),
         ];
     }
 

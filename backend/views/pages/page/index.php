@@ -4,11 +4,12 @@
  * @var $dataProvider   yii\data\ActiveDataProvider
  * @var $languages      \backend\models\Language
  */
+use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use backend\components\grid\BooleanDataColumn;
 use backend\components\grid\TranslatesDataColumn;
+use backend\components\grid\BooleanDataColumn;
 use backend\components\grid\CombinedDataColumn;
 
 $this->title = Yii::t('backend', 'Pages');
@@ -29,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body table-responsive">
-                <?php Pjax::begin(); ?>
+                <?php Pjax::begin(['id' => 'pjax-grid']); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -50,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'html',
                         ],
                         [
-                            'class' => BooleanDataColumn::className(),
+                            'class' => BooleanDataColumn::class,
                             'attribute' => 'main',
                             'headerOptions' => ['width' => '90'],
                             'format' => 'boolean',
@@ -72,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'html',
                         ],
                         [
-                            'class' => TranslatesDataColumn::className(),
+                            'class' => TranslatesDataColumn::class,
                             'attribute' => 'translates',
                             'label' => Yii::t('backend', 'Translate'),
                             'format' => 'html',
@@ -85,26 +86,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return Html::a(
                                         Yii::$app->formatter->asBoolean($data->published),
                                         ['unpublish', 'id' => $data->id],
-                                        [
-                                            'class' => 'btn btn-xs btn-success btn-block',
-                                            'data-method' => 'post',
-                                        ]
+                                        ['class' => 'btn btn-xs btn-success btn-block ajaxAction']
                                     );
                                 }
                                 return Html::a(
                                     Yii::$app->formatter->asBoolean($data->published),
                                     ['publish', 'id' => $data->id],
-                                    [
-                                        'class' => 'btn btn-xs btn-danger btn-block',
-                                        'data-method' => 'post',
-                                    ]
+                                    ['class' => 'btn btn-xs btn-danger btn-block ajaxAction']
                                 );
                             },
                             'headerOptions' => ['width' => '90'],
-                            'format' => 'raw',
+                            'format' => 'boolean',
                         ],
                         [
-                            'class' => CombinedDataColumn::className(),
+                            'class' => CombinedDataColumn::class,
                             'labelTemplate' => '{0}  /  {1}',
                             'valueTemplate' => '{0}<br />{1}',
                             'labels' => [
@@ -131,10 +126,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
 
                         ['class' => 'yii\grid\ActionColumn',
-                            'headerOptions' => ['width' => '90'],
+                            'headerOptions' => ['width' => '60'],
+                            'template' => '{update} {delete}',
                             'visibleButtons' => [
                                 'update' => Yii::$app->user->can('editPages'),
                                 'delete' => Yii::$app->user->can('deletePages'),
+                            ],
+                            'buttons' => [
+                                'delete' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                        'class' => 'ajaxDelete',
+                                        'title' => Yii::t('backend', 'Delete')
+                                    ]);
+                                }
                             ],
                         ],
                     ],
@@ -144,3 +148,41 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php
+$script = <<< JS
+$.pjax.reload({container: '#pjax-grid'});
+$(document).on('ready pjax:success', function () {
+    $('.ajaxDelete').on('click', function (e) {
+        e.preventDefault();
+        var deleteUrl = $(this).attr('href');
+        bootbox.confirm('Are you sure you want to delete this item?', function (result) {
+            if (result) {
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'post',
+                    error: function (xhr, status, error) {
+                        bootbox.alert('There was an error with your request.' + xhr.responseText);
+                    }
+                }).done(function (data) {
+                    $.pjax.reload({container: '#pjax-grid', timeout: false, async:false});
+                });
+            }
+        });
+    });
+    $('.ajaxAction').on('click', function (e) {
+        e.preventDefault();
+        var actionUrl = $(this).attr('href');
+        $.ajax({
+            url: actionUrl,
+            type: 'post',
+            error: function (xhr, status, error) {
+                bootbox.alert('There was an error with your request.' + xhr.responseText);
+            }
+        }).done(function (data) {
+            $.pjax.reload({container: '#pjax-grid', timeout: false, async:false});
+        });
+    });
+});
+JS;
+$this->registerJs($script, View::POS_READY);
+?>

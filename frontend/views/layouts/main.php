@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var $this       \yii\web\View
+ * @var $content    string
+ */
 use frontend\assets\AppAsset;
 use yii\helpers\Url;
 
@@ -14,11 +18,11 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
 <body>
 <?php $this->beginBody() ?>
 
+    <?= $this->render('_18plus') ?>
+
     <?= $this->render('_header') ?>
     <!-- Page-->
     <main>
-        <?= $this->render('_alert') ?>
-
         <?= $content ?>
     </main>
     <?= $this->render('_footer') ?>

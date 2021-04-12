@@ -12,6 +12,8 @@ class m190604_143509_create_categories_lng_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%categories_lng}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer(11)->notNull(),
@@ -23,7 +25,7 @@ class m190604_143509_create_categories_lng_table extends Migration
             'seo_text' => $this->text(),
             'content' => $this->text(),
             'breadbg' => $this->string(255),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('categories_lng_categories_id_fk', '{{%categories_lng}}', 'item_id');
 

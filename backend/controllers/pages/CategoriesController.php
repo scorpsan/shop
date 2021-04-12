@@ -1,34 +1,41 @@
 <?php
 namespace backend\controllers\pages;
 
+use backend\controllers\AppController;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
+use Da\User\Filter\AccessRuleFilter;
 use Yii;
 use yii\base\Model;
 use backend\models\Categories;
 use backend\models\CategoriesLng;
 use backend\models\Language;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
 
-class CategoriesController extends \backend\controllers\AppController {
-
+class CategoriesController extends AppController
+{
     public $clearRoot = true;
 
-    public function behaviors() {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
+                'ruleConfig' => [
+                    'class' => AccessRuleFilter::class,
+                ],
                 'rules' => [
                     [
-                        'actions' => ['index', 'view'],
+                        'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['viewPages'],
                     ],
                     [
-                        'actions' => ['create', 'update', 'lists', 'publish', 'unpublish', 'up', 'down'],
+                        'actions' => ['create', 'update', 'publish', 'unpublish', 'up', 'down', 'lists'],
                         'allow' => true,
                         'roles' => ['editPages'],
                     ],
@@ -39,43 +46,37 @@ class CategoriesController extends \backend\controllers\AppController {
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
         ];
     }
 
-    public function beforeAction($action) {
-        if (in_array($action->id, ['index', 'view', 'update'], true)) {
-            Url::remember('', 'actions-redirect');
-        }
-        return parent::beforeAction($action);
-    }
-
-    public function actionIndex() {
+    /**
+     * @return string
+     */
+    public function actionIndex()
+    {
         $root = Categories::find()->where(['alias' => 'pages'])->limit(1)->one();
         if (empty($root)) {
-            $root = new Categories();
-            $root->alias = 'pages';
-            $root->parent_id = 0;
-            $root->published = 0;
-            $root->noindex = 0;
-            $root->page_style = 0;
+            $root = new Categories([
+                'alias' => 'pages',
+                'parent_id' => 0,
+                'published' => 0,
+                'noindex' => 0,
+                'page_style' => 0,
+            ]);
             $root->makeRoot();
             if (!$this->clearRoot) {
                 $languages = Language::getLanguages();
                 foreach ($languages as $lang) {
-                    $rootLng = new CategoriesLng();
-                    $rootLng->item_id = $root->id;
-                    $rootLng->lng = $lang->url;
-                    $rootLng->title = 'Pages';
+                    $rootLng = new CategoriesLng([
+                        'item_id' => $root->id,
+                        'lng' => $lang->url,
+                        'title' => 'Pages',
+                    ]);
                     $rootLng->save();
                 }
             }
         }
+
         $query = Categories::find()
             ->where(['tree' => $root->tree])
             ->with('translate')
@@ -89,6 +90,7 @@ class CategoriesController extends \backend\controllers\AppController {
             'sort' => false,
             'pagination' => false,
         ]);
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'clearRoot' => $this->clearRoot,
@@ -96,26 +98,16 @@ class CategoriesController extends \backend\controllers\AppController {
         ]);
     }
 
-    public function actionView($id) {
-        $model = Categories::find()->where(['id' => $id])
-            ->with('translate')
-            ->with('translates')
-            ->limit(1)->one();
-        $languages = Language::getLanguages();
-        if ($model !== null)
-            return $this->render('view', [
-                'model' => $model,
-                'languages' => $languages,
-                'clearRoot' => $this->clearRoot,
-            ]);
-        throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
-    }
-
-    public function actionCreate() {
-        $model = new Categories();
-        $model->published = true;
-        $model->noindex = false;
-        $model->page_style = false;
+    /**
+     * @return string
+     */
+    public function actionCreate()
+    {
+        $model = new Categories([
+            'published' => true,
+            'noindex' => false,
+            'page_style' => false,
+        ]);
         $languages = Language::getLanguages();
         foreach ($languages as $lang) {
             $modelLng[$lang->url] = new CategoriesLng();
@@ -146,6 +138,7 @@ class CategoriesController extends \backend\controllers\AppController {
         }
         $root = Categories::find()->where(['alias' => 'pages'])->limit(1)->one();
         $parentList = ArrayHelper::map($root->listTreeCategories('pages', $this->clearRoot), 'id', 'title');
+
         return $this->render('create', [
             'model' => $model,
             'modelLng' => $modelLng,
@@ -155,7 +148,8 @@ class CategoriesController extends \backend\controllers\AppController {
         ]);
     }
 
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = Categories::find()->where(['id' => $id])
             ->with('translate')
             ->limit(1)->one();
@@ -166,6 +160,7 @@ class CategoriesController extends \backend\controllers\AppController {
                 $modelLng[$lang->url] = new CategoriesLng();
             }
         }
+
         if ($model->load(Yii::$app->request->post()) && Model::loadMultiple($modelLng, Yii::$app->request->post())) {
             if ($model->parent_id) {
                 if ($model->sorting == 'first') {
@@ -193,8 +188,9 @@ class CategoriesController extends \backend\controllers\AppController {
                 return $this->redirect(['index']);
             }
         }
-        if ($model->depth == 0 && $model->alias == 'shop') {
-            $parentList = [];
+
+        if ($model->depth == 0 && $model->alias == 'pages') {
+            $parentList = array();
             $model->parent_id = 0;
         } elseif ($model->depth == 0) {
             throw new NotFoundHttpException(Yii::t('error', 'error400 message'));
@@ -204,6 +200,7 @@ class CategoriesController extends \backend\controllers\AppController {
             $parent = $model->parents(1)->one();
             $model->parent_id = $parent->id;
         }
+
         return $this->render('update', [
             'model' => $model,
             'modelLng' => $modelLng,
@@ -213,58 +210,70 @@ class CategoriesController extends \backend\controllers\AppController {
         ]);
     }
 
-    public function actionDelete($id) {
-        if (($model = Categories::findOne($id)) !== null) {
-            try {
-                CategoriesLng::deleteAll(['item_id' => $id]);
-                //Pages::updateAll(['category_id' => 0], ['category_id' => $id]);
-                $model->delete();
-                $this->clearCache();
-            } catch (\DomainException $e) {
-                Yii::$app->errorHandler->logException($e);
-                Yii::$app->session->setFlash('error', $e->getMessage());
-            }
+    public function actionPublish($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            Categories::updateAll(['published' => 1], ['id' => $id]);
+            $this->clearCache();
+            return true;
         }
         return $this->redirect(['index']);
     }
 
-    public function actionPublish($id) {
-        Categories::updateAll(['published' => 1], ['id' => $id]);
-        $this->clearCache();
-        if (Yii::$app->request->isAjax) return $this->actionIndex();
-        return $this->redirect(Url::previous('actions-redirect'));
+    public function actionUnpublish($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $category = Categories::find()->where(['id' => $id])->limit(1)->one();
+            $categoryChildren = array_merge([$id], $category->children()->select('id')->column());
+            Categories::updateAll(['published' => 0], ['in', 'id', $categoryChildren]);
+            $this->clearCache();
+            return true;
+        }
+        return $this->redirect(['index']);
     }
 
-    public function actionUnpublish($id) {
-        $category = Categories::find()->where(['id' => $id])->limit(1)->one();
-        $categoryChildren = array_merge([$id], $category->children()->select('id')->column());
-        Categories::updateAll(['published' => 0], ['in', 'id', $categoryChildren]);
-        $this->clearCache();
-        if (Yii::$app->request->isAjax) return $this->actionIndex();
-        return $this->redirect(Url::previous('actions-redirect'));
+    public function actionUp($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $model = Categories::find()->where(['id' => $id])->limit(1)->one();
+            $prev = $model->prev()->one();
+            if (!empty($prev))
+                $model->insertBefore($prev);
+            $this->clearCache();
+            return true;
+        }
+        return $this->redirect(['index']);
     }
 
-    public function actionUp($id) {
-        $model = Categories::find()->where(['id' => $id])->limit(1)->one();
-        $prev = $model->prev()->one();
-        if (!empty($prev))
-            $model->insertBefore($prev);
-        $this->clearCache();
-        if (Yii::$app->request->isAjax) return $this->actionIndex();
-        return $this->redirect(Url::previous('actions-redirect'));
+    public function actionDown($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $model = Categories::find()->where(['id' => $id])->limit(1)->one();
+            $next = $model->next()->one();
+            if (!empty($next))
+                $model->insertAfter($next);
+            $this->clearCache();
+            return true;
+        }
+        return $this->redirect(['index']);
     }
 
-    public function actionDown($id) {
-        $model = Categories::find()->where(['id' => $id])->limit(1)->one();
-        $next = $model->next()->one();
-        if (!empty($next))
-            $model->insertAfter($next);
-        $this->clearCache();
-        if (Yii::$app->request->isAjax) return $this->actionIndex();
-        return $this->redirect(Url::previous('actions-redirect'));
+    public function actionDelete($id)
+    {
+        if (!$model = Categories::findOne($id)) {
+            throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
+        }
+
+        if (Yii::$app->request->isAjax) {
+            CategoriesLng::deleteAll(['item_id' => $id]);
+            $this->clearCache();
+            return $model->delete();
+        }
+        return $this->redirect(['index']);
     }
 
-    private function clearCache() {
+    private function clearCache()
+    {
         $languages = Language::getLanguages();
         foreach ($languages as $language) {
             Yii::$app->cache->delete('basicTreeCategories' . 'pages' . $language->url);
@@ -273,7 +282,8 @@ class CategoriesController extends \backend\controllers\AppController {
         }
     }
 
-    public function actionLists() {
+    public function actionLists()
+    {
         if (Yii::$app->request->isAjax) {
             $id = $_POST['id'];
             $item_id = $_POST['item_id'];

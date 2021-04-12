@@ -6,6 +6,8 @@ class m201010_181140_create_shop_products_lng_table extends Migration
 {
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%shop_products_lng}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer(11)->notNull(),
@@ -17,7 +19,7 @@ class m201010_181140_create_shop_products_lng_table extends Migration
             'keywords' => $this->string(255),
             'description' => $this->string(255),
             'seo_text' => $this->text(),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('shop_products_lng_shop_products_id_fk', '{{%shop_products_lng}}', 'item_id');
 

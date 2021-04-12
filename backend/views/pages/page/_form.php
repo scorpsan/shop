@@ -7,6 +7,8 @@
  * @var $languages      backend\models\Language
  * @var $categoryList   array
  */
+
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -21,77 +23,6 @@ $("document").ready(function(){
 <?php $form = ActiveForm::begin(); ?>
 <div class="row">
     <div class="col-md-9">
-        <div class="box">
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <?= $form->field($model, 'id')->textInput(['readonly' => 'readonly']) ?>
-
-                        <?= $form->field($model, 'category_id')->dropDownList($categoryList) ?>
-
-                        <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
-                    </div>
-                    <div class="col-sm-6">
-                        <?= $form->field($model, 'created_at', ['enableClientValidation' => false])->widget(DateTimePicker::classname(), [
-                            'options' => [
-                                'placeholder' => Yii::t('backend', 'Select date and time...'),
-                                'value' => $model->created_at ? Yii::$app->formatter->asDatetime($model->created_at) : '',
-                            ],
-                            'convertFormat' => true,
-                            'removeButton' => false,
-                            //'disabled' => true,
-                            'pluginOptions' => [
-                                'format' => Yii::$app->formatter->datetimeFormat,
-                                'startDate' => '01-01-2019 00:00',
-                                'todayHighlight' => true,
-                                'autoclose' => true,
-                                'todayBtn'=>true,
-                            ],
-                        ]) ?>
-                        <?= $form->field($model, 'updated_at', ['enableClientValidation' => false])->widget(DateTimePicker::classname(), [
-                            'options' => [
-                                'placeholder' => Yii::t('backend', 'Select date and time...'),
-                                'value' => $model->updated_at ? Yii::$app->formatter->asDatetime($model->updated_at) : '',
-                            ],
-                            'convertFormat' => true,
-                            'removeButton' => false,
-                            'disabled' => true,
-                            'pluginOptions' => [
-                                'format' => Yii::$app->formatter->datetimeFormat,
-                                'startDate' => '01-01-2019 00:00',
-                                'todayHighlight' => true,
-                                'autoclose' => true,
-                                'todayBtn'=>true,
-                            ],
-                        ]) ?>
-
-                        <?= $form->field($model, 'page_style')->dropDownList(\yii\helpers\ArrayHelper::map(Yii::$app->params['pageStyle'], 'key', 'title'), [
-                            'onchange' => '
-                                $("div[class*=-breadbg]").addClass("hidden");
-                                if ($(this).val() > 5) {
-                                    $("div[class*=-breadbg]").removeClass("hidden");
-                                }'
-                        ]) ?>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="box">
-            <div class="box-body">
-                <?= $form->field($model, 'published')->checkbox() ?>
-
-                <?= $form->field($model, 'main')->checkbox() ?>
-
-                <?= $form->field($model, 'noindex')->checkbox() ?>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
         <?php if (!empty($languages)) {
             $count = count($languages);
             $licontent = '';
@@ -110,15 +41,15 @@ $("document").ready(function(){
                         $tabcontent .= '<div id="lng_' . $key . '" class="tab-pane fade" role="tabpanel">';
                     }
                 }
-                $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
                 if ($lang->default) {
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]lng")->hiddenInput(['value' => $key])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]title");
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]lng")->hiddenInput(['value' => $key])->label(false);
                 } else {
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]lng", ['enableClientValidation' => false])->hiddenInput(['value' => $key])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]title", ['enableClientValidation' => false]);
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]lng", ['enableClientValidation' => false])->hiddenInput(['value' => $key])->label(false);
                 }
-                $tabcontent .= $form->field($modelLng[$key], "[$key]breadbg")->widget(InputFile::className(), [
+                $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]breadbg")->widget(InputFile::class, [
                     'controller' => 'elfinder',
                     'filter' => 'image',
                     'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
@@ -126,10 +57,6 @@ $("document").ready(function(){
                     'buttonOptions' => ['class' => 'btn btn-default'],
                     'multiple' => false
                 ]);
-                $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle");
-                $tabcontent .= $form->field($modelLng[$key], "[$key]description");
-                $tabcontent .= $form->field($modelLng[$key], "[$key]keywords");
-                $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->textarea();
                 $tabcontent .= '<div class="row"><div class="col-xs-12"><h3 class="box-title">' . Yii::t('backend', 'Sections') . '</h3></div></div>';
                 if ($modelLng[$key]->id) {
                     $tabcontent .= '<div class="row"><div class="col-xs-12" id="lng_sections_' . $modelLng[$key]->id . '" data-item_id="' . $modelLng[$key]->id . '"></div></div>';
@@ -148,6 +75,11 @@ $("document").ready(function(){
                                 'action' => Url::to(['/pages/widget/create', 'item_id' => $modelLng[$key]->id]),
                             ],
                         ]);
+                    $tabcontent .= '<hr><h2 class="page-header"><i class="fa fa-internet-explorer"></i> ' . Yii::t('backend', 'SEO') . '</h2>';
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle");
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]description");
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]keywords");
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->textarea();
                     $tabcontent .= '</div></div>';
                 } else {
                     $tabcontent .= '<div class="row"><div class="col-xs-12"><div class="box"><div class="box-body">';
@@ -176,6 +108,70 @@ $("document").ready(function(){
                 </div>
             <?php } ?>
         <?php } ?>
+    </div>
+    <div class="col-md-3">
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($model, 'id')->textInput(['readonly' => 'readonly']) ?>
+
+                <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($model, 'published')->checkbox() ?>
+
+                <?= $form->field($model, 'main')->checkbox() ?>
+
+                <?= $form->field($model, 'noindex')->checkbox() ?>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($model, 'category_id')->dropDownList($categoryList) ?>
+
+                <?= $form->field($model, 'page_style')->dropDownList(ArrayHelper::map(Yii::$app->params['pageStyle'], 'key', 'title'), [
+                    'onchange' => '
+                        $("div[class*=-breadbg]").addClass("hidden");
+                        if ($(this).val() > 5) {
+                            $("div[class*=-breadbg]").removeClass("hidden");
+                        }'
+                ]) ?>
+                <hr>
+                <?= $form->field($model, 'created_at', ['enableClientValidation' => false])->widget(DateTimePicker::class, [
+                    'options' => [
+                        'placeholder' => Yii::t('backend', 'Select date and time...'),
+                        'value' => $model->created_at ? Yii::$app->formatter->asDatetime($model->created_at) : '',
+                    ],
+                    'convertFormat' => true,
+                    'removeButton' => false,
+                    //'disabled' => true,
+                    'pluginOptions' => [
+                        'format' => Yii::$app->formatter->datetimeFormat,
+                        'startDate' => '01-01-2019 00:00',
+                        'todayHighlight' => true,
+                        'autoclose' => true,
+                        'todayBtn'=>true,
+                    ],
+                ]) ?>
+                <?= $form->field($model, 'updated_at', ['enableClientValidation' => false])->widget(DateTimePicker::class, [
+                    'options' => [
+                        'placeholder' => Yii::t('backend', 'Select date and time...'),
+                        'value' => $model->updated_at ? Yii::$app->formatter->asDatetime($model->updated_at) : '',
+                    ],
+                    'convertFormat' => true,
+                    'removeButton' => false,
+                    'disabled' => true,
+                    'pluginOptions' => [
+                        'format' => Yii::$app->formatter->datetimeFormat,
+                        'startDate' => '01-01-2019 00:00',
+                        'todayHighlight' => true,
+                        'autoclose' => true,
+                        'todayBtn'=>true,
+                    ],
+                ]) ?>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">

@@ -3,6 +3,7 @@ namespace backend\models;
 
 use common\models\Language as BaseLanguage;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%language}}".
@@ -14,9 +15,13 @@ use Yii;
  * @property int $default
  * @property int $published
  */
-class Language extends BaseLanguage {
-
-    public function rules() {
+class Language extends BaseLanguage
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
         return [
             [['url', 'local', 'title'], 'required'],
             [['url', 'local'], 'string', 'max' => 5],
@@ -27,7 +32,11 @@ class Language extends BaseLanguage {
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'url' => Yii::t('backend', 'Url'),
@@ -38,7 +47,11 @@ class Language extends BaseLanguage {
         ];
     }
 
-    public static function getLanguages() {
+    /**
+     * @return Language[]|ActiveRecord
+     */
+    public static function getLanguages()
+    {
         return self::find()->where(['published' => true])->orderBy(['default' => SORT_DESC])->indexBy('url')->all();
     }
 

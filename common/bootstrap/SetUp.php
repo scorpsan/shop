@@ -1,21 +1,24 @@
 <?php
 namespace common\bootstrap;
 
+use yii\base\BootstrapInterface;
 use common\models\Language;
 use common\models\SiteSettings;
 
-class SetUp implements \yii\base\BootstrapInterface {
-
-	public function bootstrap($app) {
+class SetUp implements BootstrapInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+	public function bootstrap($app)
+    {
         /** Set Default Language in system */
         $app->params['defaultLanguage'] = Language::getLanguageDefault()->url;
-        /** Set available Languages List */
-        $app->urlManager->languages = Language::getLanguagesList();
         /** Get Currency Code and Region */
         $siteSettings = SiteSettings::find()->joinWith('translates')->limit(1)->one();
         $app->formatter->currencyCode = $siteSettings->currency_code;
-        $app->formatter->defaultTimeZone = 'Europe/Moscow';
-        $app->setTimeZone('Europe/Moscow');
+        $app->formatter->defaultTimeZone = $app->params['userTimeZone'];
+        $app->setTimeZone($app->params['userTimeZone']);
         $app->name = $siteSettings->title;
         $app->params['comingSoon'] = $siteSettings->coming_soon;
         $app->params['searchOnSite'] = $siteSettings->search_on_site;

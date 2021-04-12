@@ -9,6 +9,9 @@ if (Yii::$app->layout != 'main') {
 ?>
 <?php if (!empty($model->content)) { ?>
     <?php foreach ($model->content as $key => $section) { ?>
+        <?php if ($key === 0 && $section->widget_type != 'SwiperWidget') { ?>
+            <?= $this->render('../layouts/_alert') ?>
+        <?php } ?>
         <?php if ($section->widget) { ?>
             <?php
             $widgetName = "\\frontend\\widgets\\$section->widget_type";
@@ -39,5 +42,10 @@ if (Yii::$app->layout != 'main') {
                 </div>
             </section>
         <?php } ?>
+        <?php if ($key === 0 && $section->widget_type == 'SwiperWidget') { ?>
+            <?= $this->render('../layouts/_alert') ?>
+        <?php } ?>
     <?php } ?>
+<?php } else { ?>
+    <?= $this->render('../layouts/_alert') ?>
 <?php } ?>

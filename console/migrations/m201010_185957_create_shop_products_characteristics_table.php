@@ -9,11 +9,13 @@ class m201010_185957_create_shop_products_characteristics_table extends Migratio
 {
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%shop_products_characteristics}}', [
             'id' => $this->primaryKey(),
             'product_id' => $this->integer()->notNull(),
             'lng' => $this->string(5)->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('shop_products_characteristics_shop_products_id_fk', '{{%shop_products_characteristics}}', 'product_id');
 

@@ -1,22 +1,51 @@
 <?php
 namespace frontend\models;
 
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\db\Expression;
 use yii\validators\UrlValidator;
 use creocoder\nestedsets\NestedSetsBehavior;
+use Exception;
+use yii\db\Expression;
 
-class Menus extends \yii\db\ActiveRecord {
-
-    public static function tableName() {
+/**
+ * @property-read null $label
+ * @property-read null $title
+ * @property-read mixed $translate
+ *
+ * @property int $id [int(11)]
+ * @property int $tree [int(11)]
+ * @property int $lft [int(11)]
+ * @property int $rgt [int(11)]
+ * @property int $depth [int(11)]
+ * @property string $url [varchar(255)]
+ * @property string $params [varchar(255)]
+ * @property string $access [varchar(25)]
+ * @property bool $published [tinyint(1)]
+ * @property bool $target_blank [tinyint(1)]
+ * @property string $anchor [varchar(25)]
+ */
+class Menus extends ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%menus}}';
     }
 
-    public function behaviors() {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
             'tree' => [
-                'class' => NestedSetsBehavior::className(),
+                'class' => NestedSetsBehavior::class,
                 'treeAttribute' => 'tree',
                 // 'leftAttribute' => 'lft',
                 // 'rightAttribute' => 'rgt',
@@ -25,30 +54,57 @@ class Menus extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function transactions() {
+    /**
+     * {@inheritdoc}
+     */
+    public function transactions()
+    {
         return [
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
 
-    public static function find() {
+    /**
+     * @return MenusQuery
+     */
+    public static function find()
+    {
         return new MenusQuery(get_called_class());
     }
 
-    public function getTitle() {
-        return (isset($this->translate->title)) ? $this->translate->title : null;
+    /**
+     * @return string|null
+     * @throws Exception
+     */
+    public function getTitle()
+    {
+        return ArrayHelper::getValue($this->translate, 'title');
     }
 
-    public function getLabel() {
-        return (isset($this->translate->title)) ? $this->translate->title : null;
+    /**
+     * @return string|null
+     * @throws Exception
+     */
+    public function getLabel()
+    {
+        return $this->title;
     }
 
-    public function getTranslate() {
+    /**
+     * @return ActiveQuery
+     */
+    public function getTranslate()
+    {
         $langDef = Yii::$app->params['defaultLanguage'];
-        return $this->hasOne(MenusLng::className(), ['item_id' => 'id'])->alias('translate')->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])->indexBy('lng');
+        return $this->hasOne(MenusLng::class, ['item_id' => 'id'])->alias('translate')
+            ->onCondition(['lng' => Yii::$app->language])
+            ->orOnCondition(['lng' => $langDef])
+            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
+            ->indexBy('lng');
     }
 
-    public function getFullUrl($url = null, $params = null, $anchor = null) {
+    public function getFullUrl($url = null, $params = null, $anchor = null)
+    {
         if (!isset($url)) {
             $url = $this->url;
             $params = $this->params;
@@ -80,10 +136,11 @@ class Menus extends \yii\db\ActiveRecord {
         }
     }
 
-    public static function getMenuItems($controller) {
+    public static function getMenuItems($controller)
+    {
         $makeNode = function ($node) {
             if (!empty($node['url'])) {
-                $node['url'] = self::getFullUrl($node['url'], $node['params'], $node['anchor']);
+                $node['url'] = $this->getFullUrl($node['url'], $node['params'], $node['anchor']);
             }
             $newData = [
                 'label' => $node['translate']['title'],

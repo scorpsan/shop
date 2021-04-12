@@ -5,7 +5,7 @@ use yii\helpers\Html;
  * @var $content    string
  */
 dmstr\web\AdminLteAsset::register($this);
-backend\assets\AdminLtePluginAsset::register($this);
+backend\assets\AddonsAsset::register($this);
 
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
 
@@ -15,7 +15,7 @@ $js = <<< JS
         radioClass: 'iradio_square-blue',
         increaseArea: '20%'
     });
-    $('.select2').select2();
+    $('select.select2').select2();
 JS;
 $this->registerJs($js, yii\web\View::POS_READY);
 ?>

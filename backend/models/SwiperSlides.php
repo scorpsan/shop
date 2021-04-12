@@ -1,8 +1,9 @@
 <?php
 namespace backend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 use yii2tech\ar\position\PositionBehavior;
+use Yii;
 
 /**
  * This is the model class for table "{{%swiper_slides}}".
@@ -19,25 +20,31 @@ use yii2tech\ar\position\PositionBehavior;
  * @property string $lng
  * @property int $start_at
  * @property int $end_at
+ *
+ * @property-read mixed $swiper
  */
-class SwiperSlides extends \yii\db\ActiveRecord {
+class SwiperSlides extends ActiveRecord
+{
 
     public $sorting;
 
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%swiper_slides}}';
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'positionBehavior' => [
-                'class' => PositionBehavior::className(),
+                'class' => PositionBehavior::class,
                 'positionAttribute' => 'sort',
             ],
         ];
     }
 
-    public function rules() {
+    public function rules()
+    {
         return [
             [['image', 'title'], 'required'],
             [['image', 'title'], 'string', 'max' => 255],
@@ -50,11 +57,12 @@ class SwiperSlides extends \yii\db\ActiveRecord {
             [['lng'], 'string', 'max' => 5],
             [['lng'], 'default', 'value' => null],
             [['sorting', 'start_at', 'end_at'], 'safe'],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Swiper::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Swiper::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'item_id' => Yii::t('backend', 'Slider'),
@@ -72,7 +80,8 @@ class SwiperSlides extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if ($this->isNewRecord) {
             if ($this->start_at) {
                 $this->start_at = Yii::$app->formatter->asTimestamp($this->start_at);
@@ -99,8 +108,9 @@ class SwiperSlides extends \yii\db\ActiveRecord {
         return parent::beforeSave($insert);
     }
 
-    public function getSwiper() {
-        return $this->hasOne(Swiper::className(), ['id' => 'item_id']);
+    public function getSwiper()
+    {
+        return $this->hasOne(Swiper::class, ['id' => 'item_id']);
     }
 
 }

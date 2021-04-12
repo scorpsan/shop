@@ -1,20 +1,28 @@
 <?php
 namespace backend\controllers;
 
+use yii\filters\AccessControl;
+use Da\User\Filter\AccessRuleFilter;
 use Yii;
 use yii\base\DynamicModel;
-use yii\filters\AccessControl;
-use backend\models\SwiperSlides;
 use backend\models\Language;
+use backend\models\SwiperSlides;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
 
-class SwiperSlidesController extends AppController {
-
-    public function behaviors() {
+class SwiperSlidesController extends AppController
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
+                'ruleConfig' => [
+                    'class' => AccessRuleFilter::class,
+                ],
                 'rules' => [
                     [
                         'actions' => ['index'],
@@ -36,9 +44,11 @@ class SwiperSlidesController extends AppController {
         ];
     }
 
-    public function actionIndex($item_id = null) {
+    public function actionIndex($item_id = null)
+    {
         if ($item_id && Yii::$app->request->isAjax) {
             $slides = SwiperSlides::find()->where(['item_id' => $item_id])->orderBy(['sort' => SORT_ASC])->all();
+
             return $this->renderAjax('index', [
                 'slides' => $slides,
             ]);
@@ -46,7 +56,8 @@ class SwiperSlidesController extends AppController {
         return false;
     }
 
-    public function actionCreate($item_id = null) {
+    public function actionCreate($item_id = null)
+    {
         if ($item_id && Yii::$app->request->isAjax) {
             $model = new SwiperSlides();
             $model->item_id = $item_id;
@@ -65,17 +76,18 @@ class SwiperSlidesController extends AppController {
                 }
                 return ['success' => false];
             }
-            $languages = ArrayHelper::map(Language::find()->select(['url', 'title'])->asArray()->all(), 'url', 'title');
+
             return $this->renderAjax('_form', [
                 'model' => $model,
                 'sortingList' => $this->sortingLists(),
-                'languages' => $languages,
+                'languages' => ArrayHelper::map(Language::getLanguages(), 'url', 'title'),
             ]);
         }
         return false;
     }
 
-    public function actionUpdate($id = null) {
+    public function actionUpdate($id = null)
+    {
         if ($id && Yii::$app->request->isAjax) {
             $model = SwiperSlides::find()->where(['id' => $id])->limit(1)->one();
             if ($model->load(Yii::$app->request->post())) {
@@ -92,11 +104,11 @@ class SwiperSlidesController extends AppController {
                 }
                 return ['success' => false];
             }
-            $languages = ArrayHelper::map(Language::find()->select(['url', 'title'])->asArray()->all(), 'url', 'title');
+
             return $this->renderAjax('_form', [
                 'model' => $model,
                 'sortingList' => $this->sortingLists(),
-                'languages' => $languages,
+                'languages' => ArrayHelper::map(Language::getLanguages(), 'url', 'title'),
             ]);
         }
         return false;
@@ -163,7 +175,8 @@ class SwiperSlidesController extends AppController {
         return false;
     }
 
-    protected function sortingLists($item_id = null) {
+    protected function sortingLists($item_id = null)
+    {
         $sortingList = ArrayHelper::map(SwiperSlides::find()->orderBy(['sort' => SORT_ASC])->all(), 'sort', 'title');
         if ($item_id)
             $item = SwiperSlides::find()->where(['id' => $item_id])->limit(1)->one();

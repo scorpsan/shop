@@ -12,6 +12,8 @@ class m190605_163958_create_pages_section_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%pages_section}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer(11)->notNull(),
@@ -29,7 +31,7 @@ class m190605_163958_create_pages_section_table extends Migration
             'widget' => $this->boolean()->notNull()->defaultValue(0),
             'widget_type' => $this->string(255),
             'content' => $this->getDb()->getSchema()->createColumnSchemaBuilder('longtext'),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('pages_section_pages_lng_id_fk', '{{%pages_section}}', 'item_id');
 

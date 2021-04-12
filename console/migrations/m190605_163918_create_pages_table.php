@@ -12,6 +12,8 @@ class m190605_163918_create_pages_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%pages}}', [
             'id' => $this->primaryKey(),
             'category_id' => $this->integer(11)->notNull()->defaultValue(0),
@@ -22,7 +24,7 @@ class m190605_163918_create_pages_table extends Migration
             'page_style' => $this->tinyInteger(1)->notNull()->defaultValue(0),
             'created_at' => $this->integer(11)->notNull(),
             'updated_at' => $this->integer(11)->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('pages_categories_id_fk', '{{%pages}}', 'category_id');
 

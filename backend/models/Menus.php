@@ -87,6 +87,14 @@ class Menus extends \yii\db\ActiveRecord {
         ];
     }
 
+    public function beforeValidate() {
+        if (parent::beforeValidate()) {
+            $this->alias = str_replace(' ', '_', $this->alias);
+            return true;
+        }
+        return false;
+    }
+
     public function beforeDelete() {
         MenusLng::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();

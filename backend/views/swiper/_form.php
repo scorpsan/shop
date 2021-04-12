@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var $model \backend\models\Swiper
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;

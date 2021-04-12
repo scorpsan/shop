@@ -12,6 +12,8 @@ class m190605_163930_create_pages_lng_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%pages_lng}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer(11)->notNull(),
@@ -22,7 +24,7 @@ class m190605_163930_create_pages_lng_table extends Migration
             'description' => $this->string(255),
             'seo_text' => $this->text(),
             'breadbg' => $this->string(255),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('pages_lng_pages_id_fk', '{{%pages_lng}}', 'item_id');
 

@@ -1,16 +1,24 @@
 <?php
-
-use kartik\datetime\DateTimePicker;
+/**
+ * @var $this           yii\web\View
+ * @var $form           yii\widgets\ActiveForm
+ * @var $model          \backend\models\SwiperSlides
+ * @var $sortingList    array
+ * @var $languages      backend\models\Language
+ */
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\form\ActiveForm;
+use kartik\datetime\DateTimePicker;
 use mihaildev\ckeditor\CKEditor;
 use mihaildev\elfinder\ElFinder;
 use mihaildev\elfinder\InputFile;
+
 mihaildev\elfinder\Assets::noConflict($this);
 ?>
 <?php $form = ActiveForm::begin([
     'id' => 'slide-form',
-    'action' => \yii\helpers\Url::to(),
+    'action' => Url::to(),
     'options' => [
         'data' => [
             'item_id' => $model->item_id,
@@ -25,7 +33,7 @@ mihaildev\elfinder\Assets::noConflict($this);
         <div class="col-sm-6">
             <?= $form->field($model, 'published')->checkbox() ?>
 
-            <?= $form->field($model, 'start_at', ['enableClientValidation' => false])->widget(DateTimePicker::classname(), [
+            <?= $form->field($model, 'start_at', ['enableClientValidation' => false])->widget(DateTimePicker::class, [
                 'options' => [
                     'placeholder' => Yii::t('backend', 'Select date and time...'),
                     'value' => $model->start_at ? Yii::$app->formatter->asDatetime($model->start_at) : '',
@@ -41,7 +49,7 @@ mihaildev\elfinder\Assets::noConflict($this);
                     'todayBtn'=>true,
                 ],
             ]) ?>
-            <?= $form->field($model, 'end_at', ['enableClientValidation' => false])->widget(DateTimePicker::classname(), [
+            <?= $form->field($model, 'end_at', ['enableClientValidation' => false])->widget(DateTimePicker::class, [
                 'options' => [
                     'placeholder' => Yii::t('backend', 'Select date and time...'),
                     'value' => $model->end_at ? Yii::$app->formatter->asDatetime($model->end_at) : '',

@@ -1,6 +1,7 @@
 <?php
 namespace backend\models;
 
+use yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -13,25 +14,37 @@ use Yii;
  * @property string|null $units
  * @property string|null $default
  */
-class ShopCharacteristicsLng extends \yii\db\ActiveRecord {
-
-    public static function tableName() {
+class ShopCharacteristicsLng extends ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%shop_characteristics_lng}}';
     }
 
-    public function rules() {
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
         return [
             [['item_id', 'lng', 'title'], 'required'],
             [['item_id'], 'integer'],
             [['lng'], 'string', 'max' => 5],
             [['title', 'default'], 'string', 'max' => 255],
             [['units'], 'string', 'max' => 10],
-            [['lng'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['lng' => 'url']],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopCharacteristics::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['lng'], 'exist', 'skipOnError' => true, 'targetClass' => Language::class, 'targetAttribute' => ['lng' => 'url']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopCharacteristics::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'item_id' => Yii::t('backend', 'Item ID'),

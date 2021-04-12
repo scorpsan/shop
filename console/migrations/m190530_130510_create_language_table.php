@@ -12,6 +12,8 @@ class m190530_130510_create_language_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%language}}', [
             'id' => $this->primaryKey(),
             'url' => $this->string(5)->unique()->notNull(),
@@ -19,7 +21,7 @@ class m190530_130510_create_language_table extends Migration
             'title' => $this->string(255)->notNull(),
             'default' => $this->boolean()->notNull()->defaultValue(0),
             'published' => $this->boolean()->notNull()->defaultValue(1),
-        ]);
+        ], $tableOptions);
 
         $this->insert('{{%language}}', [
             'url' => 'ru',

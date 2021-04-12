@@ -1,6 +1,7 @@
 <?php
 namespace backend\models;
 
+use yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -11,14 +12,21 @@ use Yii;
  * @property string $description
  * @property int $published
  * @property int $player
+ *
+ * @property-read mixed $slides
  */
-class Swiper extends \yii\db\ActiveRecord {
-
-    public static function tableName() {
+class Swiper extends ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%swiper}}';
     }
 
-    public function rules() {
+    public function rules()
+    {
         return [
             [['title'], 'required'],
             [['title', 'description'], 'string', 'max' => 255],
@@ -28,7 +36,8 @@ class Swiper extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'title' => Yii::t('backend', 'Title'),
@@ -38,13 +47,15 @@ class Swiper extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
         SwiperSlides::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
     }
 
-    public function getSlides() {
-        return $this->hasMany(SwiperSlides::className(), ['item_id' => 'id'])->orderBy('sort');
+    public function getSlides()
+    {
+        return $this->hasMany(SwiperSlides::class, ['item_id' => 'id'])->orderBy('sort');
     }
 
 }

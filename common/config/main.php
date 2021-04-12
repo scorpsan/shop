@@ -36,11 +36,11 @@ return [
             'dateFormat' => 'dd-MM-yyyy',
             'timeFormat' => 'HH:mm',
             'datetimeFormat' => 'dd-MM-yyyy HH:mm',
-            'timeZone' => 'Europe/Moscow',
-            'defaultTimeZone' => 'Europe/Moscow',
+            'timeZone' => 'Europe/Minsk',
+            'defaultTimeZone' => 'Europe/Minsk',
             'decimalSeparator' => ',',
             'thousandSeparator' => ' ',
-            'currencyCode' => 'USD',
+            'currencyCode' => 'BYN',
         ],
         'i18n' => [
             'translations' => [

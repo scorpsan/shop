@@ -1,8 +1,8 @@
 <?php
 /**
- * @var $this       yii\web\View
- * @var $model      backend\models\ShopBrands
- * @var $modelLng   backend\models\ShopBrandsLng
+ * @var $this           yii\web\View
+ * @var $model          backend\models\ShopBrands
+ * @var $modelLng       backend\models\ShopBrandsLng
  * @var $languages      backend\models\Language
  */
 $this->title = Yii::t('backend', 'Create Brand');

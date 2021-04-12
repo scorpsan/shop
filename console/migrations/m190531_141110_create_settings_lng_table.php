@@ -12,6 +12,8 @@ class m190531_141110_create_settings_lng_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%settings_lng}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer(11)->notNull(),
@@ -26,7 +28,7 @@ class m190531_141110_create_settings_lng_table extends Migration
             'opening_hours_full' => $this->string(255),
             'contact_info' => $this->text(),
             'address_map' => $this->string(255),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('settings_lng_settings_id_fk', '{{%settings_lng}}', 'item_id');
 

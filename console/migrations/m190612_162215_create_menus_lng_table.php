@@ -12,12 +12,14 @@ class m190612_162215_create_menus_lng_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
         $this->createTable('{{%menus_lng}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer(11)->notNull(),
             'lng' => $this->string(5)->notNull(),
             'title' => $this->string(255)->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('menus_lng_menus_id_fk', '{{%menus_lng}}', 'item_id');
 

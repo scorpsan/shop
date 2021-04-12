@@ -22,11 +22,25 @@ return [
             'class' => Da\User\Module::class,
             'classMap' => [
                 'User' => common\models\User::class,
+                'RegistrationForm' => 'frontend\forms\RegistrationForm',
             ],
             'controllerMap' => [
-                'profile' => 'frontend\controllers\ProfileController'
+                'profile' => 'frontend\controllers\user\ProfileController',
+                'settings' => 'frontend\controllers\user\SettingsController',
+                'registration' => 'frontend\controllers\user\RegistrationController',
+                'security' => 'frontend\controllers\user\SecurityController',
+                'address' => 'frontend\controllers\user\AddressController',
             ],
-            'gdprPrivacyPolicyUrl' => ['/privacy'],
+            'mailParams' => [
+                'fromEmail' => function() {
+                    return [Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']];
+                }
+            ],
+            'gdprPrivacyPolicyUrl' => ['/page/view', 'alias' => 'privacy'],
+            'enableGdprCompliance' => true,
+            'enableTwoFactorAuthentication' => false,
+            'allowAccountDelete' => false,
+            'enableEmailConfirmation' => true,
             'routes' => [],
         ],
     ],
@@ -57,59 +71,23 @@ return [
                 ]
             ]
         ],
+        'reCaptcha' => [
+            'class' => 'himiklab\yii2\recaptcha\ReCaptchaConfig',
+            //'siteKeyV2' => 'your siteKey v2',
+            //'secretV2' => 'your secret key v2',
+            'siteKeyV3' => '6LcQH80ZAAAAAHcOaC4WK96xd0IhcF6cjbz1tRlL',
+            'secretV3' => '6LcQH80ZAAAAAHQLv0uzEuFPNdJcX1qEp9kbDSPJ',
+        ],
         'urlManager' => [
-            'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['ru'],
-            'enableLocaleUrls' => true,
+            'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             //'enableStrictParsing' => true,
-            /**
-             * @var array list of route and URL regex patterns to ignore during
-             * language processing. The keys of the array are patterns for routes, the
-             * values are patterns for URLs. Route patterns are checked during URL
-             * creation. If a pattern matches, no language parameter will be added to
-             * the created URL.  URL patterns are checked during processing incoming
-             * requests. If a pattern matches, the language processing will be skipped
-             * for that URL. Examples:
-             *
-             * ~~~php
-             * [
-             *     '#^site/(login|register)#' => '#^(login|register)#'
-             *     '#^api/#' => '#^api/#',
-             * ]
-             * ~~~
-             */
-            'ignoreLanguageUrlPatterns' => [
-                '#^favicon.ico#' => '#^favicon.ico#',
-                '#^robots.txt#' => '#^robots.txt#',
-                '#^elfinder#' => '#^elfinder#',
-                '#^assets#' => '#^assets#',
-                '#^files#' => '#^files#',
-                '#^fonts#' => '#^fonts#',
-                '#^icon#' => '#^icon#',
-                '#^images#' => '#^images#',
-            ],
             'normalizer' => [
                 'class' => 'yii\web\UrlNormalizer',
                 'action' => \yii\web\UrlNormalizer::ACTION_REDIRECT_PERMANENT,
             ],
-            'rules' => [
-                '' => 'page/index',
-                '<_a:(login|logout)>' => 'user/security/<_a>',
-                '<_a:(register|resend)>' => 'user/registration/<_a>',
-                'user/forgot' => 'user/recovery/request',
-                'user/recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/recovery/reset',
-                'user/confirm/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/registration/confirm',
-                'user/profile' => 'user/profile/index',
-                'user/profile/<_a:[\w\-]+>' => 'user/settings/<_a>',
-                'search' => 'page/search',
-                '<alias:[\w_-]+>' => 'page/view',
-                '<_c:[\w\-]+>' => '<_c>/index',
-                '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',
-                '<_c:[\w\-]+>/<_a:[\w\-]+>' => '<_c>/<_a>',
-                '<_c:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => '<_c>/<_a>',
-            ],
+            'rules' => require Yii::getAlias('@frontend/config/rules.php'),
         ],
     ],
     'params' => $params,

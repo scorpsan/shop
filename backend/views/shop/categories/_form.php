@@ -1,11 +1,14 @@
 <?php
 /**
+ * @var $this           yii\web\View
  * @var $model          backend\models\Categories
  * @var $modelLng       backend\models\CategoriesLng
  * @var $languages      backend\models\Language
  * @var $parentList     array
  * @var $clearRoot      bool
  */
+
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -28,51 +31,6 @@ $("document").ready(function(){
 <?php $form = ActiveForm::begin(); ?>
 <div class="row">
     <div class="col-md-9">
-        <div class="box">
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <?= $form->field($model, 'id')->textInput(['readonly' => 'readonly']) ?>
-
-                        <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
-
-                        <?= $form->field($model, 'page_style')->dropDownList(\yii\helpers\ArrayHelper::map(Yii::$app->params['categoryStyle'], 'key', 'title'), [
-                            'onchange' => '
-                                //$("div[class*=-breadbg]").addClass("hidden");
-                                //if ($(this).val() > 5) {
-                                    //$("div[class*=-breadbg]").removeClass("hidden");
-                                //}'
-                        ]) ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?= $form->field($model, 'parent_id')->dropDownList($parentList, array_merge($rootOptions, [
-                            'options' => [
-                                $model->id => ['Disabled' => true],
-                            ],
-                            'onchange' => '
-                                $.post("'.Url::to(['/shop/categories/lists']).'", {id: $(this).val(), item_id: '.$item_id.'}, function (resp) {
-                                    $("select#categories-sorting").html( resp );
-                                });',
-                        ])) ?>
-
-                        <?= $form->field($model, 'sorting')->dropDownList([], $rootOptions) ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="box">
-            <div class="box-body">
-                <?= $form->field($model, 'published')->checkbox() ?>
-
-                <?= $form->field($model, 'noindex')->checkbox() ?>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
         <?php if (!empty($languages)) {
             $count = count($languages);
             $licontent = '';
@@ -91,15 +49,15 @@ $("document").ready(function(){
                         $tabcontent .= '<div id="lng_' . $key . '" class="tab-pane fade" role="tabpanel">';
                     }
                 }
-                $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
                 if ($lang->default) {
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]lng")->hiddenInput(['value' => $key])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]title");
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]lng")->hiddenInput(['value' => $key])->label(false);
                 } else {
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]lng", ['enableClientValidation' => false])->hiddenInput(['value' => $key])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]title", ['enableClientValidation' => false]);
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]lng", ['enableClientValidation' => false])->hiddenInput(['value' => $key])->label(false);
                 }
-                $tabcontent .= $form->field($modelLng[$key], "[$key]breadbg")->widget(InputFile::className(), [
+                $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]breadbg")->widget(InputFile::class, [
                     'controller' => 'elfinder',
                     'filter' => 'image',
                     'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
@@ -107,9 +65,10 @@ $("document").ready(function(){
                     'buttonOptions' => ['class' => 'btn btn-default'],
                     'multiple' => false
                 ]);
-                $tabcontent .= $form->field($modelLng[$key], "[$key]content")->widget(CKEditor::className(), [
+                $tabcontent .= $form->field($modelLng[$key], "[$key]content")->widget(CKEditor::class, [
                     'editorOptions' => ['allowedContent' => true,],
                 ]);
+                $tabcontent .= '<hr><h2 class="page-header"><i class="fa fa-internet-explorer"></i> ' . Yii::t('backend', 'SEO') . '</h2>';
                 $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle");
                 $tabcontent .= $form->field($modelLng[$key], "[$key]keywords");
                 $tabcontent .= $form->field($modelLng[$key], "[$key]description");
@@ -135,6 +94,45 @@ $("document").ready(function(){
                 </div>
             <?php } ?>
         <?php } ?>
+    </div>
+    <div class="col-md-3">
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($model, 'id')->textInput(['readonly' => 'readonly']) ?>
+
+                <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($model, 'published')->checkbox() ?>
+
+                <?= $form->field($model, 'noindex')->checkbox() ?>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($model, 'parent_id')->dropDownList($parentList, array_merge($rootOptions, [
+                    'options' => [
+                        $model->id => ['Disabled' => true],
+                    ],
+                    'onchange' => '
+                        $.post("'.Url::to(['/shop/categories/lists']).'", {id: $(this).val(), item_id: '.$item_id.'}, function (resp) {
+                            $("select#categories-sorting").html( resp );
+                        });',
+                ])) ?>
+
+                <?= $form->field($model, 'sorting')->dropDownList([], $rootOptions) ?>
+
+                <?= $form->field($model, 'page_style')->dropDownList(ArrayHelper::map(Yii::$app->params['categoryStyle'], 'key', 'title'), [
+                    'onchange' => '
+                        //$("div[class*=-breadbg]").addClass("hidden");
+                        //if ($(this).val() > 5) {
+                            //$("div[class*=-breadbg]").removeClass("hidden");
+                        //}'
+                ]) ?>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">

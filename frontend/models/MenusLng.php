@@ -1,9 +1,21 @@
 <?php
 namespace frontend\models;
 
-class MenusLng extends \yii\db\ActiveRecord {
+use yii\db\ActiveRecord;
 
-    public static function tableName() {
+/**
+ * @property int $id [int(11)]
+ * @property int $item_id [int(11)]
+ * @property string $lng [varchar(5)]
+ * @property string $title [varchar(255)]
+ */
+class MenusLng extends ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%menus_lng}}';
     }
 

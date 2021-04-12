@@ -1,25 +1,18 @@
 <?php
 namespace common\models;
 
-use Yii;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 /**
- * This is the model class for table "{{%swiper}}".
- *
- * @property int $id
- * @property string $title
- * @property string $description
- * @property bool $published
- * @property bool $player
- *
- * @var $params
- * @var $options
+ * Class Swiper
+ * @package common\models
+ * @var $id integer
+ * @var $title string
+ * @var $params array
+ * @var $options array
  */
 class Swiper extends \yii\db\ActiveRecord {
-
-    public $params;
-    public $options;
 
     public static function tableName() {
         return '{{%swiper}}';
@@ -36,6 +29,10 @@ class Swiper extends \yii\db\ActiveRecord {
             $options = ArrayHelper::merge($options, Yii::$app->params['widgetsList']['SwiperWidget']['options']);
         }
         return $options;
+    }
+
+    public function getSlides() {
+        return $this->hasMany(SwiperSlides::className(), ['item_id' => 'id'])->orderBy('sort');
     }
 
 }

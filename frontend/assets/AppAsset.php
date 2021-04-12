@@ -12,21 +12,19 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        '//fonts.googleapis.com/css?family=Barlow:400,700&display=swap',
-        '//fonts.googleapis.com/css?family=Roboto&display=swap',
         '/css/style.css',
-        '/css/themes.css',
+        //'/css/themes.css',
     ];
     public $js = [
+        '/js/slick.min.js',
+        '/js/jquery.countdown.js',
         '/js/jquery.barrating.min.js',
-        '/js/jquery.countdown.min.js',
-        '/js/slick.js',
         '/js/store.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap4\BootstrapPluginAsset',
-        'frontend\assets\FontAwesome5Asset',
+        'frontend\assets\StyleAsset',
     ];
     public $cssOptions = [
         'async' => 'async',

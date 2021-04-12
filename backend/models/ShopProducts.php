@@ -1,9 +1,17 @@
 <?php
-
 namespace backend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
+use dosamigos\taggable\Taggable;
+use yii2tech\ar\position\PositionBehavior;
 use yii\behaviors\SluggableBehavior;
+use yii\behaviors\TimestampBehavior;
+use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
+use yii\db\Expression;
+use Exception;
 
 /**
  * This is the model class for table "{{%shop_products}}".
@@ -24,26 +32,53 @@ use yii\behaviors\SluggableBehavior;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property ShopCategoryAssignments[] $shopCategoryAssignments
- * @property ShopPhotos[] $shopPhotos
  * @property Categories $category
  * @property ShopBrands $brand
- * @property ShopProductsCharacteristics[] $shopProductsCharacteristics
- * @property ShopProductsLng[] $shopProductsLngs
+ * @property-read string $title
+ * @property-read string $smallImageMain
+ * @property-read string $mediumImageMain
+ * @property-read string $imageMain
+ * @property-read mixed $images
+ * @property-read mixed $translate
+ * @property-read mixed $translates
+ * @property-read mixed $tags
+ * @property-read mixed $imagesLinks
+ * @property-read mixed $imagesLinksData
+ * @property-read array $sortingLists
+ * @property-read ActiveQuery $characteristics
+ * @property ShopCategoryAssignments $shopCategoryAssignments
+ * @property ShopProductsCharacteristics $Characteristics
  */
-class ShopProducts extends \yii\db\ActiveRecord {
+class ShopProducts extends ActiveRecord
+{
+    public $titleDefault;
+    public $sorting;
 
-    public static function tableName() {
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%shop_products}}';
     }
 
-    public function behaviors() {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
+            TimestampBehavior::class,
+            Taggable::class,
             'sluggable' => [
-                'class' => SluggableBehavior::className(),
+                'class' => SluggableBehavior::class,
                 'attribute' => 'titleDefault',
                 'slugAttribute' => 'alias',
                 'immutable' => true,
+            ],
+            'positionBehavior' => [
+                'class' => PositionBehavior::class,
+                'positionAttribute' => 'sort',
             ],
         ];
     }
@@ -54,14 +89,19 @@ class ShopProducts extends \yii\db\ActiveRecord {
     public function rules()
     {
         return [
-            [['category_id', 'brand_id', 'code', 'alias', 'sort', 'created_at', 'updated_at'], 'required'],
-            [['category_id', 'brand_id', 'sort', 'published', 'top', 'new', 'hit', 'created_at', 'updated_at'], 'integer'],
+            [['alias', 'code'], 'string', 'max' => 255],
+            [['alias', 'code'], 'unique'],
+            [['alias'], 'filter', 'filter'=>'trim'],
+            [['alias'], 'filter', 'filter'=>'strtolower'],
+            [['category_id', 'brand_id', 'code'], 'required'],
+            [['category_id', 'brand_id', 'sort', 'hit'], 'integer'],
             [['rating', 'price', 'sale'], 'number'],
-            [['code', 'alias'], 'string', 'max' => 255],
-            [['code'], 'unique'],
-            [['alias'], 'unique'],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopBrands::className(), 'targetAttribute' => ['brand_id' => 'id']],
+            [['published', 'top', 'new'], 'boolean'],
+            [['published'], 'default', 'value' => 1],
+            [['top', 'new', 'hit'], 'default', 'value' => 0],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['category_id' => 'id']],
+            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopBrands::class, 'targetAttribute' => ['brand_id' => 'id']],
+            [['created_at', 'updated_at', 'sorting', 'tagNames'], 'safe'],
         ];
     }
 
@@ -72,11 +112,12 @@ class ShopProducts extends \yii\db\ActiveRecord {
     {
         return [
             'id' => Yii::t('backend', 'ID'),
-            'category_id' => Yii::t('backend', 'Category ID'),
-            'brand_id' => Yii::t('backend', 'Brand ID'),
+            'category_id' => Yii::t('backend', 'Category'),
+            'brand_id' => Yii::t('backend', 'Brand'),
             'code' => Yii::t('backend', 'Code'),
             'alias' => Yii::t('backend', 'Alias'),
             'sort' => Yii::t('backend', 'Sort'),
+            'sorting' => Yii::t('backend', 'Sort After'),
             'published' => Yii::t('backend', 'Published'),
             'top' => Yii::t('backend', 'Top'),
             'new' => Yii::t('backend', 'New'),
@@ -90,71 +131,180 @@ class ShopProducts extends \yii\db\ActiveRecord {
     }
 
     /**
-     * Gets query for [[ShopCategoryAssignments]].
-     *
-     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
+     * {@inheritdoc}
      */
-    public function getShopCategoryAssignments()
+    public function beforeValidate()
     {
-        return $this->hasMany(ShopCategoryAssignments::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[ShopPhotos]].
-     *
-     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
-     */
-    public function getShopPhotos()
-    {
-        return $this->hasMany(ShopPhotos::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Category]].
-     *
-     * @return \yii\db\ActiveQuery|CategoryQuery
-     */
-    public function getCategory()
-    {
-        return $this->hasOne(Categories::className(), ['id' => 'category_id']);
-    }
-
-    /**
-     * Gets query for [[Brand]].
-     *
-     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
-     */
-    public function getBrand()
-    {
-        return $this->hasOne(ShopBrands::className(), ['id' => 'brand_id']);
-    }
-
-    /**
-     * Gets query for [[ShopProductsCharacteristics]].
-     *
-     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
-     */
-    public function getShopProductsCharacteristics()
-    {
-        return $this->hasMany(ShopProductsCharacteristics::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[ShopProductsLngs]].
-     *
-     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
-     */
-    public function getShopProductsLngs()
-    {
-        return $this->hasMany(ShopProductsLng::className(), ['item_id' => 'id']);
+        if (parent::beforeValidate()) {
+            $this->alias = str_replace(' ', '_', $this->alias);
+            return true;
+        }
+        return false;
     }
 
     /**
      * {@inheritdoc}
-     * @return ShopProductsQuery the active query used by this AR class.
      */
-    public static function find()
+    public function beforeSave($insert)
     {
-        return new ShopProductsQuery(get_called_class());
+        if ($this->isNewRecord) {
+            if ($this->created_at) {
+                $this->created_at = Yii::$app->formatter->asTimestamp($this->created_at);
+            } else {
+                $this->created_at = time();
+            }
+        } else {
+            if ($this->created_at) {
+                $this->created_at = Yii::$app->formatter->asTimestamp($this->created_at);
+            } else {
+                $this->created_at = $this->getOldAttribute('created_at');
+            }
+        }
+        $this->updated_at = time();
+        return parent::beforeSave($insert);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeDelete()
+    {
+        ShopProductsCharacteristics::deleteAll(['product_id' => $this->id]);
+        ShopPhotos::deleteAll(['product_id' => $this->id]);
+        FileHelper::removeDirectory(Yii::getAlias('@filesroot/products/' . $this->id . '/'));
+        ShopProductsLng::deleteAll(['item_id' => $this->id]);
+        return parent::beforeDelete();
+    }
+
+    /**
+     * @return string|null
+     * @throws Exception
+     */
+    public function getTitle()
+    {
+        return ArrayHelper::getValue($this->translate, 'title');
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Categories::class, ['id' => 'category_id'])->with('translate');
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getBrand()
+    {
+        return $this->hasOne(ShopBrands::class, ['id' => 'brand_id'])->with('translate');
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getSmallImageMain()
+    {
+        return ArrayHelper::getValue($this->images[0], 'smallImageUrl', Yii::getAlias('@images/nophoto.svg'));
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getMediumImageMain()
+    {
+        return ArrayHelper::getValue($this->images[0], 'mediumImageUrl', Yii::getAlias('@images/nophoto.svg'));
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getImageMain()
+    {
+        return ArrayHelper::getValue($this->images[0], 'imageUrl', Yii::getAlias('@images/nophoto.svg'));
+    }
+
+    public function getImages()
+    {
+        return $this->hasMany(ShopPhotos::class, ['product_id' => 'id'])->orderBy('sort');
+    }
+
+    public function getImagesLinks()
+    {
+        return ArrayHelper::getColumn($this->images, 'imageUrl');
+    }
+
+    public function getImagesLinksData()
+    {
+        return ArrayHelper::toArray($this->images, [
+            ShopPhotos::class => [
+                'caption' => 'url',
+                'key' => 'id',
+            ]
+        ]);
+    }
+
+    public function getTags()
+    {
+        return $this->hasMany(Tags::class, ['id' => 'tag_id'])->viaTable(ShopTags::tableName(), ['item_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getTranslate()
+    {
+        $langDef = Yii::$app->params['defaultLanguage'];
+        return $this->hasOne(ShopProductsLng::class, ['item_id' => 'id'])
+            ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
+            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
+            ->indexBy('lng');
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getTranslates()
+    {
+        return $this->hasMany(ShopProductsLng::class, ['item_id' => 'id'])->indexBy('lng');
+    }
+
+    /**
+     * @return array
+     */
+    public function getSortingLists()
+    {
+        $sortingList = ArrayHelper::map(self::find()->orderBy(['sort' => SORT_ASC])->all(), 'sort', 'title');
+        if (count($sortingList)) {
+            $sortingList = array_merge(['first' => Yii::t('backend', '- First Element -')], $sortingList, ['last' => Yii::t('backend', '- Last Element -')]);
+        } else {
+            $sortingList = ['last' => Yii::t('backend', '- First Element -')];
+        }
+        return $sortingList;
+    }
+
+    /**
+     * Gets query for [[ShopCategoryAssignments]].
+     *
+     * @return ActiveQuery
+     */
+    public function getShopCategoryAssignments()
+    {
+        return $this->hasMany(ShopCategoryAssignments::class, ['product_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Characteristics]].
+     *
+     * @return ActiveQuery
+     */
+    public function getCharacteristics()
+    {
+        return $this->hasMany(ShopProductsCharacteristics::class, ['product_id' => 'id']);
+    }
+
 }

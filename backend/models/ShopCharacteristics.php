@@ -1,11 +1,14 @@
 <?php
 namespace backend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use yii\behaviors\SluggableBehavior;
-use yii\db\Expression;
-use yii\helpers\ArrayHelper;
 use yii2tech\ar\position\PositionBehavior;
+use Yii;
+use yii\helpers\ArrayHelper;
+use yii\db\Expression;
+use Exception;
 
 /**
  * This is the model class for table "{{%shop_characteristics}}".
@@ -16,36 +19,55 @@ use yii2tech\ar\position\PositionBehavior;
  * @property int $required
  * @property int $published
  * @property int $sort
+ *
+ * @property-read mixed $translate
+ * @property-read mixed $title
+ * @property-read array $sortingLists
+ * @property-read mixed $translates
  */
-class ShopCharacteristics extends \yii\db\ActiveRecord {
-
-    public $sorting;
+class ShopCharacteristics extends ActiveRecord
+{
     public $titleDefault;
+    public $sorting;
 
-    public static function tableName() {
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
         return '{{%shop_characteristics}}';
     }
 
-    public function behaviors() {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
         return [
             'sluggable' => [
-                'class' => SluggableBehavior::className(),
+                'class' => SluggableBehavior::class,
                 'attribute' => 'titleDefault',
                 'slugAttribute' => 'alias',
                 'immutable' => true,
             ],
             'positionBehavior' => [
-                'class' => PositionBehavior::className(),
+                'class' => PositionBehavior::class,
                 'positionAttribute' => 'sort',
             ],
         ];
     }
 
-    public function rules() {
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
         return [
-            [['alias', 'type'], 'required'],
-            [['alias'], 'unique'],
             [['alias'], 'string', 'max' => 255],
+            [['alias'], 'unique'],
+            [['alias'], 'filter', 'filter'=>'trim'],
+            [['alias'], 'filter', 'filter'=>'strtolower'],
+            [['type'], 'required'],
             [['type'], 'string', 'max' => 16],
             [['published', 'required'], 'boolean'],
             [['published'], 'default', 'value' => true],
@@ -55,7 +77,11 @@ class ShopCharacteristics extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('backend', 'ID'),
             'alias' => Yii::t('backend', 'Alias'),
@@ -67,33 +93,64 @@ class ShopCharacteristics extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function beforeDelete() {
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            $this->alias = str_replace(' ', '_', $this->alias);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeDelete()
+    {
         ShopCharacteristicsLng::deleteAll(['item_id' => $this->id]);
+        Yii::$app->db->createCommand()
+            ->dropColumn(ShopProductsCharacteristics::tableName(), $this->alias)
+            ->execute();
         return parent::beforeDelete();
     }
 
-    public function getTitle() {
-        return (isset($this->translate->title)) ? $this->translate->title : null;
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getTitle()
+    {
+        return ArrayHelper::getValue($this->translate, 'title');
     }
 
-    public function getUnits() {
-        return (isset($this->translate->units)) ? $this->translate->units : null;
-    }
-
-    public function getDefault() {
-        return (isset($this->translate->default)) ? $this->translate->default : null;
-    }
-
-    public function getTranslate() {
+    /**
+     * @return ActiveQuery
+     */
+    public function getTranslate()
+    {
         $langDef = Yii::$app->params['defaultLanguage'];
-        return $this->hasOne(ShopCharacteristicsLng::className(), ['item_id' => 'id'])->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])->indexBy('lng');
+        return $this->hasOne(ShopCharacteristicsLng::class, ['item_id' => 'id'])
+            ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
+            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
+            ->indexBy('lng');
     }
 
-    public function getTranslates() {
-        return $this->hasMany(ShopCharacteristicsLng::className(), ['item_id' => 'id'])->indexBy('lng');
+    /**
+     * @return ActiveQuery
+     */
+    public function getTranslates()
+    {
+        return $this->hasMany(ShopCharacteristicsLng::class, ['item_id' => 'id'])->indexBy('lng');
     }
 
-    public function getSortingLists() {
+    /**
+     * @return array
+     */
+    public function getSortingLists()
+    {
         $sortingList = ArrayHelper::map(self::find()->orderBy(['sort' => SORT_ASC])->all(), 'sort', 'title');
         if (count($sortingList)) {
             $sortingList = array_merge(['first' => Yii::t('backend', '- First Element -')], $sortingList, ['last' => Yii::t('backend', '- Last Element -')]);
@@ -102,4 +159,15 @@ class ShopCharacteristics extends \yii\db\ActiveRecord {
         }
         return $sortingList;
     }
+
+    /**
+     * @param $alias
+     * @return array
+     */
+    public static function dropList($alias)
+    {
+        $items = ShopProductsCharacteristics::find()->select($alias)->where(['like', $alias, '%' . '%', false])->groupBy($alias)->all();
+        return array_column($items, $alias, $alias);
+    }
+
 }

@@ -5,15 +5,13 @@
 #php_value max_input_time 6000
 
 #SetEnvIf X-SSL-Emu on HTTPS=on
-#Options -Indexes
+Options -Indexes
 Options +FollowSymLinks
 IndexIgnore */*
 RewriteEngine On
 
-#RewriteCond %{HTTP_HOST} ^shop\.by [OR]
-#RewriteCond %{HTTP_HOST} ^www\.shop\.by [OR]
 #RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
-#RewriteRule ^(.*)$ https://shop.by/$1 [QSA,R=301,L]
+#RewriteRule ^(.*)$ https://badkitty.by/$1 [QSA,R=301,L]
 #RewriteCond %{SERVER_PORT} !^443$
 #RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [QSA,R=301,L]
 

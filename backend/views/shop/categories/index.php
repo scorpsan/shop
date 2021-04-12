@@ -5,6 +5,7 @@
  * @var $clearRoot      bool
  * @var $languages      \backend\models\Language
  */
+use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -28,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body table-responsive">
-                <?php Pjax::begin(['enablePushState' => false]); ?>
+                <?php Pjax::begin(['id' => 'pjax-grid']); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -36,9 +37,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'title',
                             'label' => Yii::t('backend', 'Title'),
                             'value' => function($data) use ($clearRoot) {
-                                return Html::a(($data->depth - (int)$clearRoot > 0) ? str_pad('', ($data->depth - (int)$clearRoot), '-') . ' &nbsp;' . Html::encode($data->title) : Html::encode($data->title), ['view', 'id' => $data->id]) . '&nbsp;<span class="small">(alias: ' . $data->alias . ')</span>';
+                                $title = Html::encode($data->title);
+                                if ($data->depth - (int)$clearRoot > 0) {
+                                    $title = str_pad('', ($data->depth - (int)$clearRoot)*7, '&mdash;') . '&nbsp;' . $title;
+                                }
+                                return Html::a($title, ['update', 'id' => $data->id]) . '&nbsp;<span class="small">(alias: ' . $data->alias . ')</span>';
                             },
                             'format' => 'html',
+                        ],
+                        [
+                            'attribute' => 'id',
+                            'headerOptions' => ['width' => '60'],
                         ],
                         [
                             'attribute' => 'updown',
@@ -48,12 +57,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $prev = $data->prev()->one();
                                 $next = $data->next()->one();
                                 if (!empty($prev))
-                                    $content .= Html::a('<span class="fa fa-arrow-circle-up"></span>', ['up', 'id' => $data->id]);
+                                    $content .= Html::a('<span class="fa fa-arrow-circle-up"></span>', ['up', 'id' => $data->id], ['class' => 'ajaxAction']);
                                 else
                                     $content .= '<span class="fa fa-arrow-circle-up"></span>';
                                 $content .= ' / ';
                                 if (!empty($next))
-                                    $content .= Html::a('<span class="fa fa-arrow-circle-down"></span>', ['down', 'id' => $data->id]);
+                                    $content .= Html::a('<span class="fa fa-arrow-circle-down"></span>', ['down', 'id' => $data->id], ['class' => 'ajaxAction']);
                                 else
                                     $content .= '<span class="fa fa-arrow-circle-down"></span>';
                                 return $content;
@@ -77,10 +86,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Html::tag('span', Yii::$app->formatter->asBoolean($data->noindex), ['class' => 'label label-' . (($data->noindex) ? 'danger' : 'success')]);
                             },
                             'headerOptions' => ['width' => '90'],
-                            'format' => 'html',
+                            'format' => 'raw',
                         ],
                         [
-                            'class' => TranslatesDataColumn::className(),
+                            'class' => TranslatesDataColumn::class,
                             'clearRoot' => $clearRoot,
                             'attribute' => 'translates',
                             'label' => Yii::t('backend', 'Translate'),
@@ -94,30 +103,34 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return Html::a(
                                         Yii::$app->formatter->asBoolean($data->published),
                                         ['unpublish', 'id' => $data->id],
-                                        ['class' => 'btn btn-xs btn-success btn-block',]
+                                        ['class' => 'btn btn-xs btn-success btn-block ajaxAction',]
                                     );
                                 }
                                 return Html::a(
                                     Yii::$app->formatter->asBoolean($data->published),
                                     ['publish', 'id' => $data->id],
-                                    ['class' => 'btn btn-xs btn-danger btn-block',]
+                                    ['class' => 'btn btn-xs btn-danger btn-block ajaxAction',]
                                 );
                             },
                             'headerOptions' => ['width' => '90'],
-                            'format' => 'raw',
+                            'format' => 'boolean',
                         ],
 
                         ['class' => 'yii\grid\ActionColumn',
-                            'headerOptions' => ['width' => '90'],
+                            'headerOptions' => ['width' => '60'],
+                            'template' => '{update} {delete}',
                             'visibleButtons' => [
                                 'update' => Yii::$app->user->can('editPages'),
                                 'delete' => Yii::$app->user->can('deletePages'),
                             ],
-                        ],
-
-                        [
-                            'attribute' => 'id',
-                            'headerOptions' => ['width' => '60'],
+                            'buttons' => [
+                                'delete' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                        'class' => 'ajaxDelete',
+                                        'title' => Yii::t('backend', 'Delete')
+                                    ]);
+                                }
+                            ],
                         ],
                     ],
                 ]); ?>
@@ -126,3 +139,41 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php
+$script = <<< JS
+$.pjax.reload({container: '#pjax-grid'});
+$(document).on('ready pjax:success', function () {
+    $('.ajaxDelete').on('click', function (e) {
+        e.preventDefault();
+        var deleteUrl = $(this).attr('href');
+        bootbox.confirm('Are you sure you want to delete this item?', function (result) {
+            if (result) {
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'post',
+                    error: function (xhr, status, error) {
+                        bootbox.alert('There was an error with your request.' + xhr.responseText);
+                    }
+                }).done(function (data) {
+                    $.pjax.reload({container: '#pjax-grid', timeout: false, async:false});
+                });
+            }
+        });
+    });
+    $('.ajaxAction').on('click', function (e) {
+        e.preventDefault();
+        var actionUrl = $(this).attr('href');
+        $.ajax({
+            url: actionUrl,
+            type: 'post',
+            error: function (xhr, status, error) {
+                bootbox.alert('There was an error with your request.' + xhr.responseText);
+            }
+        }).done(function (data) {
+            $.pjax.reload({container: '#pjax-grid', timeout: false, async:false});
+        });
+    });
+});
+JS;
+$this->registerJs($script, View::POS_READY);
+?>
