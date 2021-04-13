@@ -16,6 +16,7 @@ class AppAsset extends AssetBundle
         //'/css/themes.css',
     ];
     public $js = [
+        'https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js',
         '/js/slick.min.js',
         '/js/jquery.countdown.js',
         '/js/jquery.barrating.min.js',

@@ -52,22 +52,21 @@ $total = 0;
                                     </td>
                                     <td data-label="Quantity" class="product-quantity" data-title="<?= Yii::t('frontend', 'QTY') ?>">
                                         <div class="js-qty">
-                                            <button type="button" class="js-qty__adjust js-qty__adjust--minus icon-fallback-text item-minus-cart" data-url="<?= Url::to(['/cart/minus']) ?>" data-id="<?= $key ?>">
-                                                <span class="icon icon-minus" aria-hidden="true"></span>
-                                                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-                                            </button>
+                                            <?= Html::a('<span class="icon icon-minus" aria-hidden="true"></span><i class="fas fa-chevron-down" aria-hidden="true"></i>', ['/cart/minus'], [
+                                                'class' => 'js-qty__adjust js-qty__adjust--minus icon-fallback-text item-minus-cart', 'data-id' => $key
+                                            ]) ?>
                                             <input type="text" class="js-qty__num" value="<?= $prod['qty'] ?>" min="1" data-id="<?= $key ?>" aria-label="quantity" pattern="[0-9]*" name="updates[]">
-                                            <button type="button" class="js-qty__adjust js-qty__adjust--plus icon-fallback-text item-plus-cart" data-url="<?= Url::to(['/cart/plus']) ?>" data-id="<?= $key ?>">
-                                                <span class="icon icon-plus" aria-hidden="true"></span>
-                                                <i class="fas fa-chevron-up" aria-hidden="true"></i>
-                                            </button>
+                                            <?= Html::a('<span class="icon icon-plus" aria-hidden="true"></span><i class="fas fa-chevron-up" aria-hidden="true"></i>', ['/cart/plus'], [
+                                                'class' => 'js-qty__adjust js-qty__adjust--plus icon-fallback-text item-plus-cart', 'data-id' => $key
+                                            ]) ?>
                                         </div>
                                     </td>
                                     <td data-label="Sub Total" class="product-subtotal" data-title="<?= Yii::t('frontend', 'Total') ?>">
                                         <span class="amount"><?= Yii::$app->formatter->asCurrency($totalPrice) ?></span>
                                     </td>
-                                    <td class="product-remove">
-                                        <span class="delete-from-cart remove" data-url="<?= Url::to(['/cart/delete']) ?>" data-id="<?= $key ?>"><i class="fas fa-trash" aria-hidden="true"></i></span>
+                                    <td class="text-center cart-actions">
+                                        <?= Html::a('<i class="fas fa-heart" aria-hidden="true"></i>', ['/cart/to-wish'], ['class' => 'from-cart-to-wish', 'data-id' => $key]) ?>
+                                        <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['/cart/delete'], ['class' => 'delete-from-cart remove', 'data-id' => $key]) ?>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -88,7 +87,7 @@ $total = 0;
                             <?= Html::a(Yii::t('frontend', 'Update Cart'), ['/cart/update'], ['class' => 'shop-button update-cart']) ?>
                         </div>
                         <div class="cart-button">
-                            <?= Html::a(Yii::t('frontend', 'Clear Cart'), ['/cart/clear'], ['class' => 'shop-button clear-cart', 'data' => ['url' => Url::to(['/cart/clear'])]]) ?>
+                            <?= Html::a(Yii::t('frontend', 'Clear Cart'), ['/cart/clear'], ['class' => 'shop-button clear-cart']) ?>
                         </div>
                         <div class="cart-button">
                             <?= Html::a(Yii::t('frontend', 'Continue Shopping'), ['/shop/index'], ['class' => 'shop-button']) ?>

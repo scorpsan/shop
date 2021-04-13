@@ -121,7 +121,7 @@ $filter = FilterWidget::widget(['categoryalias' => $product->category->alias]);
                                 <div class="select-buy">
                                     <?= Html::a(Yii::t('frontend', 'Add to cart'), ['/shop/cart/add'], ['class' => 'add-to-cart', 'data-id' => $product->id]) ?>
                                     <?php if (!Yii::$app->user->isGuest) { ?>
-                                        <?= Html::a('<i class="fas fa-heart"></i>', ['/shop/func/add-to-wish'], ['class' => 'add-to-wish', 'data-id' => $product->id]) ?>
+                                        <?= Html::a('<i class="fas fa-heart"></i>', ['/user/wishlist/add'], ['class' => 'add-to-wish', 'data-id' => $product->id]) ?>
                                     <?php } ?>
                                 </div>
                             </div>

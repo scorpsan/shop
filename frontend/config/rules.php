@@ -9,6 +9,8 @@ return [
     'cabinet/recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/recovery/reset',
     'cabinet/confirm/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/registration/confirm',
     'cabinet/address/<_a:[\w\-]+>' => 'user/address/<_a>',
+    'cabinet/wishlist' => 'user/wishlist/index',
+    'cabinet/wishlist/<_a:[\w\-]+>' => 'user/wishlist/<_a>',
     'cabinet/profile/<_a:[\w\-]+>' => 'user/settings/<_a>',
     'cabinet/<_a:[\w_-]+>' => 'user/profile/<_a>',
 

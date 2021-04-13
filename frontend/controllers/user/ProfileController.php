@@ -64,9 +64,4 @@ class ProfileController extends BaseProfileController
         return $this->render('orders');
     }
 
-    public function actionWishList()
-    {
-        return $this->render('wish-list');
-    }
-
 }

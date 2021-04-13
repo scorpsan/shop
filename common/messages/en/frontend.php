@@ -60,6 +60,12 @@ return [
     'Edit Profile' => 'Edit Profile',
     'Edit Account' => 'Edit Account',
     'Change Password' => 'Change Password',
+    'Action' => 'Action',
+    'Add to Wishlist failed! Product not found.' => 'Add to Wishlist failed! Product not found.',
+    'Successfully added to Wishlist!' => 'Successfully added to Wishlist!',
+    'This Product is already on the Wishlist!' => 'This Product is already on the Wishlist!',
+    'Successfully added to cart!' => 'Successfully added to cart!',
+    'Error adding to cart! Product not found.' => 'Error adding to cart! Product not found.',
 
     'Create' => 'Create',
     'Update' => 'Update',

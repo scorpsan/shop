@@ -30,6 +30,7 @@ return [
                 'registration' => 'frontend\controllers\user\RegistrationController',
                 'security' => 'frontend\controllers\user\SecurityController',
                 'address' => 'frontend\controllers\user\AddressController',
+                'wishlist' => 'frontend\controllers\user\WishlistController',
             ],
             'mailParams' => [
                 'fromEmail' => function() {

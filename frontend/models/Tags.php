@@ -5,17 +5,18 @@ use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 
 /**
- * @property-read mixed $shopTags
  * @property int $id [int(11)]
  * @property int $frequency [int(11)]
  * @property string $name [varchar(100)]
+ *
+ * @property-read ActiveQuery $shopTags
  */
 class Tags extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%tags}}';
     }
@@ -23,7 +24,7 @@ class Tags extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getShopTags()
+    public function getShopTags(): ActiveQuery
     {
         return $this->hasMany(ShopTags::class, ['tag_id' => 'id']);
     }

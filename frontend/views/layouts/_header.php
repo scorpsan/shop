@@ -95,7 +95,7 @@ $params = Yii::$app->params;
     <?php Pjax::begin(['id' => 'mini-cart-pjax']); ?>
         <h3 class="minicart-title text-center"><?= Yii::t('frontend', 'Your Cart') ?></h3>
         <span class="closebtn minicart-close fas fa-times"></span>
-        <span class="minicart-number"><?= Yii::$app->session->get('cart.qty', 0) ?></span>
+        <span class="minicart-number qty-in-cart"><?= Yii::$app->session->get('cart.qty', 0) ?></span>
         <div class="minicart-scroll" data-url="<?= Url::to(['/cart/mini-cart']) ?>">
         </div>
     <?php Pjax::end(); ?>

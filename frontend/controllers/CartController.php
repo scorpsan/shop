@@ -1,6 +1,9 @@
 <?php
 namespace frontend\controllers;
 
+use frontend\models\UserWishlistItems;
+use yii\filters\AccessControl;
+use Da\User\Filter\AccessRuleFilter;
 use frontend\models\ShopProducts;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -13,6 +16,29 @@ use Exception;
 class CartController extends AppController
 {
     public $_session;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors(): array
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'ruleConfig' => [
+                    'class' => AccessRuleFilter::class,
+                ],
+                'only' => ['to-wish'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['to-wish'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -90,24 +116,12 @@ class CartController extends AppController
         if (!$product = ShopProducts::find()->where(['id' => $data['id']])->one()) {
             return [
                 'error' => true,
-                'message' => 'Ошибка добавления в корзину! Товар не найден.',
+                'message' => Yii::t('frontend', 'Error adding to cart! Product not found.'),
             ];
         }
         $qty = ArrayHelper::getValue($data, 'qty', 1);
 
-        $cart = $this->_session['cart'];
-
-        if (isset($cart[$data['id']])) {
-            $cart[$data['id']]['qty'] += $qty;
-        } else {
-            $cart[$data['id']] = [
-                'id' => $data['id'],
-                'qty' => $qty,
-            ];
-        }
-        $this->_session['cart'] = $cart;
-        //$this->_session['cart.qty'] = isset($this->_session['cart.qty']) ? $this->_session['cart.qty'] + $qty : $qty;
-        $this->_session['cart.qty'] = $this->_session['cart.qty'] + $qty;
+        $this->ItemToCart($data['id'], $qty);
 
         if (!Yii::$app->request->isAjax) {
             return $this->goBack();
@@ -117,7 +131,7 @@ class CartController extends AppController
             'success' => true,
             'name' => $product->title,
             'image' => $product->smallImageMain,
-            'message' => 'Успешно добавлен в корзину!',
+            'message' => Yii::t('frontend', 'Successfully added to cart!'),
             'qty' => ArrayHelper::getValue($this->_session, 'cart.qty', 0),
         ];
     }
@@ -126,14 +140,7 @@ class CartController extends AppController
     {
         $data = Yii::$app->request->post();
 
-        $cart = $this->_session['cart'];
-
-        $qty = ArrayHelper::getValue($cart[$data['id']], 'qty', 0);
-        if (isset($cart[$data['id']])) {
-            unset($cart[$data['id']]);
-        }
-        $this->_session['cart'] = $cart;
-        $this->_session['cart.qty'] = $this->_session['cart.qty'] - $qty;
+        $this->ItemToCart($data['id'], 0);
 
         if (!Yii::$app->request->isAjax) {
             return $this->goBack();
@@ -149,16 +156,7 @@ class CartController extends AppController
     {
         $data = Yii::$app->request->post();
 
-        $cart = $this->_session['cart'];
-
-        if (isset($cart[$data['id']])) {
-            $cart[$data['id']]['qty'] -= 1;
-            if ($cart[$data['id']]['qty'] == 0)
-                unset($cart[$data['id']]);
-
-            $this->_session['cart'] = $cart;
-            $this->_session['cart.qty'] = $this->_session['cart.qty'] - 1;
-        }
+        $this->ItemToCart($data['id'], -1);
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['index']);
@@ -174,14 +172,7 @@ class CartController extends AppController
     {
         $data = Yii::$app->request->post();
 
-        $cart = $this->_session['cart'];
-
-        if (isset($cart[$data['id']])) {
-            $cart[$data['id']]['qty'] += 1;
-
-            $this->_session['cart'] = $cart;
-            $this->_session['cart.qty'] = $this->_session['cart.qty'] + 1;
-        }
+        $this->ItemToCart($data['id'], 1);
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['index']);
@@ -197,21 +188,9 @@ class CartController extends AppController
     {
         $data = Yii::$app->request->post('update');
 
-        $cart = $this->_session['cart'];
-        $qty = 0;
-
         foreach ($data as $item) {
-            if (isset($cart[$item['id']])) {
-                if ($item['qty'] > 0) {
-                    $cart[$item['id']]['qty'] = $item['qty'];
-                    $qty += $item['qty'];
-                } else {
-                    unset($cart[$item['id']]);
-                }
-            }
+            $this->ItemToCart($item['id'], $item['qty'], true);
         }
-        $this->_session['cart'] = $cart;
-        $this->_session['cart.qty'] = $qty;
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['index']);
@@ -236,6 +215,79 @@ class CartController extends AppController
             'success' => true,
             'qty' => ArrayHelper::getValue($this->_session, 'cart.qty', 0),
         ];
+    }
+
+    public function actionToWish()
+    {
+        $data = Yii::$app->request->post();
+        if (!$product = ShopProducts::find()->where(['id' => $data['id']])->one()) {
+            return [
+                'error' => true,
+                'message' => Yii::t('frontend', 'Add to Wishlist failed! Product not found.'),
+            ];
+        }
+
+        if (!$wish = UserWishlistItems::find()->where(['user_id' => Yii::$app->user->id, 'product_id' => $data['id']])->one()) {
+            $newwish = new UserWishlistItems([
+                'user_id' => Yii::$app->user->id,
+                'product_id' => $data['id'],
+            ]);
+            $newwish->save();
+            $message = Yii::t('frontend', 'Successfully added to Wishlist!');
+        } else {
+            $message = Yii::t('frontend', 'This Product is already on the Wishlist!');
+        }
+
+        $this->ItemToCart($data['id'], 0);
+
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(['index']);
+        }
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'success' => true,
+            'name' => $product->title,
+            'image' => $product->smallImageMain,
+            'message' => $message,
+            'qty' => ArrayHelper::getValue($this->_session, 'cart.qty', 0),
+        ];
+    }
+
+    public static function ItemToCart($id, $qty, $update = false): bool
+    {
+        $session = Yii::$app->session;
+
+        $cart = $session['cart'];
+        $changeQty = 0;
+
+        if (isset($cart[$id])) {
+            if ($qty != 0) {
+                if ($update) {
+                    $changeQty = $qty - $cart[$id]['qty'];
+                    $cart[$id]['qty'] = $qty;
+                } else {
+                    $changeQty = $qty;
+                    $cart[$id]['qty'] += $qty;
+                }
+            } else {
+                $changeQty = -1 * $cart[$id]['qty'];
+                $cart[$id]['qty'] = 0;
+            }
+            
+            if ($cart[$id]['qty'] == 0)
+                unset($cart[$id]);
+        } elseif($qty > 0) {
+            $cart[$id] = [
+                'id' => $id,
+                'qty' => $qty,
+            ];
+            $changeQty = $qty;
+        }
+
+        $session['cart'] = $cart;
+        $session['cart.qty'] = $session['cart.qty'] + $changeQty;
+
+        return true;
     }
 
 }

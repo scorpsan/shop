@@ -51,7 +51,7 @@ use yii\bootstrap4\Html;
     <div class="option">
         <?= Html::a('<span><i class="fas fa-shopping-cart"></i></span>', ['/shop/cart/add'], ['class' => 'add-to-cart', 'data-id' => $product->id]) ?>
         <?php if (!Yii::$app->user->isGuest) { ?>
-            <?= Html::a('<span><i class="fas fa-heart"></i></span>', ['/shop/func/add-to-wish'], ['class' => 'add-to-wish', 'data-id' => $product->id]) ?>
+            <?= Html::a('<span><i class="fas fa-heart"></i></span>', ['/user/wishlist/add'], ['class' => 'add-to-wish', 'data-id' => $product->id]) ?>
         <?php } ?>
     </div>
 </div>

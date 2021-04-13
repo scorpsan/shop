@@ -143,8 +143,7 @@ $params = Yii::$app->params;
         <div class="error-message"></div>
     </div>
 </div>
-
-<div class="product-popup engo-popup engoc_hide_mobile">
+<div class="product-popup engo-popup d-mobile-none">
     <div class="overlay"></div>
     <div class="content">
         <a href="javascript:void(0)" class="close-window"><i class="fas fa-times"></i></a>
@@ -158,11 +157,35 @@ $params = Yii::$app->params;
                     <p class="success-message"></p>
                 </div>
                 <div class="actions mt-0">
-                    <button class="continue-shopping shop-button">Продолжить</button>
-                    <button class="shop-button" onclick="window.location='<?= Url::to(['/cart/index']) ?>'">Корзину</button>
+                    <button class="continue-shopping shop-button"><?= Yii::t('frontend', 'Continue') ?></button>
+                    <button class="shop-button" onclick="window.location='<?= Url::to(['/cart/index']) ?>'"><?= Yii::t('frontend', 'View Cart') ?></button>
                 </div>
             </div>
         </div>
 
     </div>
 </div>
+<?php if (!Yii::$app->user->isGuest) { ?>
+<div class="wishlist-popup engo-popup d-mobile-none">
+    <div class="overlay"></div>
+    <div class="content">
+        <a href="javascript:void(0)" class="close-window"><i class="fas fa-times"></i></a>
+        <div class="mini-product-item row">
+            <div class="col-md-3 col-sm-3 product-image f-left">
+                <img alt="img" src="<?= Yii::getAlias('@images/nophoto.svg') ?>" style="max-width:120px; height:auto"/>
+            </div>
+            <div class="col-md-9 col-sm-9 f-left">
+                <div class="product-info f-left">
+                    <p class="product-name"></p>
+                    <p class="success-message"></p>
+                </div>
+                <div class="actions mt-0">
+                    <button class="continue-shopping shop-button"><?= Yii::t('frontend', 'Continue') ?></button>
+                    <button class="shop-button" onclick="window.location='<?= Url::to(['/user/wishlist/index']) ?>'"><?= Yii::t('frontend', 'My Wish List') ?></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<?php } ?>

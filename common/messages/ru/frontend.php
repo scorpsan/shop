@@ -60,6 +60,12 @@ return [
     'Edit Profile' => 'Редактировать профиль',
     'Edit Account' => 'Редактировать аккаунт',
     'Change Password' => 'Изменить пароль',
+    'Action' => 'Действие',
+    'Add to Wishlist failed! Product not found.' => 'Ошибка добавления в Список желаний! Товар не найден.',
+    'Successfully added to Wishlist!' => 'Успешно добавлен в Список желаний!',
+    'This Product is already on the Wishlist!' => 'Этот товар уже есть в Списке желаний!',
+    'Successfully added to cart!' => 'Успешно добавлен в корзину!',
+    'Error adding to cart! Product not found.' => 'Ошибка добавления в корзину! Товар не найден.',
 
     'Create' => 'Создать',
     'Update' => 'Обновить',
