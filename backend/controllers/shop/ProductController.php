@@ -26,7 +26,7 @@ class ProductController extends AppController
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [

@@ -53,6 +53,7 @@ class ShopProducts extends ActiveRecord
 {
     public $titleDefault;
     public $sorting;
+    public $countwishes;
 
     /**
      * {@inheritdoc}
@@ -122,6 +123,7 @@ class ShopProducts extends ActiveRecord
             'top' => Yii::t('backend', 'Top'),
             'new' => Yii::t('backend', 'New'),
             'hit' => Yii::t('backend', 'Hit'),
+            'wishes' => Yii::t('backend', 'Wish'),
             'rating' => Yii::t('backend', 'Rating'),
             'price' => Yii::t('backend', 'Price'),
             'sale' => Yii::t('backend', 'Sale'),
@@ -133,7 +135,7 @@ class ShopProducts extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function beforeValidate()
+    public function beforeValidate(): bool
     {
         if (parent::beforeValidate()) {
             $this->alias = str_replace(' ', '_', $this->alias);
@@ -145,7 +147,7 @@ class ShopProducts extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function beforeSave($insert)
+    public function beforeSave($insert): bool
     {
         if ($this->isNewRecord) {
             if ($this->created_at) {
@@ -167,12 +169,13 @@ class ShopProducts extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function beforeDelete()
+    public function beforeDelete(): bool
     {
         ShopProductsCharacteristics::deleteAll(['product_id' => $this->id]);
         ShopPhotos::deleteAll(['product_id' => $this->id]);
         FileHelper::removeDirectory(Yii::getAlias('@filesroot/products/' . $this->id . '/'));
         ShopProductsLng::deleteAll(['item_id' => $this->id]);
+        UserWishlistItems::deleteAll(['product_id' => $this->id]);
         return parent::beforeDelete();
     }
 
@@ -180,7 +183,7 @@ class ShopProducts extends ActiveRecord
      * @return string|null
      * @throws Exception
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return ArrayHelper::getValue($this->translate, 'title');
     }
@@ -188,7 +191,7 @@ class ShopProducts extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getCategory()
+    public function getCategory(): ActiveQuery
     {
         return $this->hasOne(Categories::class, ['id' => 'category_id'])->with('translate');
     }
@@ -196,7 +199,7 @@ class ShopProducts extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getBrand()
+    public function getBrand(): ActiveQuery
     {
         return $this->hasOne(ShopBrands::class, ['id' => 'brand_id'])->with('translate');
     }
@@ -205,7 +208,7 @@ class ShopProducts extends ActiveRecord
      * @return string
      * @throws Exception
      */
-    public function getSmallImageMain()
+    public function getSmallImageMain(): string
     {
         return ArrayHelper::getValue($this->images[0], 'smallImageUrl', Yii::getAlias('@images/nophoto.svg'));
     }
@@ -214,7 +217,7 @@ class ShopProducts extends ActiveRecord
      * @return string
      * @throws Exception
      */
-    public function getMediumImageMain()
+    public function getMediumImageMain(): string
     {
         return ArrayHelper::getValue($this->images[0], 'mediumImageUrl', Yii::getAlias('@images/nophoto.svg'));
     }
@@ -223,22 +226,22 @@ class ShopProducts extends ActiveRecord
      * @return string
      * @throws Exception
      */
-    public function getImageMain()
+    public function getImageMain(): string
     {
         return ArrayHelper::getValue($this->images[0], 'imageUrl', Yii::getAlias('@images/nophoto.svg'));
     }
 
-    public function getImages()
+    public function getImages(): ActiveQuery
     {
         return $this->hasMany(ShopPhotos::class, ['product_id' => 'id'])->orderBy('sort');
     }
 
-    public function getImagesLinks()
+    public function getImagesLinks(): array
     {
         return ArrayHelper::getColumn($this->images, 'imageUrl');
     }
 
-    public function getImagesLinksData()
+    public function getImagesLinksData(): array
     {
         return ArrayHelper::toArray($this->images, [
             ShopPhotos::class => [
@@ -248,15 +251,20 @@ class ShopProducts extends ActiveRecord
         ]);
     }
 
-    public function getTags()
+    public function getTags(): ActiveQuery
     {
         return $this->hasMany(Tags::class, ['id' => 'tag_id'])->viaTable(ShopTags::tableName(), ['item_id' => 'id']);
+    }
+
+    public function getWishes(): ActiveQuery
+    {
+        return $this->hasMany(UserWishlistItems::class, ['product_id' => 'id']);
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getTranslate()
+    public function getTranslate(): ActiveQuery
     {
         $langDef = Yii::$app->params['defaultLanguage'];
         return $this->hasOne(ShopProductsLng::class, ['item_id' => 'id'])
@@ -268,7 +276,7 @@ class ShopProducts extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getTranslates()
+    public function getTranslates(): ActiveQuery
     {
         return $this->hasMany(ShopProductsLng::class, ['item_id' => 'id'])->indexBy('lng');
     }
@@ -276,7 +284,7 @@ class ShopProducts extends ActiveRecord
     /**
      * @return array
      */
-    public function getSortingLists()
+    public function getSortingLists(): array
     {
         $sortingList = ArrayHelper::map(self::find()->orderBy(['sort' => SORT_ASC])->all(), 'sort', 'title');
         if (count($sortingList)) {
@@ -292,7 +300,7 @@ class ShopProducts extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getShopCategoryAssignments()
+    public function getShopCategoryAssignments(): ActiveQuery
     {
         return $this->hasMany(ShopCategoryAssignments::class, ['product_id' => 'id']);
     }
@@ -302,7 +310,7 @@ class ShopProducts extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getCharacteristics()
+    public function getCharacteristics(): ActiveQuery
     {
         return $this->hasMany(ShopProductsCharacteristics::class, ['product_id' => 'id']);
     }

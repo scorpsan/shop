@@ -141,6 +141,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'rating',
                         'hit',
+                        [
+                            'attribute' => 'wishes',
+                            'content' => function($data) {
+                                return count($data->wishes);
+                            },
+                            'format' => 'raw',
+                        ],
 
                         ['class' => 'yii\grid\ActionColumn',
                             'headerOptions' => ['width' => '60'],

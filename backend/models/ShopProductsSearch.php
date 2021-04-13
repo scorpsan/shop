@@ -1,6 +1,7 @@
 <?php
 namespace backend\models;
 
+use backend\controllers\AppController;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -29,10 +30,12 @@ class ShopProductsSearch extends ShopProducts
     public function search($params) {
         $query = ShopProducts::find()
             ->joinWith('translate')
+            ->with('wishes')
             ->with('translates')
             ->with('images')
             ->with('category')
         ;
+
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -55,8 +58,8 @@ class ShopProductsSearch extends ShopProducts
             ],
         ]);
         $dataProvider->sort->attributes['title'] = [
-            'asc' => [ShopProductsLng::tableName().'.title' => SORT_ASC],
-            'desc' => [ShopProductsLng::tableName().'.title' => SORT_DESC],
+            'asc' => [ShopProductsLng::tableName() . '.title' => SORT_ASC],
+            'desc' => [ShopProductsLng::tableName() . '.title' => SORT_DESC],
         ];
 
         $this->load($params);
