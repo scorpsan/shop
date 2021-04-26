@@ -1,5 +1,5 @@
 <?php
-namespace frontend\models;
+namespace common\models;
 
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
@@ -8,7 +8,7 @@ use yii\db\ActiveQuery;
  * @property int $item_id [int(11)]
  * @property int $tag_id [int(11)]
  *
- * @property-read ActiveQuery $item
+ * @property-read ActiveQuery $product
  * @property-read ActiveQuery $tag
  */
 class ShopTags extends ActiveRecord
@@ -24,7 +24,7 @@ class ShopTags extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getItem(): ActiveQuery
+    public function getProduct(): ActiveQuery
     {
         return $this->hasOne(ShopProducts::class, ['id' => 'item_id']);
     }

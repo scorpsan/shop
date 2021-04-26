@@ -1,0 +1,198 @@
+<?php
+/**
+ * @var $productList \frontend\models\ShopProducts
+ * @var $cartList array
+ * @var $formInfo \frontend\forms\CheckoutForm
+ * @var $shipMethod \frontend\models\ShopDelivery
+ * @var $subtotal float
+ * @var $total float
+ */
+
+use yii\widgets\ActiveForm;
+use common\models\Country;
+use frontend\widgets\phoneInput\phoneInputWidget;
+use yii\bootstrap4\Html;
+
+$this->title = Yii::t('frontend', 'Information');
+
+$user = Yii::$app->user;
+if (!$user->isGuest) {
+    $name = empty($user->identity->profile->name) ? Html::encode($user->identity->username) : Html::encode($user->identity->profile->name);
+}
+?>
+
+<?= $this->render('_aside_head', ['total' => $total]) ?>
+
+<div class="content">
+    <div class="wrap">
+        <div class="main">
+            <header class="main__header" role="banner">
+                <?= Html::a('<span class="logo__text heading-1">' . Yii::$app->name . '</span>', ['/page/index'], ['title' => Yii::$app->name, 'class' => 'logo logo--left']) ?>
+
+                <nav aria-label="Breadcrumb">
+                    <ol class="breadcrumb " role="list">
+                        <li class="breadcrumb__item breadcrumb__item--completed">
+                            <?= Html::a(Yii::t('frontend', 'Cart'), ['/cart/index'], ['class' => 'breadcrumb__link']) ?>
+                            <svg class="icon-svg icon-svg--color-adaptive-light icon-svg--size-10 breadcrumb__chevron-icon" aria-hidden="true" focusable="false"> <use xlink:href="#chevron-right" /> </svg>
+                        </li>
+                        <li class="breadcrumb__item breadcrumb__item--current" aria-current="step">
+                            <?= Html::tag('span', Yii::t('frontend', 'Information'), ['class' => 'breadcrumb__link']) ?>
+                            <svg class="icon-svg icon-svg--color-adaptive-light icon-svg--size-10 breadcrumb__chevron-icon" aria-hidden="true" focusable="false"> <use xlink:href="#chevron-right" /> </svg>
+                        </li>
+                        <li class="breadcrumb__item breadcrumb__item--completed">
+                            <?= Html::a(Yii::t('frontend', 'Shipping'), ['/checkout/shipping'], ['class' => 'breadcrumb__link']) ?>
+                            <svg class="icon-svg icon-svg--color-adaptive-light icon-svg--size-10 breadcrumb__chevron-icon" aria-hidden="true" focusable="false"> <use xlink:href="#chevron-right" /> </svg>
+                        </li>
+                        <li class="breadcrumb__item breadcrumb__item--blank">
+                            <?= Html::a(Yii::t('frontend', 'Payment'), ['/checkout/payment'], ['class' => 'breadcrumb__link']) ?>
+                        </li>
+                    </ol>
+                </nav>
+            </header>
+            <main class="main__content" role="main">
+                <div class="step">
+                    <?php if (!$user->isGuest) { ?>
+                        <div class="section__content mb-4">
+                            <div class="logged-in-customer-information">
+                                <div class="logged-in-customer-information__avatar-wrapper">
+                                    <div class="logged-in-customer-information__avatar gravatar" style="background-image: url(<?= $user->identity->avatarUrl ?>);filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//cdn.shopify.com/proxy/5cae64e12cfd032b16d057595aa4c13b78fe982817c339d111d3fd8baee8a446/www.gravatar.com/avatar/d0a155537c3a50b10f8bd67248c29b64.jpg?s=100&amp;d=https%3A%2F%2Fcdn.shopify.com%2Fshopifycloud%2Fshopify%2Fassets%2Fno-gravatar-new-04e7c2331218ac202e79e31be502fd5631bc96cb0206580dbcb0720ebbbd7c73_100x100.png', sizingMethod='scale')" role="img" aria-label="Avatar"></div>
+                                </div>
+                                <p class="logged-in-customer-information__paragraph">
+                                    <span class="page-main__emphasis"><?= $name ?></span>
+                                    <span data-rtl-ensure="">(<?= $user->identity->email ?>)</span>
+                                    <br>
+                                    <?= Html::a(Yii::t('frontend', 'Sign Out'), ['/user/security/logout'], ['data-method' => 'post', 'title' => Yii::t('frontend', 'Sign Out')]) ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php } ?>
+
+                    <?php $form = ActiveForm::begin([
+                        'id' => $formInfo->formName(),
+                        'options' => ['class' => 'edit_checkout'],
+                        'fieldConfig' => [
+                            'template' => "<div class=\"field__input-wrapper\">{label}\n{input}</div>\n{hint}\n{error}",
+                            'labelOptions' => ['class' => 'field__label field__label--visible'],
+                            'errorOptions' => ['class' => 'field__message field__message--error'],
+                            'options' => ['class' => 'field'],
+                            'inputOptions' => ['class' => 'field__input'],
+                        ],
+                        'enableClientValidation' => true,
+                        'validateOnBlur' => true,
+                    ]); ?>
+
+                        <div class="step__sections">
+                            <div class="section section--contact-information">
+                                <div class="section__header">
+                                    <div class="layout-flex layout-flex--tight-vertical layout-flex--loose-horizontal layout-flex--wrap">
+                                        <h2 class="section__title layout-flex__item layout-flex__item--stretch" id="main-header" tabindex="-1"><?= Yii::t('frontend', 'Contact information') ?></h2>
+                                        <?php if ($user->isGuest) { ?>
+                                        <p class="layout-flex__item">
+                                            <span aria-hidden="true"><?= Yii::t('frontend', 'Already have an account?') ?></span>
+                                            <?= Html::a(Yii::t('frontend', 'Sign In'), ['/user/security/login'], ['title' => Yii::t('frontend', 'My Account')]) ?>
+                                        </p>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="section__content">
+                                    <div class="fieldset">
+                                        <?= $form->field($formInfo, 'email')->input('email') ?>
+                                        <?= $form->field($formInfo, 'phone')->widget(phoneInputWidget::class, [
+                                            'preferred' => ['BY'],
+                                            'options' => [
+                                                'class' => 'field__input'
+                                            ],
+                                            'bsVersion' => 4,
+                                            'selectOn' => false,
+                                        ]) ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section section--shipping-address">
+                                <div class="section__header">
+                                    <h2 class="section__title" id="section-delivery-title">
+                                        <?= Yii::t('frontend', 'Shipping address') ?>
+                                    </h2>
+                                </div>
+                                <div class="section__content">
+                                    <div class="fieldset">
+                                        <?php if (!$user->isGuest) { ?>
+                                            <div class="field">
+                                                <div class="field__input-wrapper field__input-wrapper--select">
+                                                    <?= Html::dropDownList('custom_address', $user->identity->addresses[0]->id, \yii\helpers\ArrayHelper::map($user->identity->addresses, 'id', 'fullStringAddress'), [
+                                                        'prompt' => Yii::t('frontend', 'Use a new address'),
+                                                        'class' => 'field__input field__input--select',
+                                                        'id' => 'custom_address',
+                                                        'data' => [
+                                                            'url' => \yii\helpers\Url::to(['/user/address/load'])
+                                                        ]
+                                                    ]) ?>
+                                                    <div class="field__caret">
+                                                        <svg class="icon-svg icon-svg--color-adaptive-lighter icon-svg--size-10 field__caret-svg" role="presentation" aria-hidden="true" focusable="false"> <use xlink:href="#caret-down"></use> </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                        <?= $form->field($formInfo, 'name')->textInput(['placeholder' => $formInfo->getAttributeLabel('name')]) ?>
+
+                                        <div class="address-fields">
+                                            <?= $form->field($formInfo, 'address')->textInput(['placeholder' => $formInfo->getAttributeLabel('address')]) ?>
+
+                                            <?= $form->field($formInfo, 'address2')->textInput(['placeholder' => $formInfo->getAttributeLabel('address2')]) ?>
+
+                                            <?= $form->field($formInfo, 'city')->textInput(['placeholder' => $formInfo->getAttributeLabel('city')]) ?>
+
+                                            <?= $form->field($formInfo, 'district')->textInput(['placeholder' => $formInfo->getAttributeLabel('district')]) ?>
+
+                                            <?= $form->field($formInfo, 'region')->textInput(['placeholder' => $formInfo->getAttributeLabel('region')]) ?>
+
+                                            <?= $form->field($formInfo, 'country', [
+                                                'template' => "{label}\n<div class=\"field__input-wrapper field__input-wrapper--select\">{input}<div class=\"field__caret\">
+                                                        <svg class=\"icon-svg icon-svg--color-adaptive-lighter icon-svg--size-10 field__caret-svg\" role=\"presentation\" aria-hidden=\"true\" focusable=\"false\"> <use xlink:href=\"#caret-down\" /> </svg>
+                                                    </div></div>\n{hint}\n{error}",
+                                                'options' => ['class' => 'field--two-thirds field'],
+                                                'inputOptions' => ['class' => 'field__input field__input--select'],
+                                            ])->dropDownList(Country::getCountryList()) ?>
+
+                                            <?= $form->field($formInfo, 'postal', ['options' => [
+                                                'class' => 'field--third field'
+                                            ]])->textInput(['placeholder' => $formInfo->getAttributeLabel('postal')]) ?>
+                                        </div>
+                                        <?php if (!$user->isGuest) { ?>
+                                        <div class="field" id="remember_me">
+                                            <div class="checkbox-wrapper">
+                                                <div class="checkbox__input">
+                                                    <input class="input-checkbox" data-backup="remember_me" type="checkbox" value="1" name="checkout[remember_me]" id="checkout_remember_me" />
+                                                </div>
+                                                <label class="checkbox__label" for="checkout_remember_me"><?= Yii::t('frontend', 'Save this address for next time') ?></label>
+                                            </div>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step__footer">
+                            <?= Html::submitButton('<span class="btn__content">' . Yii::t('frontend', 'Continue') . '</span>', ['class' => 'step__footer__continue-btn btn']) ?>
+                            <?= Html::a('<span class="step__footer__previous-link-content">' . Yii::t('frontend', 'Return to cart') . '</span>', ['/cart/index'], ['class' => 'step__footer__previous-link']) ?>
+                        </div>
+
+                    <?php ActiveForm::end(); ?>
+                </div>
+
+            </main>
+            <footer class="main__footer" role="contentinfo">
+                <p class="copyright-text">Copyright <i class="fa fa-copyright"></i> <?= date('Y') ?> by <a href="#"><?= Yii::$app->name ?></a>. All Rights Reserved. Powered by <a href="https://web-made.biz" target="_blank">Web-Made.biz</a></p>
+            </footer>
+        </div>
+
+        <?= $this->render('_aside', [
+            'productList' => $productList,
+            'cartList' => $cartList,
+            'shipMethod' => $shipMethod,
+            'subtotal' => $subtotal,
+            'total' => $total,
+        ]) ?>
+    </div>
+</div>

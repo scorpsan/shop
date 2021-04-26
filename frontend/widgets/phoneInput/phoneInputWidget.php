@@ -71,7 +71,7 @@ class phoneInputWidget extends InputWidget
 		$view = $this->getView();
 		phoneInputAsset::register($view);
 
-		$message = Yii::t('frontend', 'Wrong phone number format, enter phone number in international format');
+		$message = Yii::t('frontend', 'Wrong format, enter phone number in international format.');
 
 		$js = <<<JS
 var phoneInput = $(".phone-input"),
@@ -110,15 +110,15 @@ $(document).on("click", ".selectCountry", function () {
     phoneInput.val($(this).attr("data-dial-code"));
 });
 
-phoneInput.parents("form:first").on("afterValidate", function (e) {
+phoneInput.parents("form:first").on("beforeValidate", function (e) {
     $(this).yiiActiveForm('find', phoneInput.attr("id")).validate = function (attribute, value, messages, deferred, form) {
 		if (!phoneInput.inputmasks("isCompleted")) {
-		    e.preventDefault();
-		    phoneInput.closest(".input-group").addClass("is-invalid");
+		    phoneInput.closest(".field").addClass("has-error");
 			messages.push("${message}");
+			e.preventDefault();
 			return false;
 		}
-		phoneInput.closest(".input-group").removeClass("is-invalid");
+		phoneInput.closest(".field").removeClass("has-error");
 		return true;
 	}
 });

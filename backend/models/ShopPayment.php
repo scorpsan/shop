@@ -1,49 +1,37 @@
 <?php
 namespace backend\models;
 
-use yii\db\ActiveRecord;
+use common\models\ShopPayment as BaseShopPayments;
 use yii\db\ActiveQuery;
 use yii2tech\ar\position\PositionBehavior;
+use voskobovich\linker\LinkerBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\db\Expression;
-use Exception;
+use yii\base\InvalidConfigException;
 
 /**
- * This is the model class for table "{{%shop_payment_method}}".
- *
- * @property int $id [int(11)]
- * @property string $className [varchar(255)]
- * @property int $sort [int(9)]
- * @property bool $default [tinyint(1)]
- * @property bool $published [tinyint(1)]
- *
- * @property-read null|string $title
- * @property-read null|string $description
- * @property-read ActiveQuery $translate
+ * @property-read ActiveQuery $delivery
  * @property-read ActiveQuery $translates
  */
-class ShopPayment extends ActiveRecord
+class ShopPayment extends BaseShopPayments
 {
     public $sorting;
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
-        return '{{%shop_payment_method}}';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'positionBehavior' => [
                 'class' => PositionBehavior::class,
                 'positionAttribute' => 'sort',
+            ],
+            'linkerBehavior' => [
+                'class' => LinkerBehavior::class,
+                'relations' => [
+                    'delivery_list' => 'delivery',
+                ],
             ],
         ];
     }
@@ -51,13 +39,13 @@ class ShopPayment extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['className'], 'string', 'max' => 255],
-            [['default', 'published'], 'boolean'],
-            [['default'], 'default', 'value' => false],
+            [['published'], 'boolean'],
             [['published'], 'default', 'value' => true],
+            [['delivery_list'], 'each', 'rule' => ['integer']],
             [['sorting'], 'safe'],
         ];
     }
@@ -65,62 +53,57 @@ class ShopPayment extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'className' => Yii::t('backend', 'Class Name'),
-            'default' => Yii::t('backend', 'Default'),
             'published' => Yii::t('backend', 'Published'),
             'sort' => Yii::t('backend', 'Sort'),
             'sorting' => Yii::t('backend', 'Sort After'),
+            'delivery_list' => Yii::t('backend', 'Delivery Methods'),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function beforeDelete()
+    public function beforeDelete(): bool
     {
         ShopPaymentLng::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
     }
 
     /**
-     * @return string|null
-     * @throws Exception
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
-    public function getTitle()
+    public function getDelivery(): ActiveQuery
     {
-        return ArrayHelper::getValue($this->translate, 'title');
-    }
-
-    /**
-     * @return string|null
-     * @throws Exception
-     */
-    public function getDescription()
-    {
-        return ArrayHelper::getValue($this->translate, 'desc');
+        return $this->hasMany(ShopDelivery::class, ['id' => 'delivery_id'])->viaTable(ShopPaymentDelivery::tableName(), ['payment_id' => 'id']);
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getTranslate()
-    {
-        $langDef = Yii::$app->params['defaultLanguage'];
-        return $this->hasOne(ShopPaymentLng::class, ['item_id' => 'id'])
-            ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
-            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
-            ->indexBy('lng');
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getTranslates()
+    public function getTranslates(): ActiveQuery
     {
         return $this->hasMany(ShopPaymentLng::class, ['item_id' => 'id'])->indexBy('lng');
+    }
+
+    /**
+     * @param string $keyField
+     * @param string $valueField
+     * @param bool $asArray
+     * @return array
+     */
+    public static function listAll($keyField = 'id', $valueField = 'translate.title', $asArray = true): array
+    {
+        $query = static::find()->with('translate');
+        if ($asArray) {
+            $query->asArray();
+        }
+
+        return ArrayHelper::map($query->all(), $keyField, $valueField);
     }
 
 }

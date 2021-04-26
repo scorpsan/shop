@@ -1,9 +1,8 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\models\PagesLng;
-use Yii;
 use frontend\models\Pages;
+use Yii;
 use yii\web\NotFoundHttpException;
 
 class PageController extends AppController
@@ -62,24 +61,24 @@ class PageController extends AppController
      */
     public function actionSearch()
     {
-        $query = Yii::$app->request->post('search');
-        $query = trim($query);
-        $query = htmlspecialchars($query);
-        Yii::$app->layout = Yii::$app->params['pageStyle'][6]['layouts'];
-        $this->headerClass = Yii::$app->params['pageStyle'][6]['headclass'];
-        $this->setMeta(Yii::$app->name . ' | ' . Yii::t('frontend', 'Search results'), Yii::$app->params['keywords'], Yii::$app->params['description']);
-
-        $results = null;
-        if ($query) {
-            $results = Pages::find()->where(['published' => true])->leftJoin(PagesLng::tableName())
-                ->andFilterWhere(['or', ['like', PagesLng::tableName().'.title', $query], ['like', PagesLng::tableName().'.description', $query], ['like', PagesLng::tableName().'.content', $query]])
-                ->all();
-        }
-
-        return $this->render('search', [
-            'search' => $query,
-            'results' => $results,
-        ]);
+//        $query = Yii::$app->request->post('search');
+//        $query = trim($query);
+//        $query = htmlspecialchars($query);
+//        Yii::$app->layout = Yii::$app->params['pageStyle'][6]['layouts'];
+//        $this->headerClass = Yii::$app->params['pageStyle'][6]['headclass'];
+//        $this->setMeta(Yii::$app->name . ' | ' . Yii::t('frontend', 'Search results'), Yii::$app->params['keywords'], Yii::$app->params['description']);
+//
+//        $results = null;
+//        if ($query) {
+//            $results = Pages::find()->where(['published' => true])->leftJoin(PagesLng::tableName())
+//                ->andFilterWhere(['or', ['like', PagesLng::tableName().'.title', $query], ['like', PagesLng::tableName().'.description', $query], ['like', PagesLng::tableName().'.content', $query]])
+//                ->all();
+//        }
+//
+//        return $this->render('search', [
+//            'search' => $query,
+//            'results' => $results,
+//        ]);
     }
 
 }

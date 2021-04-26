@@ -1,13 +1,12 @@
 <?php
 namespace backend\models;
 
-use yii\db\ActiveRecord;
+use common\models\ShopDelivery as BaseShopDelivery;
 use yii\db\ActiveQuery;
 use yii2tech\ar\position\PositionBehavior;
+use voskobovich\linker\LinkerBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\db\Expression;
-use Exception;
 
 /**
  * This is the model class for table "{{%shop_delivery_method}}".
@@ -23,30 +22,29 @@ use Exception;
  *
  * @property-read null|string $title
  * @property-read null|string $description
+ * @property-read ActiveQuery $payments
  * @property-read ActiveQuery $translate
  * @property-read ActiveQuery $translates
  */
-class ShopDelivery extends ActiveRecord
+class ShopDelivery extends BaseShopDelivery
 {
     public $sorting;
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
-        return '{{%shop_delivery_method}}';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'positionBehavior' => [
                 'class' => PositionBehavior::class,
                 'positionAttribute' => 'sort',
+            ],
+            'linkerBehavior' => [
+                'class' => LinkerBehavior::class,
+                'relations' => [
+                    'payment_list' => 'payments',
+                ],
             ],
         ];
     }
@@ -54,7 +52,7 @@ class ShopDelivery extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['cost'], 'number'],
@@ -62,6 +60,7 @@ class ShopDelivery extends ActiveRecord
             [['default', 'published'], 'boolean'],
             [['default'], 'default', 'value' => false],
             [['published'], 'default', 'value' => true],
+            [['payment_list'], 'each', 'rule' => ['integer']],
             [['sorting'], 'safe'],
         ];
     }
@@ -69,7 +68,7 @@ class ShopDelivery extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('backend', 'ID'),
@@ -81,54 +80,41 @@ class ShopDelivery extends ActiveRecord
             'published' => Yii::t('backend', 'Published'),
             'sort' => Yii::t('backend', 'Sort'),
             'sorting' => Yii::t('backend', 'Sort After'),
+            'payment_list' => Yii::t('backend', 'Payment Methods'),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function beforeDelete()
+    public function beforeDelete(): bool
     {
         ShopDeliveryLng::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
     }
 
     /**
-     * @return string|null
-     * @throws Exception
-     */
-    public function getTitle()
-    {
-        return ArrayHelper::getValue($this->translate, 'title');
-    }
-
-    /**
-     * @return string|null
-     * @throws Exception
-     */
-    public function getDescription()
-    {
-        return ArrayHelper::getValue($this->translate, 'desc');
-    }
-
-    /**
      * @return ActiveQuery
      */
-    public function getTranslate()
-    {
-        $langDef = Yii::$app->params['defaultLanguage'];
-        return $this->hasOne(ShopDeliveryLng::class, ['item_id' => 'id'])
-            ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
-            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
-            ->indexBy('lng');
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getTranslates()
+    public function getTranslates(): ActiveQuery
     {
         return $this->hasMany(ShopDeliveryLng::class, ['item_id' => 'id'])->indexBy('lng');
+    }
+
+    /**
+     * @param string $keyField
+     * @param string $valueField
+     * @param bool $asArray
+     * @return array
+     */
+    public static function listAll($keyField = 'id', $valueField = 'translate.title', $asArray = true): array
+    {
+        $query = static::find()->with('translate');
+        if ($asArray) {
+            $query->asArray();
+        }
+
+        return ArrayHelper::map($query->all(), $keyField, $valueField);
     }
 
 }

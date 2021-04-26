@@ -3,7 +3,7 @@ use frontend\widgets\Menu;
 
 $secondMenu = [
     [ 'label' => Yii::t('frontend', 'My Profile'), 'url' => ['/user/profile/index']],
-    [ 'label' => Yii::t('frontend', 'My Orders'), 'url' => ['/user/profile/orders']],
+    [ 'label' => Yii::t('frontend', 'My Orders'), 'url' => ['/user/orders/index']],
     [ 'label' => Yii::t('frontend', 'My Wish List'), 'url' => ['/user/wishlist/index']],
     [ 'label' => Yii::t('frontend', 'Sign Out'), 'url' => ['/user/security/logout'], 'template' => '<a href="{url}" title="{title}" class="{class}" data-method="post">{label}</a>'],
 ];

@@ -21,7 +21,7 @@ class PaymentController extends AppController
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -71,7 +71,6 @@ class PaymentController extends AppController
     public function actionCreate()
     {
         $model = new ShopPayment([
-            'default' => false,
             'published' => true,
         ]);
         $languages = Language::getLanguages();

@@ -4,9 +4,6 @@ namespace common\models;
 use yii\db\ActiveRecord;
 
 /**
- * Class Language
- * @package common\models
- *
  * @property int $id [int(11)]
  * @property string $url [varchar(5)]
  * @property string $local [varchar(5)]

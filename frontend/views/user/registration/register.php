@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="login-form">
                         <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
 
-                        <?= $form->field($model, 'email') ?>
+                        <?= $form->field($model, 'email')->input('email') ?>
 
                         <?= $form->field($model, 'phone')->widget(phoneInputWidget::class, [
                             'preferred' => ['BY'],

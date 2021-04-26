@@ -4,12 +4,13 @@ namespace frontend\controllers\user;
 use frontend\controllers\AppController;
 use yii\filters\AccessControl;
 use Da\User\Filter\AccessRuleFilter;
-use common\models\ProfileAddress;
+use frontend\models\ProfileAddress;
 use frontend\forms\DeleteForm;
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class AddressController extends AppController
 {
@@ -27,7 +28,7 @@ class AddressController extends AppController
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'delete'],
+                        'actions' => ['create', 'update', 'delete', 'load'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -44,9 +45,9 @@ class AddressController extends AppController
 
         if ($address->load(Yii::$app->request->post()) && $address->validate()) {
         	if (!$address->save()) {
-				Yii::$app->getSession()->setFlash('error', Yii::t('frontend', 'Error Create Address'));
+				Yii::$app->getSession()->setFlash('error', Yii::t('frontend', 'Error Create/Change Address'));
 			} else {
-                Yii::$app->getSession()->setFlash('success', Yii::t('frontend', 'Your Address has been added'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('frontend', 'Your Address has been created'));
             }
             return $this->redirect(['/user/profile/index']);
         }
@@ -68,7 +69,7 @@ class AddressController extends AppController
 
         if ($address->load(Yii::$app->request->post()) && $address->validate()) {
 			if (!$address->save()) {
-				Yii::$app->getSession()->setFlash('error', Yii::t('frontend', 'Error Update Address'));
+				Yii::$app->getSession()->setFlash('error', Yii::t('frontend', 'Error Create/Change Address'));
 			} else {
                 Yii::$app->getSession()->setFlash('success', Yii::t('frontend', 'Your Address has been updated'));
             }
@@ -100,10 +101,10 @@ class AddressController extends AppController
 
 		if ($form->load(Yii::$app->request->post()) && $form->validate()) {
 
-			if ($address->delete()) {
-			    Yii::$app->getSession()->setFlash('success', Yii::t('frontend', 'Your Address has been deleted'));
+			if (!$address->delete()) {
+                Yii::$app->getSession()->setFlash('error', Yii::t('frontend', 'Error Delete Address'));
 			} else {
-				Yii::$app->getSession()->setFlash('error', Yii::t('frontend', 'Error Delete Address'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('frontend', 'Your Address has been deleted'));
 			}
 
 			return $this->redirect(['/user/profile/index']);
@@ -113,5 +114,26 @@ class AddressController extends AppController
 			'model' => $form,
 		]);
 	}
+
+	public function actionLoad()
+    {
+        $data = Yii::$app->request->post();
+
+        if (!$address = ProfileAddress::find()->where(['id' => $data['id'], 'user_id' => Yii::$app->user->id])->asArray()->one()) {
+            return [
+                'error' => true,
+                'message' => Yii::t('frontend', 'Address not found.'),
+            ];
+        }
+
+        if (!Yii::$app->request->isAjax) {
+            return $this->goBack();
+        }
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'success' => true,
+            'address' => $address,
+        ];
+    }
 
 }

@@ -1,32 +1,9 @@
 <?php
 namespace frontend\models;
 
-use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
+use common\models\Tags as BaseTags;
 
-/**
- * @property int $id [int(11)]
- * @property int $frequency [int(11)]
- * @property string $name [varchar(100)]
- *
- * @property-read ActiveQuery $shopTags
- */
-class Tags extends ActiveRecord
+class Tags extends BaseTags
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName(): string
-    {
-        return '{{%tags}}';
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getShopTags(): ActiveQuery
-    {
-        return $this->hasMany(ShopTags::class, ['tag_id' => 'id']);
-    }
 
 }

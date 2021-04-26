@@ -57,7 +57,7 @@ $module = Yii::$app->getModule('user');
                             'enableClientValidation' => false,
                         ]); ?>
 
-                        <?= $form->field($model, 'email') ?>
+                        <?= $form->field($model, 'email')->input('email') ?>
 
                         <?= $form->field($model, 'phone')->widget(phoneInputWidget::class, [
                             'preferred' => ['BY'],

@@ -1,12 +1,10 @@
 <?php
-namespace frontend\models;
+namespace common\models;
 
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 
 /**
- * @property-read ActiveQuery $content
- *
  * @property int $id [int(11)]
  * @property int $item_id [int(11)]
  * @property string $lng [varchar(5)]
@@ -16,20 +14,24 @@ use yii\db\ActiveQuery;
  * @property string $description [varchar(255)]
  * @property string $seo_text
  * @property string $breadbg [varchar(255)]
+ *
+ * @property-read ActiveQuery $content
  */
 class PagesLng extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName(): string
+    {
         return '{{%pages_lng}}';
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getContent() {
+    public function getContent(): ActiveQuery
+    {
         return $this->hasMany(PagesSection::class, ['item_id' => 'id'])
             ->andWhere(['published' => true])->orderBy(['sort' => SORT_ASC]);
     }

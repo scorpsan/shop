@@ -9,6 +9,9 @@ return [
     'cabinet/recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/recovery/reset',
     'cabinet/confirm/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/registration/confirm',
     'cabinet/address/<_a:[\w\-]+>' => 'user/address/<_a>',
+    'cabinet/orders' => 'user/orders/index',
+    'cabinet/orders/<number:[\w_-]+>' => 'user/orders/view',
+    'cabinet/orders/<number:[\w_-]+>/<_a:[\w\-]+>' => 'user/orders/<_a>',
     'cabinet/wishlist' => 'user/wishlist/index',
     'cabinet/wishlist/<_a:[\w\-]+>' => 'user/wishlist/<_a>',
     'cabinet/profile/<_a:[\w\-]+>' => 'user/settings/<_a>',
@@ -23,6 +26,9 @@ return [
     '/shop/vendor/<brandalias:[\w_-]+>' => 'shop/brand',
     '/shop/vendor/<brandalias:[\w_-]+>/page<page:\d+>' => 'shop/brand',
     '/shop/product/<alias:[\w_-]+>' => 'shop/product',
+
+    '/checkout' => '/checkout/index',
+    '/checkout/<_a:[\w_-]+>' => '/checkout/<_a>',
 
     '/search' => 'page/search',
     '/<alias:[\w_-]+>' => 'page/view',

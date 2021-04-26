@@ -48,12 +48,13 @@ class CartController extends AppController
         parent::init();
         $this->_session = Yii::$app->session;
         $this->_session->open();
-    }
 
-    public function beforeAction($action)
-    {
         Yii::$app->layout = 'page';
         $this->headerClass = 'header-v2 header-absolute';
+    }
+
+    public function beforeAction($action): bool
+    {
         if ($action->id == 'order-notify') {
             $this->enableCsrfValidation = false;
         }
@@ -92,22 +93,17 @@ class CartController extends AppController
     }
 
     /**
-     * @return ShopProducts[]|null
+     * @return ShopProducts[]
+     * @throws Exception
      */
-    protected function getSessionList()
+    protected function getSessionList(): array
     {
-        if (empty($this->_session['cart'])) {
-            return null;
+        if (!$cart = ArrayHelper::getValue($this->_session, 'cart')) {
+            $cartIds = [];
+        } else {
+            $cartIds = array_column($cart, 'id');
         }
-
-        $sessionList = ShopProducts::find()->where(['published' => true])
-            ->andWhere(['in', 'id', array_column($this->_session['cart'], 'id')])
-            ->with('translate')
-            ->with('images')
-            ->with('category')
-            ->indexBy('id')->all();
-
-        return $sessionList;
+        return ShopProducts::ProductsInCart($cartIds);
     }
 
     public function actionAdd()

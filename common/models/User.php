@@ -51,10 +51,9 @@ class User extends BaseUser
             parent::rules(),
             [
                 // phone rules
-                'phoneRequired' => ['phone', 'required', 'on' => ['register', 'create', 'update']],
-                'phoneLength' => ['phone', 'string', 'min' => 7, 'max' => 21],
-                'phoneTrim' => ['phone', 'trim'],
-                'phonePattern' => ['phone', 'match', 'pattern' => '/^[+][0-9]{7,20}$/', 'message' => Yii::t('frontend', 'Wrong format, enter phone number in international format.')],
+                'phoneTrim' => ['phone', 'filter', 'filter' => 'trim'],
+                'phoneRequired' => ['phone', 'required'],
+                'phonePattern' => ['phone', 'match', 'pattern' => '/^\+[0-9]{7,20}$/', 'message' => Yii::t('frontend', 'Wrong format, enter phone number in international format.')],
                 'phoneUnique' => [
                     'phone',
                     'unique',

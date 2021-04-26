@@ -1,7 +1,7 @@
 <?php
 namespace backend\models;
 
-use yii\db\ActiveRecord;
+use common\models\ShopDeliveryLng as BaseShopDeliveryLng;
 use Yii;
 
 /**
@@ -13,14 +13,12 @@ use Yii;
  * @property string $title [varchar(255)]
  * @property string $desc
  */
-class ShopDeliveryLng extends ActiveRecord
+class ShopDeliveryLng extends BaseShopDeliveryLng
 {
-    public static function tableName()
-    {
-        return '{{%shop_delivery_method_lng}}';
-    }
-
-    public function rules()
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
     {
         return [
             [['item_id', 'lng', 'title'], 'required'],
@@ -33,7 +31,10 @@ class ShopDeliveryLng extends ActiveRecord
         ];
     }
 
-    public function attributeLabels()
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('backend', 'ID'),

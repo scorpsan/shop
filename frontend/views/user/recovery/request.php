@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $this->render('../shared/_alert') ?>
 
                     <div class="login-form">
-                        <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+                        <?= $form->field($model, 'email')->input('email', ['autofocus' => true]) ?>
 
                         <div class="d-flex lr">
                             <?= Html::submitButton(Yii::t('usuario', 'Continue'), ['class' => 'btn-submit']) ?>

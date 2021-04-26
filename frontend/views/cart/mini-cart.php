@@ -5,8 +5,7 @@
  * @var $cartQty int
  */
 
-use yii\helpers\Html;
-use yii\helpers\Url;
+use yii\bootstrap4\Html;
 
 $total = 0;
 ?>
@@ -28,7 +27,7 @@ $total = 0;
                         <span class="product-quantity"><?= Yii::t('frontend', 'QTY') ?>: <?= $prod['qty'] ?></span>
                         <span class="product-price"><span class="product-price-symbol"></span><?= Yii::$app->formatter->asCurrency($price) ?></span>
                         <div class="product-remove float-right">
-                            <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['/cart/delete'], ['class' => 'delete-from-cart', 'data-id' => $key]) ?>
+                            <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['/cart/delete'], ['title' => Yii::t('frontend', 'Delete'), 'class' => 'delete-from-cart', 'data-id' => $key]) ?>
                         </div>
                     </div>
                 </div>
@@ -43,7 +42,7 @@ $total = 0;
         </div>
         <div class="actions">
             <?= Html::a('<span>' . Yii::t('frontend', 'View Cart') . '</span>', ['/shop/cart'], ['class' => 'button-viewcart', 'data-pjax' => 0]) ?>
-            <?= Html::a('<span>' . Yii::t('frontend', 'Checkout') . '</span>', ['/shop/checkout'], ['class' => 'button-checkout', 'data-pjax' => 0]) ?>
+            <?= Html::a('<span>' . Yii::t('frontend', 'Checkout') . '</span>', ['/checkout/index'], ['class' => 'button-checkout', 'data-pjax' => 0]) ?>
         </div>
     </div>
 <?php } else { ?>

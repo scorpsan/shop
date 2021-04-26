@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
+use yii\base\InvalidConfigException;
 use yii\db\Expression;
 use Exception;
 
@@ -46,6 +47,8 @@ use Exception;
  * @property-read mixed $imagesLinksData
  * @property-read array $sortingLists
  * @property-read ActiveQuery $characteristics
+ * @property-read ActiveQuery $wishes
+ *
  * @property ShopCategoryAssignments $shopCategoryAssignments
  * @property ShopProductsCharacteristics $Characteristics
  */
@@ -53,12 +56,11 @@ class ShopProducts extends ActiveRecord
 {
     public $titleDefault;
     public $sorting;
-    public $countwishes;
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%shop_products}}';
     }
@@ -66,7 +68,7 @@ class ShopProducts extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             TimestampBehavior::class,
@@ -87,7 +89,7 @@ class ShopProducts extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['alias', 'code'], 'string', 'max' => 255],
@@ -109,7 +111,7 @@ class ShopProducts extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('backend', 'ID'),
@@ -231,16 +233,25 @@ class ShopProducts extends ActiveRecord
         return ArrayHelper::getValue($this->images[0], 'imageUrl', Yii::getAlias('@images/nophoto.svg'));
     }
 
+    /**
+     * @return ActiveQuery
+     */
     public function getImages(): ActiveQuery
     {
         return $this->hasMany(ShopPhotos::class, ['product_id' => 'id'])->orderBy('sort');
     }
 
+    /**
+     * @return array
+     */
     public function getImagesLinks(): array
     {
         return ArrayHelper::getColumn($this->images, 'imageUrl');
     }
 
+    /**
+     * @return array
+     */
     public function getImagesLinksData(): array
     {
         return ArrayHelper::toArray($this->images, [
@@ -251,11 +262,18 @@ class ShopProducts extends ActiveRecord
         ]);
     }
 
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
     public function getTags(): ActiveQuery
     {
         return $this->hasMany(Tags::class, ['id' => 'tag_id'])->viaTable(ShopTags::tableName(), ['item_id' => 'id']);
     }
 
+    /**
+     * @return ActiveQuery
+     */
     public function getWishes(): ActiveQuery
     {
         return $this->hasMany(UserWishlistItems::class, ['product_id' => 'id']);

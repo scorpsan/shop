@@ -79,6 +79,8 @@ $this->title = Yii::t('frontend', 'Address');
 
                         <?= $form->field($address, 'address') ?>
 
+                        <?= $form->field($address, 'address2') ?>
+
                         <div class="d-flex lr mb-4">
                             <?= Html::a(Yii::t('frontend', 'Cancel'), ['/user/profile/index'], ['class' => 'btn-cancel']) ?>
                             <?= Html::submitButton(Yii::t('frontend', 'Save'), ['class' => 'btn-submit']) ?>

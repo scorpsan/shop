@@ -6,6 +6,8 @@
  * @var $modelLng       backend\models\ShopDeliveryLng
  * @var $languages      backend\models\Language
  */
+
+use backend\models\ShopPayment;
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 ?>
@@ -73,6 +75,14 @@ use kartik\form\ActiveForm;
                         <?= $form->field($model, 'max_summa')->textInput(['maxlength' => true]) ?>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($model, 'payment_list')->listBox(ShopPayment::listAll(), [
+                    'multiple' => true,
+                    'size' => 5,
+                ]) ?>
             </div>
         </div>
     </div>

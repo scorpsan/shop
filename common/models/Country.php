@@ -6,9 +6,6 @@ use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
- * Class Country
- * @package common\models
- *
  * @property int $id [int(11)]
  * @property string $iso [varchar(2)]
  * @property string $name [varchar(80)]
@@ -39,7 +36,7 @@ class Country extends ActiveRecord
      * @param $code string
      * @return string
      */
-    public static function getCountryName($code): string
+    public static function getCountryName(string $code): string
     {
         return self::find()->select('nicename')->where(['name' => $code])->scalar();
     }

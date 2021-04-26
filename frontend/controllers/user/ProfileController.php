@@ -26,7 +26,7 @@ class ProfileController extends BaseProfileController
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'show', 'orders', 'wish-list'],
+                        'actions' => ['index', 'show'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -57,11 +57,6 @@ class ProfileController extends BaseProfileController
     public function actionShow($id)
     {
         return $this->redirect(['index']);
-    }
-
-    public function actionOrders()
-    {
-        return $this->render('orders');
     }
 
 }

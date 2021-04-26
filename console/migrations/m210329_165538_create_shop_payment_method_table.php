@@ -18,7 +18,6 @@ class m210329_165538_create_shop_payment_method_table extends Migration
             'id' => $this->primaryKey(),
             'className' => $this->string()->notNull(),
             'sort' => $this->integer(9)->notNull(),
-            'default' => $this->boolean()->notNull()->defaultValue(0),
             'published' => $this->boolean()->notNull()->defaultValue(1),
         ], $tableOptions);
     }

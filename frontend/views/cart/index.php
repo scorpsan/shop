@@ -13,7 +13,6 @@ $this->title = Yii::t('frontend', 'Shopping Cart');
 
 $this->params['breadcrumbs'][] = Yii::t('frontend', 'Your Shopping Cart');
 
-$nullPrice = false;
 $total = 0;
 ?>
 <section class="section-cart">
@@ -29,7 +28,7 @@ $total = 0;
                             <th colspan="2" class="product-thumbnail"><?= Yii::t('frontend', 'Product') ?></th>
                             <th class="product-price"><?= Yii::t('frontend', 'Price') ?></th>
                             <th class="product-quantity"><?= Yii::t('frontend', 'QTY') ?></th>
-                            <th class="product-subtotal"><?= Yii::t('frontend', 'Total') ?></th>
+                            <th class="product-subtotal"><?= Yii::t('frontend', 'Subtotal') ?></th>
                             <th class="product-remove">&nbsp;</th>
                         </tr>
                         </thead>
@@ -61,12 +60,12 @@ $total = 0;
                                             ]) ?>
                                         </div>
                                     </td>
-                                    <td data-label="Sub Total" class="product-subtotal" data-title="<?= Yii::t('frontend', 'Total') ?>">
+                                    <td data-label="Sub Total" class="product-subtotal" data-title="<?= Yii::t('frontend', 'Subtotal') ?>">
                                         <span class="amount"><?= Yii::$app->formatter->asCurrency($totalPrice) ?></span>
                                     </td>
                                     <td class="text-center cart-actions">
-                                        <?= Html::a('<i class="fas fa-heart" aria-hidden="true"></i>', ['/cart/to-wish'], ['class' => 'from-cart-to-wish', 'data-id' => $key]) ?>
-                                        <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['/cart/delete'], ['class' => 'delete-from-cart remove', 'data-id' => $key]) ?>
+                                        <?= Html::a('<i class="fas fa-heart" aria-hidden="true"></i>', ['/cart/to-wish'], ['title' => Yii::t('frontend', 'Add to cart'), 'class' => 'from-cart-to-wish', 'data-id' => $key]) ?>
+                                        <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['/cart/delete'], ['title' => Yii::t('frontend', 'Delete'), 'class' => 'delete-from-cart remove', 'data-id' => $key]) ?>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -104,7 +103,7 @@ $total = 0;
                                 </tbody>
                             </table>
                             <div class="wc-proceed-to-checkout clearfix">
-                                <?= Html::a(Yii::t('frontend', 'Check Out'), ['/cart/checkout'], ['class' => 'shop-button checkout-button button alt wc-forward bg-color']) ?>
+                                <?= Html::a(Yii::t('frontend', 'Check Out'), ['/checkout/index'], ['class' => 'shop-button checkout-button button alt wc-forward bg-color']) ?>
                             </div>
                         </div>
                     <?php } ?>

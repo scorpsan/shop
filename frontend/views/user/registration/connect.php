@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $this->render('../shared/_alert') ?>
 
                     <div class="login-form">
-                        <?= $form->field($model, 'email') ?>
+                        <?= $form->field($model, 'email')->input('email') ?>
 
                         <?= $form->field($model, 'username') ?>
 

@@ -2,6 +2,7 @@
 namespace backend\models;
 
 use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use Yii;
 
 /**
@@ -15,12 +16,18 @@ use Yii;
  */
 class Tags extends ActiveRecord
 {
-    public static function tableName()
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName(): string
     {
         return '{{%tags}}';
     }
 
-    public function rules()
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
     {
         return [
             [['frequency', 'name'], 'required'],
@@ -29,7 +36,10 @@ class Tags extends ActiveRecord
         ];
     }
 
-    public function attributeLabels()
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('backend', 'ID'),
@@ -38,7 +48,10 @@ class Tags extends ActiveRecord
         ];
     }
 
-    public function getShopTags()
+    /**
+     * @return ActiveQuery
+     */
+    public function getShopTags(): ActiveQuery
     {
         return $this->hasMany(ShopTags::class, ['tag_id' => 'id']);
     }

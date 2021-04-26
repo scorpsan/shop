@@ -13455,6 +13455,7 @@ body.mobile .col-mobile-12 {
 @media screen and (max-width:479px) {
     .d-flex.lr {flex-wrap:wrap;}
 }
+.d-flex.lr *:last-child {margin-right:0 !important;}
 .btn-lostpwd {
     font-family: "Barlow", sans-serif;
     font-size: 16px;
