@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use creocoder\nestedsets\NestedSetsBehavior;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 use Yii;
@@ -33,6 +34,22 @@ class Categories extends ActiveRecord
     public static function tableName(): string
     {
         return '{{%categories}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors(): array
+    {
+        return [
+            'tree' => [
+                'class' => NestedSetsBehavior::class,
+                'treeAttribute' => 'tree',
+                // 'leftAttribute' => 'lft',
+                // 'rightAttribute' => 'rgt',
+                // 'depthAttribute' => 'depth',
+            ],
+        ];
     }
 
     /**
