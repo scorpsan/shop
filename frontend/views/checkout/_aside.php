@@ -65,7 +65,7 @@ use yii\bootstrap4\Html;
                         <tr class="total-line total-line--shipping">
                             <th class="total-line__name" scope="row"><span><?= Yii::t('frontend', 'Shipping') ?></span></th>
                             <td class="total-line__price">
-                                <span class="skeleton-while-loading order-summary__emphasis"><?= Yii::$app->formatter->asCurrency($shipMethod->cost) ?></span>
+                                <span class="skeleton-while-loading order-summary__emphasis"><?= (($shipMethod->cost) ? Yii::$app->formatter->asCurrency($shipMethod->cost) : Yii::t('frontend','free')) ?></span>
                             </td>
                         </tr>
                         <?php } ?>

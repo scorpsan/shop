@@ -78,6 +78,9 @@ return [
     'Order N' => 'Order N',
     'Date' => 'Date',
     'Status' => 'Status',
+    'free' => 'free',
+    'In Stock' => 'In Stock',
+    'Out of Stock' => 'Out of Stock',
 
     'Create' => 'Create',
     'Update' => 'Update',
@@ -118,6 +121,18 @@ return [
     'To order' => 'To order',
     'Select order delivery method' => 'Select order delivery method',
     'Select a Payment Method' => 'Select a Payment Method',
+
+    'New Order' => 'New Order',
+    'Order Confirmed' => 'Order Confirmed',
+    'Order Sent' => 'Order Sent',
+    'Order Delivered' => 'Order Delivered',
+    'Order Cancelled' => 'Order Cancelled',
+    'Awaiting' => 'Awaiting',
+    'Paid' => 'Paid',
+    'Cancelled' => 'Cancelled',
+    'Refund' => 'Refund',
+    'Order Received' => 'Order Received',
+    'Cancel Order' => 'Cancel Order',
 
     'Email' => 'E-mail',
     'Message' => 'Message',

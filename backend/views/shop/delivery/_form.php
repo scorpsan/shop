@@ -96,8 +96,6 @@ use kartik\form\ActiveForm;
         </div>
         <div class="box">
             <div class="box-body">
-                <?= $form->field($model, 'default')->checkbox() ?>
-
                 <?= $form->field($model, 'published')->checkbox() ?>
             </div>
         </div>

@@ -2,14 +2,13 @@
 namespace common\models;
 
 use yii\db\ActiveRecord;
-use Yii;
 use yii\db\ActiveQuery;
+use Yii;
+use yii\helpers\ArrayHelper;
 use yii\db\Expression;
+use Exception;
 
 /**
- * Class SiteSettings
- * @package common\models
- *
  * @property int $id [int(11)]
  * @property string $phone [varchar(21)]
  * @property string $currency_code [varchar(3)]
@@ -34,10 +33,10 @@ use yii\db\Expression;
  * @property bool $search_on_site [tinyint(1)]
  * @property bool $shop_on_site [tinyint(1)]
  *
- * @property-read mixed $title
- * @property-read mixed $seotitle
- * @property-read mixed $keywords
- * @property-read mixed $description
+ * @property-read string $title
+ * @property-read string $seotitle
+ * @property-read string $keywords
+ * @property-read string $description
  * @property-read ActiveQuery $translate
  * @property-read ActiveQuery $translates
  */
@@ -53,34 +52,38 @@ class SiteSettings extends ActiveRecord
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getTitle(): string
     {
-        return $this->translate->title;
+        return ArrayHelper::getValue($this->translate, 'title');
     }
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getSeotitle(): string
     {
-        return $this->translate->seotitle;
+        return ArrayHelper::getValue($this->translate, 'seotitle', $this->title);
     }
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getKeywords(): string
     {
-        return $this->translate->keywords;
+        return ArrayHelper::getValue($this->translate, 'keywords', Yii::$app->params['keywords']);
     }
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getDescription(): string
     {
-        return $this->translate->description;
+        return ArrayHelper::getValue($this->translate, 'description', Yii::$app->params['description']);
     }
 
     /**

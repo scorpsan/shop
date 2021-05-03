@@ -153,5 +153,10 @@ return [
     'Tags' => 'Метки',
     'Delivery Methods' => 'Способы доставки',
     'Payment Methods' => 'Способы оплаты',
-    'Cost' => 'Стоимость'
+    'Cost' => 'Стоимость',
+    'Cost Delivery' => 'Стоимость доставки',
+    'Max Weight (gr)' => 'Макс вес (гр)',
+    'Min Summa' => 'Мин сумма',
+    'Max Summa' => 'Макс сумма',
+    'In Stock' => 'В наличии',
 ];

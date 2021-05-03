@@ -154,4 +154,9 @@ return [
     'Delivery Methods' => 'Delivery Methods',
     'Payment Methods' => 'Payment Methods',
     'Cost' => 'Cost',
+    'Cost Delivery' => 'Cost Delivery',
+    'Max Weight (gr)' => 'Max Weight (gr)',
+    'Min Summa' => 'Min Summa',
+    'Max Summa' => 'Max Summa',
+    'In Stock' => 'In Stock',
 ];

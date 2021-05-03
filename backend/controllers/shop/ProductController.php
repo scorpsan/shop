@@ -41,7 +41,7 @@ class ProductController extends AppController
                         'roles' => ['viewPages'],
                     ],
                     [
-                        'actions' => ['create', 'update', 'publish', 'unpublish', 'up', 'down', 'upload-file', 'delete-file', 'sort-file', 'list'],
+                        'actions' => ['create', 'update', 'publish', 'unpublish', 'in-stock', 'un-in-stock', 'up', 'down', 'upload-file', 'delete-file', 'sort-file', 'list'],
                         'allow' => true,
                         'roles' => ['editPages'],
                     ],
@@ -79,6 +79,7 @@ class ProductController extends AppController
     {
         $model = new ShopProducts([
             'published' => true,
+            'in_stock' => false,
             'new' => true,
             'top' => false,
             'hit' => 0,
@@ -212,6 +213,24 @@ class ProductController extends AppController
     {
         if (Yii::$app->request->isAjax) {
             ShopProducts::updateAll(['published' => 0], ['id' => $id]);
+            return true;
+        }
+        return $this->redirect(['index']);
+    }
+
+    public function actionInStock($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            ShopProducts::updateAll(['in_stock' => 1], ['id' => $id]);
+            return true;
+        }
+        return $this->redirect(['index']);
+    }
+
+    public function actionUnInStock($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            ShopProducts::updateAll(['in_stock' => 0], ['id' => $id]);
             return true;
         }
         return $this->redirect(['index']);

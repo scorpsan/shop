@@ -25,11 +25,12 @@ use Exception;
  * @property float $sale [float]
  * @property int $created_at [int(11)]
  * @property int $updated_at [int(11)]
+ * @property bool $in_stock [tinyint(1)]
  *
- * @property-read null|string $title
- * @property-read null|string $seotitle
- * @property-read null|string $keywords
- * @property-read null|string $description
+ * @property-read string $title
+ * @property-read string $seotitle
+ * @property-read string $keywords
+ * @property-read string $description
  * @property-read ActiveQuery $images
  * @property-read string $imageMain
  * @property-read string $mediumImageMain
@@ -65,7 +66,7 @@ class ShopProducts extends ActiveRecord
      */
     public function getSeotitle(): string
     {
-        return ArrayHelper::getValue($this->translate, 'seotitle');
+        return ArrayHelper::getValue($this->translate, 'seotitle', $this->title);
     }
 
     /**

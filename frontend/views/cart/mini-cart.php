@@ -8,13 +8,18 @@
 use yii\bootstrap4\Html;
 
 $total = 0;
+$canCheckout = true;
 ?>
 <?php if ($cartQty) { ?>
     <div class="minicart-scroll-content">
     <?php foreach ($cartList as $key => $prod) {
-        $price = (($productList[$key]->sale) ? $productList[$key]->sale : $productList[$key]->price);
-        $totalPrice = $prod['qty'] * $price;
-        $total += $totalPrice;
+        if ($productList[$key]->in_stock) {
+            $price = (($productList[$key]->sale) ? $productList[$key]->sale : $productList[$key]->price);
+            $totalPrice = $prod['qty'] * $price;
+            $total += $totalPrice;
+        } else {
+            $canCheckout = false;
+        }
         ?>
         <ul class="minicart-item list-unstyled">
             <li class="product-cart">
@@ -25,7 +30,7 @@ $total = 0;
                     </h3>
                     <div class="product-detail-info">
                         <span class="product-quantity"><?= Yii::t('frontend', 'QTY') ?>: <?= $prod['qty'] ?></span>
-                        <span class="product-price"><span class="product-price-symbol"></span><?= Yii::$app->formatter->asCurrency($price) ?></span>
+                        <span class="product-price"><?php if ($productList[$key]->in_stock) { ?><span class="product-price-symbol"></span><?= Yii::$app->formatter->asCurrency($price) ?><?php } else { ?><?= Yii::t('frontend', 'Out of Stock') ?><?php } ?></span>
                         <div class="product-remove float-right">
                             <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['/cart/delete'], ['title' => Yii::t('frontend', 'Delete'), 'class' => 'delete-from-cart', 'data-id' => $key]) ?>
                         </div>
@@ -42,7 +47,7 @@ $total = 0;
         </div>
         <div class="actions">
             <?= Html::a('<span>' . Yii::t('frontend', 'View Cart') . '</span>', ['/shop/cart'], ['class' => 'button-viewcart', 'data-pjax' => 0]) ?>
-            <?= Html::a('<span>' . Yii::t('frontend', 'Checkout') . '</span>', ['/checkout/index'], ['class' => 'button-checkout', 'data-pjax' => 0]) ?>
+            <?= Html::a('<span>' . Yii::t('frontend', 'Checkout') . '</span>', ['/checkout/index'], ['class' => 'button-checkout', 'disabled' => ($canCheckout)?false:'disabled', 'data-pjax' => 0]) ?>
         </div>
     </div>
 <?php } else { ?>

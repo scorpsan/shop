@@ -1,6 +1,8 @@
 <?php
 namespace common\models;
 
+use Yii;
+use yii\bootstrap4\Html;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 use yii\behaviors\TimestampBehavior;
@@ -72,6 +74,75 @@ class ShopOrdersStatuses extends ActiveRecord
     public function getOrder(): ActiveQuery
     {
         return $this->hasOne(ShopOrders::class, ['id' => 'order_id']);
+    }
+
+    /**
+     * @param null $type
+     * @return array
+     */
+    public static function listAll($type = null): array
+    {
+        if ($type == self::STATUS_TYPE_DELIVERY) {
+            return [
+                self::ORDER_NEW => Yii::t('frontend', 'New Order'),
+
+                self::DELIVERY_APPROVE => Yii::t('frontend', 'Order Confirmed'),
+                self::DELIVERY_SEND => Yii::t('frontend', 'Order Sent'),
+                self::DELIVERY_DELIVER => Yii::t('frontend', 'Order Delivered'),
+
+                self::ORDER_CANCEL => Yii::t('frontend', 'Order Cancelled'),
+            ];
+        } elseif ($type == self::STATUS_TYPE_PAYMENT) {
+            return [
+                self::ORDER_NEW => Yii::t('frontend', 'New Order'),
+
+                self::PAYMENTS_WAIT => Yii::t('frontend', 'Awaiting'),
+                self::PAYMENTS_PAID => Yii::t('frontend', 'Paid'),
+                self::PAYMENTS_CANCEL => Yii::t('frontend', 'Cancelled'),
+                self::PAYMENTS_REFUND => Yii::t('frontend', 'Refund'),
+
+                self::ORDER_CANCEL => Yii::t('frontend', 'Order Cancelled'),
+            ];
+        }
+        return [
+            self::ORDER_NEW => Yii::t('frontend', 'New Order'),
+
+            self::PAYMENTS_WAIT => Yii::t('frontend', 'Wait'),
+            self::PAYMENTS_PAID => Yii::t('frontend', 'Paid'),
+            self::PAYMENTS_CANCEL => Yii::t('frontend', 'Cancel'),
+            self::PAYMENTS_REFUND => Yii::t('frontend', 'Refund'),
+
+            self::DELIVERY_APPROVE => Yii::t('frontend', 'Order Confirmed'),
+            self::DELIVERY_SEND => Yii::t('frontend', 'Order Sent'),
+            self::DELIVERY_DELIVER => Yii::t('frontend', 'Order Delivered'),
+
+            self::ORDER_CANCEL => Yii::t('frontend', 'Order Cancelled'),
+        ];
+    }
+
+    /**
+     * @param $status
+     * @return string
+     */
+    public static function HtmlStatus($status): string
+    {
+        switch ($status) {
+            case ShopOrdersStatuses::PAYMENTS_PAID:
+            case ShopOrdersStatuses::DELIVERY_DELIVER:
+                return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-success label label-success font-size-12']);
+            case ShopOrdersStatuses::PAYMENTS_REFUND:
+                return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-warning label label-warning font-size-12']);
+            case ShopOrdersStatuses::PAYMENTS_CANCEL:
+            case ShopOrdersStatuses::ORDER_CANCEL:
+                return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-danger label label-danger font-size-12']);
+            case ShopOrdersStatuses::DELIVERY_SEND:
+                return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-info label label-info font-size-12']);
+            case ShopOrdersStatuses::PAYMENTS_WAIT:
+            case ShopOrdersStatuses::DELIVERY_APPROVE:
+            case ShopOrdersStatuses::ORDER_NEW:
+            default:
+                return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-primary label label-primary font-size-12']);
+        }
     }
 
 }

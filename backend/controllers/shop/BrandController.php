@@ -70,8 +70,10 @@ class BrandController extends AppController
 
     public function actionCreate()
     {
-        $model = new ShopBrands();
-        $model->published = true;
+        $model = new ShopBrands([
+            'published' => true,
+        ]);
+
         $languages = Language::getLanguages();
         foreach ($languages as $lang) {
             $modelLng[$lang->url] = new ShopBrandsLng();
@@ -96,7 +98,7 @@ class BrandController extends AppController
 
     public function actionUpdate($id)
     {
-        if (!$model = ShopBrands::find()->where(['id' => $id])->with('translate')->limit(1)->one()) {
+        if (!$model = ShopBrands::findOne($id)) {
             throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
         }
 

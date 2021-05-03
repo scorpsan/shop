@@ -2,65 +2,69 @@
 namespace shop\payments\methods;
 
 use shop\payments\PaymentMethod;
+use Yii;
+use yii\helpers\Url;
+use yii\httpclient\Client;
+use yii\httpclient\Response;
 
 class AlfaBankOnline implements PaymentMethod
 {
     /**
      * URL API платежного шлюза
      */
-    const RBS_PROD_URL = 'https://ecom.alfabank.by/payment/rest/';
-    const RBS_TEST_URL = 'https://web.rbsuat.com/ab_by/rest/';
+    const PROD_URL = 'https://ecom.alfabank.by/payment/rest/';
+    const TEST_URL = 'https://web.rbsuat.com/ab_by/rest/';
 
     public static function name(): string
     {
         return 'Alfa Bank Online';
     }
 
-    public static function pay(): bool
+    public static function pay($order_number, $amount, $currency = null, $urls = null): bool
     {
-        /**
-         * USERNAME , . Логин для интеграции сайта с платежным сервисом из письма после подтверждения заявки
-         * PASSWORD , .Пароль для интеграции сайта с платежным сервисом из письма после подтверждения заявки
-         * GATEWAY_URL .
-         * RETURN_URL , Ссылка на страницу, куда будет отправлен человек
-         */
-        define('USERNAME', 'www.my-site.net-api');
-        define('PASSWORD', 'trCIZNvd');
-        define('GATEWAY_URL', 'https://web.rbsuat.com/ab_by/rest/');
-        define('RETURN_URL', 'https://my-site');
-        $phone = noprob($_POST['user-tel']);
+        $data = [
+            'userName' => Yii::$app->params['AlfaBankOnline']['login'],
+            'password' => Yii::$app->params['AlfaBankOnline']['password'],
+            'orderNumber' => $order_number, //Уникальный номер заказа
+            'amount' => $amount * 100, // Сумма оплаты, передаётся цена*100, например, 22.32 BYN, то в этот параметр передаём 2232
+            'returnUrl' => (isset($urls['return_url'])) ? $urls['return_url'] : Url::home(true),
+        ];
 
-        $data = array(
-            'userName' => USERNAME,
-            'password' => PASSWORD,
-            'orderNumber' => $now, //Уникальный номер оплаты, например текущая дата до секунд+номер телефона
-            'amount' => urlencode($_POST['cost_user']), // Сумма оплаты, передаётся цена*100, например, 22.32 BYN, то в этот параметр передаём 2232
-            'returnUrl' => RETURN_URL
-        );
-        $response = static::gateway('registerPreAuth.do', $data);
-        //print_r($response);
-        if (isset($response['errorCode'])) { //
-            echo ' #' . $response['errorCode'] . ': ' . $response['errorMessage'];
-        } else { //
-            header('Location: ' . $response['formUrl']);
+        $response = static::gateway('register.do', $data);
+
+        if (!$response->isOk) {
+            Yii::$app->getSession()->setFlash('error', 'Failed: Pay Gateway Error - ' . ($response->getData())['Error']);
+            Yii::debug('Failed: Pay Gateway Error - ' . ($response->getData())['Error']);
+        } else {
+            header('Location: ' . $response->data['formUrl']);
             die();
         }
-        return true;
+
+        return false;
     }
 
-    private static function gateway($method, $data) {
-        $curl = curl_init(); //
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => GATEWAY_URL.$method, //
-            CURLOPT_RETURNTRANSFER => true, //
-            CURLOPT_POST => true, // POST
-            CURLOPT_POSTFIELDS => http_build_query($data) //
-        ));
-        $response = curl_exec($curl); //
+    public static function success(): bool
+    {
+        return false;
+    }
 
-        $response = json_decode($response, true); // JSON
-        curl_close($curl); //
-        return $response; //
+    public static function notify(): bool
+    {
+        return false;
+    }
+
+    private static function gateway($method, $data): Response
+    {
+        $GATEWAY_URL = self::PROD_URL;
+        if (Yii::$app->params['AlfaBankOnline']['test']) {
+            $GATEWAY_URL = self::TEST_URL;
+        }
+
+        $client = new Client(['baseUrl' => $GATEWAY_URL]);
+
+        $response = $client->post($method, $data)->send();
+
+        return $response;
     }
 
 }

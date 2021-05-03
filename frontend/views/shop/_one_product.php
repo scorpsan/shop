@@ -39,17 +39,27 @@ use yii\bootstrap4\Html;
             <div class="type-code">
                 <div><?= Yii::t('frontend', 'Code') . ': ' . $product->code ?></div>
             </div>
-            <div class="dollar"><?= (($product->sale) ? Yii::$app->formatter->asCurrency($product->sale) . ' <span>' . Yii::$app->formatter->asCurrency($product->price) . '</span>' : Yii::$app->formatter->asCurrency($product->price)) ?></div>
+            <div class="dollar">
+                <?php if ($product->in_stock) { ?>
+                    <?= (($product->sale) ? Yii::$app->formatter->asCurrency($product->sale) . ' <span>' . Yii::$app->formatter->asCurrency($product->price) . '</span>' : Yii::$app->formatter->asCurrency($product->price)) ?>
+                <?php } else { ?>
+                    <?= Yii::t('frontend', 'Out of Stock') ?>
+                <?php } ?>
+            </div>
         </div>
     </div>
-    <?php if ($product->sale) { ?>
-        <div class="sale"><?= Yii::$app->formatter->asPercent(($product->sale - $product->price)/$product->price) ?></div>
-    <?php } ?>
-    <?php if ($product->top) { ?>
-        <div class="hot<?= (($product->sale) ? '-sale' : '') ?>">Hot</div>
+    <?php if ($product->in_stock) { ?>
+        <?php if ($product->sale) { ?>
+            <div class="sale"><?= Yii::$app->formatter->asPercent(($product->sale - $product->price)/$product->price) ?></div>
+        <?php } ?>
+        <?php if ($product->top) { ?>
+            <div class="hot<?= (($product->sale) ? '-sale' : '') ?>">Hot</div>
+        <?php } ?>
     <?php } ?>
     <div class="option">
-        <?= Html::a('<span><i class="fas fa-shopping-cart"></i></span>', ['/shop/cart/add'], ['class' => 'add-to-cart', 'data-id' => $product->id]) ?>
+        <?php if ($product->in_stock) { ?>
+            <?= Html::a('<span><i class="fas fa-shopping-cart"></i></span>', ['/shop/cart/add'], ['class' => 'add-to-cart', 'data-id' => $product->id]) ?>
+        <?php } ?>
         <?php if (!Yii::$app->user->isGuest) { ?>
             <?= Html::a('<span><i class="fas fa-heart"></i></span>', ['/user/wishlist/add'], ['class' => 'add-to-wish', 'data-id' => $product->id]) ?>
         <?php } ?>

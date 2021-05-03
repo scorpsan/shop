@@ -3,7 +3,7 @@ namespace frontend\widgets;
 
 use yii\base\Widget;
 use Yii;
-use frontend\models\ContactForm;
+use frontend\forms\ContactForm;
 
 /**
  * Class ContactFormWidget

@@ -1,8 +1,6 @@
 <?php
 namespace backend\models;
 
-use backend\controllers\AppController;
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -14,20 +12,23 @@ class ShopProductsSearch extends ShopProducts
 {
     public $title;
 
-    public function rules() {
+    public function rules(): array
+    {
         return [
             [['id'], 'integer'],
-            [['published', 'top', 'new'], 'boolean'],
+            [['published', 'top', 'new', 'in_stock'], 'boolean'],
             [['code', 'title'], 'safe'],
         ];
     }
 
-    public function scenarios() {
+    public function scenarios(): array
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
-    public function search($params) {
+    public function search($params): ActiveDataProvider
+    {
         $query = ShopProducts::find()
             ->joinWith('translate')
             ->with('wishes')
@@ -51,6 +52,7 @@ class ShopProductsSearch extends ShopProducts
                     'rating',
                     'created_at',
                     'updated_at',
+                    'in_stock',
                 ],
                 'defaultOrder' => [
                     'sort' => SORT_ASC,
@@ -77,6 +79,7 @@ class ShopProductsSearch extends ShopProducts
             'published' => $this->published,
             'top' => $this->top,
             'new' => $this->new,
+            'in_stock' => $this->in_stock,
         ]);
         $query->andFilterWhere(['like', ShopProductsLng::tableName().'.title', $this->title])
             ->andFilterWhere(['like', 'code', $this->code]);

@@ -96,36 +96,44 @@ $filter = FilterWidget::widget(['categoryalias' => $product->category->alias]);
                                 <div class="type-code">
                                     <div><?= Yii::t('frontend', 'Code') . ': ' . $product->code ?></div>
                                 </div>
-                                <h4 class="price-product"><?= (($product->sale) ? Yii::$app->formatter->asCurrency($product->sale) . ' <span>' . Yii::$app->formatter->asCurrency($product->price) . '</span>' : Yii::$app->formatter->asCurrency($product->price)) ?></h4>
+                                <h4 class="price-product">
+                                    <?php if ($product->in_stock) { ?>
+                                        <?= (($product->sale) ? Yii::$app->formatter->asCurrency($product->sale) . ' <span>' . Yii::$app->formatter->asCurrency($product->price) . '</span>' : Yii::$app->formatter->asCurrency($product->price)) ?>
+                                    <?php } else { ?>
+                                        <?= Yii::t('frontend', 'Out of Stock') ?>
+                                    <?php } ?>
+                                </h4>
                                 <p><?= $product->translate->short_content ?></p>
                             </div>
-                            <?php ActiveForm::begin(['id' => 'addToCart', 'action' => ['/cart/add']]) ?>
-                            <h4 class="heading-4 font-weight-bold d-block select-option-p2"><?= Yii::t('frontend', 'Quantity') ?></h4>
-                            <div class="size-quanlity">
-                                <div>
-                                    <div class="select-quanlity">
-                                        <select name="quanlity" id="quanlity" class="page">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </select>
+                            <?php if ($product->in_stock) { ?>
+                                <?php ActiveForm::begin(['id' => 'addToCart', 'action' => ['/cart/add']]) ?>
+                                <h4 class="heading-4 font-weight-bold d-block select-option-p2"><?= Yii::t('frontend', 'Quantity') ?></h4>
+                                <div class="size-quanlity">
+                                    <div>
+                                        <div class="select-quanlity">
+                                            <select name="quanlity" id="quanlity" class="page">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="select-buy">
+                                        <?= Html::a(Yii::t('frontend', 'Add to cart'), ['/shop/cart/add'], ['class' => 'add-to-cart', 'data-id' => $product->id]) ?>
+                                        <?php if (!Yii::$app->user->isGuest) { ?>
+                                            <?= Html::a('<i class="fas fa-heart"></i>', ['/user/wishlist/add'], ['class' => 'add-to-wish', 'data-id' => $product->id]) ?>
+                                        <?php } ?>
                                     </div>
                                 </div>
-                                <div class="select-buy">
-                                    <?= Html::a(Yii::t('frontend', 'Add to cart'), ['/shop/cart/add'], ['class' => 'add-to-cart', 'data-id' => $product->id]) ?>
-                                    <?php if (!Yii::$app->user->isGuest) { ?>
-                                        <?= Html::a('<i class="fas fa-heart"></i>', ['/user/wishlist/add'], ['class' => 'add-to-wish', 'data-id' => $product->id]) ?>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <?php ActiveForm::end() ?>
+                                <?php ActiveForm::end() ?>
+                            <?php } ?>
                             <div class="link-page">
                                 <?php
                                 $categoryLinks = array();

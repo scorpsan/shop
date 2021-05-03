@@ -4,9 +4,6 @@ namespace common\models;
 use yii\db\ActiveRecord;
 
 /**
- * Class SiteSettingsLng
- * @package common\models
- *
  * @property int $id [int(11)]
  * @property int $item_id [int(11)]
  * @property string $lng [varchar(5)]

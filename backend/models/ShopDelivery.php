@@ -9,21 +9,6 @@ use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "{{%shop_delivery_method}}".
- *
- * @property int $id [int(11)]
- * @property float $cost [float]
- * @property int $max_weight [int(11)]
- * @property int $min_summa [int(11)]
- * @property int $max_summa [int(11)]
- * @property int $sort [int(9)]
- * @property bool $default [tinyint(1)]
- * @property bool $published [tinyint(1)]
- *
- * @property-read null|string $title
- * @property-read null|string $description
- * @property-read ActiveQuery $payments
- * @property-read ActiveQuery $translate
  * @property-read ActiveQuery $translates
  */
 class ShopDelivery extends BaseShopDelivery
@@ -57,8 +42,7 @@ class ShopDelivery extends BaseShopDelivery
         return [
             [['cost'], 'number'],
             [['max_weight', 'min_summa', 'max_summa'], 'integer'],
-            [['default', 'published'], 'boolean'],
-            [['default'], 'default', 'value' => false],
+            [['published'], 'boolean'],
             [['published'], 'default', 'value' => true],
             [['payment_list'], 'each', 'rule' => ['integer']],
             [['sorting'], 'safe'],
@@ -73,10 +57,9 @@ class ShopDelivery extends BaseShopDelivery
         return [
             'id' => Yii::t('backend', 'ID'),
             'cost' => Yii::t('backend', 'Cost Delivery'),
-            'max_weight' => Yii::t('backend', 'Max Weight'),
+            'max_weight' => Yii::t('backend', 'Max Weight (gr)'),
             'min_summa' => Yii::t('backend', 'Min Summa'),
             'max_summa' => Yii::t('backend', 'Max Summa'),
-            'default' => Yii::t('backend', 'Default'),
             'published' => Yii::t('backend', 'Published'),
             'sort' => Yii::t('backend', 'Sort'),
             'sorting' => Yii::t('backend', 'Sort After'),

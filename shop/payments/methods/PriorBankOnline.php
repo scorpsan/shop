@@ -5,20 +5,24 @@ use shop\payments\PaymentMethod;
 
 class PriorBankOnline implements PaymentMethod
 {
-    /**
-     * URL API платежного шлюза
-     */
-    //const RBS_PROD_URL = 'https://ecom.alfabank.by/payment/rest/';
-    //const RBS_TEST_URL = 'https://web.rbsuat.com/ab_by/rest/';
-
     public static function name(): string
     {
         return 'Prior Bank Online';
     }
 
-    public static function pay(): bool
+    public static function pay($order_number, $amount, $currency = null, $urls = null): bool
     {
-        return true;
+        return false;
+    }
+
+    public static function success(): bool
+    {
+        return false;
+    }
+
+    public static function notify(): bool
+    {
+        return false;
     }
 
 }

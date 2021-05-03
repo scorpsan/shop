@@ -19,8 +19,8 @@ use Exception;
  * @property int $created_at [int(11)]
  * @property int $updated_at [int(11)]
  *
- * @property-read null|string $title
- * @property-read null|string $seotitle
+ * @property-read string $title
+ * @property-read string $seotitle
  * @property-read string $keywords
  * @property-read string $description
  * @property-read array $content
@@ -37,7 +37,7 @@ class Pages extends ActiveRecord
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws Exception
      */
     public function getTitle(): string
@@ -46,12 +46,12 @@ class Pages extends ActiveRecord
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws Exception
      */
     public function getSeotitle(): string
     {
-        return ArrayHelper::getValue($this->translate, 'seotitle');
+        return ArrayHelper::getValue($this->translate, 'seotitle', $this->title);
     }
 
     /**
@@ -74,6 +74,7 @@ class Pages extends ActiveRecord
 
     /**
      * @return array
+     * @throws Exception
      */
     public function getContent(): array
     {

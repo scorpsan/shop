@@ -61,9 +61,17 @@ $this->title = Yii::t('frontend', 'My Wish List');
                                             <tr>
                                                 <td><?= Html::img($product->smallImageMain, ['alt' => $product->title, 'class' => 'img-fluid', 'width' => '100', 'height' => '100']) ?></td>
                                                 <td><?= Html::a($product->title, ['/shop/product', 'categoryalias' => ($product->category->depth > 0) ? $product->category->alias : null, 'alias' => $product->alias], ['title' => $product->title]) ?></td>
-                                                <td class="text-center dollar"><?= (($product->sale) ? Yii::$app->formatter->asCurrency($product->sale) . '<br><span>' . Yii::$app->formatter->asCurrency($product->price) . '</span>' : Yii::$app->formatter->asCurrency($product->price)) ?></td>
+                                                <td class="text-center dollar">
+                                                    <?php if ($product->in_stock) { ?>
+                                                        <?= (($product->sale) ? Yii::$app->formatter->asCurrency($product->sale) . '<br><span>' . Yii::$app->formatter->asCurrency($product->price) . '</span>' : Yii::$app->formatter->asCurrency($product->price)) ?>
+                                                    <?php } else { ?>
+                                                        <?= Yii::t('frontend', 'Out of Stock') ?>
+                                                    <?php } ?>
+                                                </td>
                                                 <td class="text-center wish-actions">
-                                                    <?= Html::a('<i class="fas fa-cart-arrow-down" aria-hidden="true"></i>', ['to-cart'], ['title' => Yii::t('frontend', 'Move to cart'), 'class' => 'from-wish-to-cart', 'data-id' => $product->id]) ?>
+                                                    <?php if ($product->in_stock) { ?>
+                                                        <?= Html::a('<i class="fas fa-cart-arrow-down" aria-hidden="true"></i>', ['to-cart'], ['title' => Yii::t('frontend', 'Move to cart'), 'class' => 'from-wish-to-cart', 'data-id' => $product->id]) ?>
+                                                    <?php } ?>
                                                     <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['delete'], ['title' => Yii::t('frontend', 'Delete'), 'class' => 'delete-from-wish remove', 'data-id' => $product->id]) ?>
                                                 </td>
                                             </tr>

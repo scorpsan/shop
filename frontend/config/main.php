@@ -23,6 +23,7 @@ return [
             'classMap' => [
                 'User' => common\models\User::class,
                 'RegistrationForm' => 'frontend\forms\RegistrationForm',
+                'MailService' => 'frontend\components\MailService',
             ],
             'controllerMap' => [
                 'profile' => 'frontend\controllers\user\ProfileController',

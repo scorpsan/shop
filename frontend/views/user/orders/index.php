@@ -4,7 +4,7 @@
  * @var \frontend\models\ShopOrders $orders
  */
 
-use shop\StatusStyle;
+use frontend\models\ShopOrdersStatuses;
 use yii\web\View;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap4\Html;
@@ -64,10 +64,14 @@ $this->title = Yii::t('frontend', 'My Orders');
                                                 <td><?= Html::a($item->order_number, ['/user/orders/view', 'number' => $item->order_number], ['data-pjax' => 0]) ?></td>
                                                 <td><?= Yii::$app->formatter->asDate($item->created_at) ?></td>
                                                 <td class="text-center dollar"><?= Yii::$app->formatter->asCurrency($item->amount, $item->currency) ?></td>
-                                                <td class="text-center"><?= ($item->paymentStatus->status == $item->deliveryStatus->status) ? StatusStyle::HtmlStatus($item->paymentStatus->status) : StatusStyle::HtmlStatus($item->paymentStatus->status) . ' / ' . StatusStyle::HtmlStatus($item->deliveryStatus->status) ?></td>
+                                                <td class="text-center"><?= ($item->paymentStatus->status == $item->deliveryStatus->status) ? ShopOrdersStatuses::HtmlStatus($item->paymentStatus->status) : ShopOrdersStatuses::HtmlStatus($item->paymentStatus->status) . ' / ' . ShopOrdersStatuses::HtmlStatus($item->deliveryStatus->status) ?></td>
                                                 <td class="text-center wish-actions">
-                                                    <?= Html::a('<i class="fas fa-dolly" aria-hidden="true"></i>', ['/user/orders/received', 'number' => $item->order_number], ['title' => Yii::t('frontend', 'Order received'), 'class' => 'order-received']) ?>
-                                                    <?= Html::a('<i class="fas fa-times" aria-hidden="true"></i>', ['/user/orders/cancel', 'number' => $item->order_number], ['title' => Yii::t('frontend', 'Cancel order'), 'class' => 'order-cancel']) ?>
+                                                    <?php if ($item->canDelivered) { ?>
+                                                        <?= Html::a('<i class="fas fa-clipboard-check" aria-hidden="true"></i>', ['/user/orders/received', 'number' => $item->order_number], ['title' => Yii::t('frontend', 'Order Received'), 'class' => 'order-received']) ?>
+                                                    <?php } ?>
+                                                    <?php if ($item->canCancel) { ?>
+                                                        <?= Html::a('<i class="fas fa-times" aria-hidden="true"></i>', ['/user/orders/cancel', 'number' => $item->order_number], ['title' => Yii::t('frontend', 'Cancel Order'), 'class' => 'order-cancel']) ?>
+                                                    <?php } ?>
                                                 </td>
                                             </tr>
                                         <?php } ?>

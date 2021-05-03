@@ -78,6 +78,9 @@ return [
     'Order N' => 'N заказа',
     'Date' => 'Дата',
     'Status' => 'Статус',
+    'free' => 'бесплатно',
+    'In Stock' => 'В наличии',
+    'Out of Stock' => 'Нет в наличии',
 
     'Create' => 'Создать',
     'Update' => 'Обновить',
@@ -118,6 +121,18 @@ return [
     'To order' => 'Заказать',
     'Select order delivery method' => 'Выберите способ доставки заказа',
     'Select a Payment Method' => 'Выберите способ оплаты',
+
+    'New Order' => 'Новый заказ',
+    'Order Confirmed' => 'Заказ подтвержден',
+    'Order Sent' => 'Заказ отправлен',
+    'Order Delivered' => 'Заказ доставлен',
+    'Order Cancelled' => 'Заказ отменен',
+    'Awaiting' => 'Ожидает',
+    'Paid' => 'Оплачен',
+    'Cancelled' => 'Отменен',
+    'Refund' => 'Возвращен',
+    'Order Received' => 'Заказ получен',
+    'Cancel Order' => 'Отменить заказ',
 
     'Email' => 'E-mail',
     'Message' => 'Сообщение',

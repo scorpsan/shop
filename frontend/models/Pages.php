@@ -8,7 +8,7 @@ class Pages extends BasePages
     /**
      * @return Pages|null
      */
-    public static function findIndexPage(): Pages
+    public static function findIndexPage()
     {
         return self::find()->where([
             'main' => true,
@@ -20,7 +20,7 @@ class Pages extends BasePages
      * @param $alias
      * @return Pages|null
      */
-    public static function findAliasPage($alias): Pages
+    public static function findAliasPage($alias)
     {
         return self::find()->where([
             'alias' => $alias,

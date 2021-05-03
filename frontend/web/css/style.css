@@ -267,7 +267,8 @@ button, button:focus {outline:none; border:none; display:inline-block;}
     justify-content:flex-end;
 }
 .menu-mobile .header-mobile .right-box .login a,
-.menu-mobile .header-mobile .right-box .search a {
+.menu-mobile .header-mobile .right-box .search a,
+.menu-mobile .header-mobile .right-box .shopping-cart {
     color:#fff;
     font-size:20px;
 }
@@ -13455,7 +13456,7 @@ body.mobile .col-mobile-12 {
 @media screen and (max-width:479px) {
     .d-flex.lr {flex-wrap:wrap;}
 }
-.d-flex.lr *:last-child {margin-right:0 !important;}
+.d-flex.lr *:last-child {margin-right:auto !important;}
 .btn-lostpwd {
     font-family: "Barlow", sans-serif;
     font-size: 16px;
@@ -13594,4 +13595,9 @@ form .checkbox .help-block {
 .mr-10 {margin-right:10px;}
 .loading {
     display:inline-block;width:100%;min-width:200px;min-height:200px;background:url('../images/loading.gif') no-repeat center center;margin:20px 0;
+}
+a[disabled] {
+    pointer-events: none;
+    cursor: default;
+    color: #666666 !important;
 }

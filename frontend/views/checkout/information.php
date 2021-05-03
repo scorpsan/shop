@@ -16,9 +16,6 @@ use yii\bootstrap4\Html;
 $this->title = Yii::t('frontend', 'Information');
 
 $user = Yii::$app->user;
-if (!$user->isGuest) {
-    $name = empty($user->identity->profile->name) ? Html::encode($user->identity->username) : Html::encode($user->identity->profile->name);
-}
 ?>
 
 <?= $this->render('_aside_head', ['total' => $total]) ?>
@@ -58,7 +55,7 @@ if (!$user->isGuest) {
                                     <div class="logged-in-customer-information__avatar gravatar" style="background-image: url(<?= $user->identity->avatarUrl ?>);filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//cdn.shopify.com/proxy/5cae64e12cfd032b16d057595aa4c13b78fe982817c339d111d3fd8baee8a446/www.gravatar.com/avatar/d0a155537c3a50b10f8bd67248c29b64.jpg?s=100&amp;d=https%3A%2F%2Fcdn.shopify.com%2Fshopifycloud%2Fshopify%2Fassets%2Fno-gravatar-new-04e7c2331218ac202e79e31be502fd5631bc96cb0206580dbcb0720ebbbd7c73_100x100.png', sizingMethod='scale')" role="img" aria-label="Avatar"></div>
                                 </div>
                                 <p class="logged-in-customer-information__paragraph">
-                                    <span class="page-main__emphasis"><?= $name ?></span>
+                                    <span class="page-main__emphasis"><?= (empty($user->identity->profile->name)) ? Html::encode($user->identity->username) : Html::encode($user->identity->profile->name) ?></span>
                                     <span data-rtl-ensure="">(<?= $user->identity->email ?>)</span>
                                     <br>
                                     <?= Html::a(Yii::t('frontend', 'Sign Out'), ['/user/security/logout'], ['data-method' => 'post', 'title' => Yii::t('frontend', 'Sign Out')]) ?>
@@ -96,7 +93,8 @@ if (!$user->isGuest) {
                                 </div>
                                 <div class="section__content">
                                     <div class="fieldset">
-                                        <?= $form->field($formInfo, 'email')->input('email') ?>
+                                        <?= $form->field($formInfo, 'email')->input('email', ['placeholder' => $formInfo->getAttributeLabel('email') . ' *']) ?>
+
                                         <?= $form->field($formInfo, 'phone')->widget(phoneInputWidget::class, [
                                             'preferred' => ['BY'],
                                             'options' => [
@@ -117,30 +115,26 @@ if (!$user->isGuest) {
                                 <div class="section__content">
                                     <div class="fieldset">
                                         <?php if (!$user->isGuest) { ?>
-                                            <div class="field">
-                                                <div class="field__input-wrapper field__input-wrapper--select">
-                                                    <?= Html::dropDownList('custom_address', $user->identity->addresses[0]->id, \yii\helpers\ArrayHelper::map($user->identity->addresses, 'id', 'fullStringAddress'), [
-                                                        'prompt' => Yii::t('frontend', 'Use a new address'),
-                                                        'class' => 'field__input field__input--select',
-                                                        'id' => 'custom_address',
-                                                        'data' => [
-                                                            'url' => \yii\helpers\Url::to(['/user/address/load'])
-                                                        ]
-                                                    ]) ?>
-                                                    <div class="field__caret">
-                                                        <svg class="icon-svg icon-svg--color-adaptive-lighter icon-svg--size-10 field__caret-svg" role="presentation" aria-hidden="true" focusable="false"> <use xlink:href="#caret-down"></use> </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <?= $form->field($formInfo, 'user_address', [
+                                                'template' => "{label}\n<div class=\"field__input-wrapper field__input-wrapper--select\">{input}<div class=\"field__caret\">
+                                                        <svg class=\"icon-svg icon-svg--color-adaptive-lighter icon-svg--size-10 field__caret-svg\" role=\"presentation\" aria-hidden=\"true\" focusable=\"false\"> <use xlink:href=\"#caret-down\" /> </svg>
+                                                    </div></div>\n{hint}\n{error}",
+                                                'options' => ['class' => 'field'],
+                                                'inputOptions' => ['class' => 'field__input field__input--select', 'id' => 'custom_address'],
+                                            ])->dropDownList(\yii\helpers\ArrayHelper::map($user->identity->addresses, 'id', 'fullStringAddress'), [
+                                                'prompt' => Yii::t('frontend', 'Use a new address'),
+                                                'data' => ['url' => \yii\helpers\Url::to(['/user/address/load'])],
+                                            ]) ?>
                                         <?php } ?>
-                                        <?= $form->field($formInfo, 'name')->textInput(['placeholder' => $formInfo->getAttributeLabel('name')]) ?>
+
+                                        <?= $form->field($formInfo, 'name')->textInput(['placeholder' => $formInfo->getAttributeLabel('name') . ' *']) ?>
 
                                         <div class="address-fields">
-                                            <?= $form->field($formInfo, 'address')->textInput(['placeholder' => $formInfo->getAttributeLabel('address')]) ?>
+                                            <?= $form->field($formInfo, 'address')->textInput(['placeholder' => $formInfo->getAttributeLabel('address') . ' *']) ?>
 
                                             <?= $form->field($formInfo, 'address2')->textInput(['placeholder' => $formInfo->getAttributeLabel('address2')]) ?>
 
-                                            <?= $form->field($formInfo, 'city')->textInput(['placeholder' => $formInfo->getAttributeLabel('city')]) ?>
+                                            <?= $form->field($formInfo, 'city')->textInput(['placeholder' => $formInfo->getAttributeLabel('city') . ' *']) ?>
 
                                             <?= $form->field($formInfo, 'district')->textInput(['placeholder' => $formInfo->getAttributeLabel('district')]) ?>
 
@@ -159,14 +153,14 @@ if (!$user->isGuest) {
                                             ]])->textInput(['placeholder' => $formInfo->getAttributeLabel('postal')]) ?>
                                         </div>
                                         <?php if (!$user->isGuest) { ?>
-                                        <div class="field" id="remember_me">
-                                            <div class="checkbox-wrapper">
-                                                <div class="checkbox__input">
-                                                    <input class="input-checkbox" data-backup="remember_me" type="checkbox" value="1" name="checkout[remember_me]" id="checkout_remember_me" />
+                                            <div class="field" id="remember_me">
+                                                <div class="checkbox-wrapper">
+                                                    <div class="checkbox__input">
+                                                        <input class="input-checkbox" data-backup="remember_me" type="checkbox" value="1" name="<?= $formInfo->formName() ?>[remember_me]" id="checkout_remember_me" />
+                                                    </div>
+                                                    <label class="checkbox__label" for="checkout_remember_me"><?= Yii::t('frontend', 'Save this address for next time') ?></label>
                                                 </div>
-                                                <label class="checkbox__label" for="checkout_remember_me"><?= Yii::t('frontend', 'Save this address for next time') ?></label>
                                             </div>
-                                        </div>
                                         <?php } ?>
                                     </div>
                                 </div>

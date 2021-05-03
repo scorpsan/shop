@@ -16,7 +16,6 @@ use Exception;
  * @property int $min_summa [int(11)]
  * @property int $max_summa [int(11)]
  * @property int $sort [int(9)]
- * @property bool $default [tinyint(1)]
  * @property bool $published [tinyint(1)]
  *
  * @property-read null|string $title

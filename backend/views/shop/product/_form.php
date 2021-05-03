@@ -130,6 +130,8 @@ $("document").ready(function(){
             <div class="box-body">
                 <?= $form->field($model, 'published')->checkbox() ?>
 
+                <?= $form->field($model, 'in_stock')->checkbox() ?>
+
                 <?= $form->field($model, 'top')->checkbox() ?>
 
                 <?= $form->field($model, 'new')->checkbox() ?>

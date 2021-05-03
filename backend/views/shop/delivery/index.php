@@ -8,7 +8,6 @@ use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use backend\components\grid\BooleanDataColumn;
 use backend\components\grid\TranslatesDataColumn;
 
 $this->title = Yii::t('backend', 'Delivery Methods');
@@ -56,7 +55,28 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'cost',
                             'label' => Yii::t('backend', 'Cost'),
-                            'value' => function($data) { return ($data->cost)?Yii::$app->formatter->asCurrency($data->cost):'free'; },
+                            'value' => function($data) { return ($data->cost) ? Yii::$app->formatter->asCurrency($data->cost) : 'free'; },
+                            'format' => 'raw',
+                        ],
+                        [
+                            'attribute' => 'max_weight',
+                            'value' => function($data) {
+                                return ($data->max_weight) ? $data->max_weight : null;
+                            },
+                            'format' => 'raw',
+                        ],
+                        [
+                            'attribute' => 'min_summa',
+                            'value' => function($data) {
+                                return ($data->min_summa) ? '>= ' . Yii::$app->formatter->asCurrency($data->min_summa) : null;
+                            },
+                            'format' => 'raw',
+                        ],
+                        [
+                            'attribute' => 'max_summa',
+                            'value' => function($data) {
+                                return ($data->max_summa) ? '< ' . Yii::$app->formatter->asCurrency($data->max_summa) : null;
+                            },
                             'format' => 'raw',
                         ],
                         [
@@ -84,12 +104,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => Yii::t('backend', 'Translate'),
                             'format' => 'html',
                             'visible' => (count($languages) > 1),
-                        ],
-                        [
-                            'class' => BooleanDataColumn::class,
-                            'attribute' => 'default',
-                            'headerOptions' => ['width' => '130'],
-                            'format' => 'boolean',
                         ],
                         [
                             'attribute' => 'published',

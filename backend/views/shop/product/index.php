@@ -128,6 +128,25 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'boolean',
                         ],
                         [
+                            'attribute' => 'in_stock',
+                            'content' => function($data) {
+                                if ($data->in_stock) {
+                                    return Html::a(
+                                        Yii::$app->formatter->asBoolean($data->in_stock),
+                                        ['un-in-stock', 'id' => $data->id],
+                                        ['class' => 'btn btn-xs btn-success btn-block ajaxAction']
+                                    );
+                                }
+                                return Html::a(
+                                    Yii::$app->formatter->asBoolean($data->in_stock),
+                                    ['in-stock', 'id' => $data->id],
+                                    ['class' => 'btn btn-xs btn-danger btn-block ajaxAction']
+                                );
+                            },
+                            'headerOptions' => ['width' => '90'],
+                            'format' => 'boolean',
+                        ],
+                        [
                             'class' => BooleanDataColumn::class,
                             'attribute' => 'top',
                             'headerOptions' => ['width' => '90'],

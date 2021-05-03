@@ -4,6 +4,10 @@ namespace frontend\models;
 use common\models\ShopOrders as BaseShopOrders;
 use Yii;
 
+/**
+ * @property-read bool $canCancel
+ * @property-read bool $canDelivered
+ */
 class ShopOrders extends BaseShopOrders
 {
     /**
@@ -32,6 +36,22 @@ class ShopOrders extends BaseShopOrders
             'created_at' => Yii::t('frontend', 'Created At'),
             'updated_at' => Yii::t('frontend', 'Updated At'),
         ];
+    }
+
+    public function getCanCancel(): bool
+    {
+        if ($this->deliveryStatus->status == ShopOrdersStatuses::ORDER_NEW) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getCanDelivered(): bool
+    {
+        if ($this->deliveryStatus->status == ShopOrdersStatuses::DELIVERY_SEND) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -78,7 +78,7 @@ class ShopOrders extends ActiveRecord
             [['delivery_postal'], 'string', 'max' => 10],
             [['delivery_method_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopDelivery::class, 'targetAttribute' => ['delivery_method_id' => 'id']],
             [['payment_method_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopPayment::class, 'targetAttribute' => ['payment_method_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnEmpty' => true, 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -143,7 +143,7 @@ class ShopOrders extends ActiveRecord
      */
     public function getDeliveryStatus()
     {
-        return $this->deliveryStatuses[0];
+        return $this->hasOne(ShopOrdersStatuses::class, ['order_id' => 'id'])->where(['type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY])->orderBy(['created_at' => SORT_DESC]);
     }
 
     /**
@@ -159,7 +159,7 @@ class ShopOrders extends ActiveRecord
      */
     public function getPaymentStatus()
     {
-        return $this->paymentStatuses[0];
+        return $this->hasOne(ShopOrdersStatuses::class, ['order_id' => 'id'])->where(['type' => ShopOrdersStatuses::STATUS_TYPE_PAYMENT])->orderBy(['created_at' => SORT_DESC]);
     }
 
     public function generateToken()

@@ -107,7 +107,7 @@ $this->title = Yii::t('frontend', 'Payment');
                                                 <div role="rowheader" class="review-block__label"><?= Yii::t('frontend', 'Method') ?></div>
                                                 <div role="cell" class="review-block__content"><?= $shipMethod->title ?> ·
                                                     <strong class="emphasis">
-                                                        <span class="skeleton-while-loading--inline"><?= Yii::$app->formatter->asCurrency($shipMethod->cost) ?></span>
+                                                        <span class="skeleton-while-loading--inline"><?= (($shipMethod->cost) ? Yii::$app->formatter->asCurrency($shipMethod->cost) : Yii::t('frontend','free')) ?></span>
                                                     </strong>
                                                 </div>
                                             </div>

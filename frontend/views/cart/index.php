@@ -14,6 +14,7 @@ $this->title = Yii::t('frontend', 'Shopping Cart');
 $this->params['breadcrumbs'][] = Yii::t('frontend', 'Your Shopping Cart');
 
 $total = 0;
+$canCheckout = true;
 ?>
 <section class="section-cart">
     <?= $this->render('../layouts/_alert') ?>
@@ -35,9 +36,13 @@ $total = 0;
                         <tbody>
                         <?php if ($cartQty) {
                             foreach ($cartList as $key => $prod) {
-                                $price = (($productList[$key]->sale) ? $productList[$key]->sale : $productList[$key]->price);
-                                $totalPrice = $prod['qty'] * $price;
-                                $total += $totalPrice;
+                                if ($productList[$key]->in_stock) {
+                                    $price = (($productList[$key]->sale) ? $productList[$key]->sale : $productList[$key]->price);
+                                    $totalPrice = $prod['qty'] * $price;
+                                    $total += $totalPrice;
+                                } else {
+                                    $canCheckout = false;
+                                }
                                 ?>
                                 <tr class="cart_item">
                                     <td data-label="Product Image" class="product-thumbnail">
@@ -46,23 +51,29 @@ $total = 0;
                                     <td data-title="Product Name" class="product-name-thumb" data-title="<?= Yii::t('frontend', 'Product') ?>">
                                         <?= Html::a($productList[$key]->title, ['/shop/product', 'categoryalias' => ($productList[$key]->category->depth > 0) ? $productList[$key]->category->alias : null, 'alias' => $productList[$key]->alias], ['title' => $productList[$key]->title]) ?>
                                     </td>
-                                    <td data-label="Product Price" class="product-price" data-title="<?= Yii::t('frontend', 'Price') ?>">
-                                        <span class="amount"><?= Yii::$app->formatter->asCurrency($price) ?></span>
-                                    </td>
-                                    <td data-label="Quantity" class="product-quantity" data-title="<?= Yii::t('frontend', 'QTY') ?>">
-                                        <div class="js-qty">
-                                            <?= Html::a('<span class="icon icon-minus" aria-hidden="true"></span><i class="fas fa-chevron-down" aria-hidden="true"></i>', ['/cart/minus'], [
-                                                'class' => 'js-qty__adjust js-qty__adjust--minus icon-fallback-text item-minus-cart', 'data-id' => $key
-                                            ]) ?>
-                                            <input type="text" class="js-qty__num" value="<?= $prod['qty'] ?>" min="1" data-id="<?= $key ?>" aria-label="quantity" pattern="[0-9]*" name="updates[]">
-                                            <?= Html::a('<span class="icon icon-plus" aria-hidden="true"></span><i class="fas fa-chevron-up" aria-hidden="true"></i>', ['/cart/plus'], [
-                                                'class' => 'js-qty__adjust js-qty__adjust--plus icon-fallback-text item-plus-cart', 'data-id' => $key
-                                            ]) ?>
-                                        </div>
-                                    </td>
-                                    <td data-label="Sub Total" class="product-subtotal" data-title="<?= Yii::t('frontend', 'Subtotal') ?>">
-                                        <span class="amount"><?= Yii::$app->formatter->asCurrency($totalPrice) ?></span>
-                                    </td>
+                                    <?php if ($productList[$key]->in_stock) { ?>
+                                        <td data-label="Product Price" class="product-price" data-title="<?= Yii::t('frontend', 'Price') ?>">
+                                            <span class="amount"><?= Yii::$app->formatter->asCurrency($price) ?></span>
+                                        </td>
+                                        <td data-label="Quantity" class="product-quantity" data-title="<?= Yii::t('frontend', 'QTY') ?>">
+                                            <div class="js-qty">
+                                                <?= Html::a('<span class="icon icon-minus" aria-hidden="true"></span><i class="fas fa-chevron-down" aria-hidden="true"></i>', ['/cart/minus'], [
+                                                    'class' => 'js-qty__adjust js-qty__adjust--minus icon-fallback-text item-minus-cart', 'data-id' => $key
+                                                ]) ?>
+                                                <input type="text" class="js-qty__num" value="<?= $prod['qty'] ?>" min="1" data-id="<?= $key ?>" aria-label="quantity" pattern="[0-9]*" name="updates[]">
+                                                <?= Html::a('<span class="icon icon-plus" aria-hidden="true"></span><i class="fas fa-chevron-up" aria-hidden="true"></i>', ['/cart/plus'], [
+                                                    'class' => 'js-qty__adjust js-qty__adjust--plus icon-fallback-text item-plus-cart', 'data-id' => $key
+                                                ]) ?>
+                                            </div>
+                                        </td>
+                                        <td data-label="Sub Total" class="product-subtotal" data-title="<?= Yii::t('frontend', 'Subtotal') ?>">
+                                            <span class="amount"><?= Yii::$app->formatter->asCurrency($totalPrice) ?></span>
+                                        </td>
+                                    <?php } else { ?>
+                                        <td colspan="3" class="product-price">
+                                            <?= Yii::t('frontend', 'Out of Stock') ?>
+                                        </td>
+                                    <?php } ?>
                                     <td class="text-center cart-actions">
                                         <?= Html::a('<i class="fas fa-heart" aria-hidden="true"></i>', ['/cart/to-wish'], ['title' => Yii::t('frontend', 'Add to cart'), 'class' => 'from-cart-to-wish', 'data-id' => $key]) ?>
                                         <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['/cart/delete'], ['title' => Yii::t('frontend', 'Delete'), 'class' => 'delete-from-cart remove', 'data-id' => $key]) ?>
@@ -103,7 +114,7 @@ $total = 0;
                                 </tbody>
                             </table>
                             <div class="wc-proceed-to-checkout clearfix">
-                                <?= Html::a(Yii::t('frontend', 'Check Out'), ['/checkout/index'], ['class' => 'shop-button checkout-button button alt wc-forward bg-color']) ?>
+                                <?= Html::a(Yii::t('frontend', 'Check Out'), ['/checkout/index'], ['class' => 'shop-button checkout-button button alt wc-forward bg-color', 'disabled' => ($canCheckout)?false:'disabled']) ?>
                             </div>
                         </div>
                     <?php } ?>

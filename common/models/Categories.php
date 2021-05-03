@@ -1,21 +1,15 @@
 <?php
 namespace common\models;
 
-use creocoder\nestedsets\NestedSetsBehavior;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
+use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use Exception;
 
 /**
- * @property-read null|string $seotitle
- * @property-read null|string $keywords
- * @property-read null|string $description
- * @property-read null|string $title
- * @property-read mixed $translate
- *
  * @property int $id [int(11)]
  * @property string $alias [varchar(255)]
  * @property int $tree [int(11)]
@@ -25,6 +19,12 @@ use Exception;
  * @property bool $published [tinyint(1)]
  * @property bool $noindex [tinyint(1)]
  * @property bool $page_style [tinyint(1)]
+ *
+ * @property-read string $title
+ * @property-read string $seotitle
+ * @property-read string $keywords
+ * @property-read string $description
+ * @property-read ActiveQuery $translate
  */
 class Categories extends ActiveRecord
 {
@@ -53,7 +53,7 @@ class Categories extends ActiveRecord
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws Exception
      */
     public function getTitle(): string
@@ -62,12 +62,12 @@ class Categories extends ActiveRecord
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws Exception
      */
     public function getSeotitle(): string
     {
-        return ArrayHelper::getValue($this->translate, 'seotitle');
+        return ArrayHelper::getValue($this->translate, 'seotitle', $this->title);
     }
 
     /**

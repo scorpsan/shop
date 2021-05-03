@@ -1,7 +1,7 @@
 <?php
 namespace backend\models;
 
-use yii\db\ActiveRecord;
+use common\models\ShopProducts as BaseShopProducts;
 use yii\db\ActiveQuery;
 use dosamigos\taggable\Taggable;
 use yii2tech\ar\position\PositionBehavior;
@@ -10,60 +10,19 @@ use yii\behaviors\TimestampBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
-use yii\base\InvalidConfigException;
-use yii\db\Expression;
-use Exception;
 
 /**
- * This is the model class for table "{{%shop_products}}".
- *
- * @property int $id
- * @property int $category_id
- * @property int $brand_id
- * @property string $code
- * @property string $alias
- * @property int $sort
- * @property int $published
- * @property int $top
- * @property int $new
- * @property int|null $hit
- * @property float|null $rating
- * @property float|null $price
- * @property float|null $sale
- * @property int $created_at
- * @property int $updated_at
- *
- * @property Categories $category
- * @property ShopBrands $brand
- * @property-read string $title
- * @property-read string $smallImageMain
- * @property-read string $mediumImageMain
- * @property-read string $imageMain
- * @property-read mixed $images
- * @property-read mixed $translate
- * @property-read mixed $translates
- * @property-read mixed $tags
- * @property-read mixed $imagesLinks
- * @property-read mixed $imagesLinksData
+ * @property-read array $imagesLinks
+ * @property-read array $imagesLinksData
+ * @property-read ActiveQuery $shopCategoryAssignments
+ * @property-read ActiveQuery $translates
  * @property-read array $sortingLists
- * @property-read ActiveQuery $characteristics
  * @property-read ActiveQuery $wishes
- *
- * @property ShopCategoryAssignments $shopCategoryAssignments
- * @property ShopProductsCharacteristics $Characteristics
  */
-class ShopProducts extends ActiveRecord
+class ShopProducts extends BaseShopProducts
 {
     public $titleDefault;
     public $sorting;
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName(): string
-    {
-        return '{{%shop_products}}';
-    }
 
     /**
      * {@inheritdoc}
@@ -99,9 +58,9 @@ class ShopProducts extends ActiveRecord
             [['category_id', 'brand_id', 'code'], 'required'],
             [['category_id', 'brand_id', 'sort', 'hit'], 'integer'],
             [['rating', 'price', 'sale'], 'number'],
-            [['published', 'top', 'new'], 'boolean'],
+            [['published', 'top', 'new', 'in_stock'], 'boolean'],
             [['published'], 'default', 'value' => 1],
-            [['top', 'new', 'hit'], 'default', 'value' => 0],
+            [['top', 'new', 'hit', 'in_stock'], 'default', 'value' => 0],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['category_id' => 'id']],
             [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopBrands::class, 'targetAttribute' => ['brand_id' => 'id']],
             [['created_at', 'updated_at', 'sorting', 'tagNames'], 'safe'],
@@ -131,6 +90,7 @@ class ShopProducts extends ActiveRecord
             'sale' => Yii::t('backend', 'Sale'),
             'created_at' => Yii::t('backend', 'Created At'),
             'updated_at' => Yii::t('backend', 'Updated At'),
+            'in_stock' => Yii::t('backend', 'In Stock'),
         ];
     }
 
@@ -182,66 +142,6 @@ class ShopProducts extends ActiveRecord
     }
 
     /**
-     * @return string|null
-     * @throws Exception
-     */
-    public function getTitle(): string
-    {
-        return ArrayHelper::getValue($this->translate, 'title');
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getCategory(): ActiveQuery
-    {
-        return $this->hasOne(Categories::class, ['id' => 'category_id'])->with('translate');
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getBrand(): ActiveQuery
-    {
-        return $this->hasOne(ShopBrands::class, ['id' => 'brand_id'])->with('translate');
-    }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function getSmallImageMain(): string
-    {
-        return ArrayHelper::getValue($this->images[0], 'smallImageUrl', Yii::getAlias('@images/nophoto.svg'));
-    }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function getMediumImageMain(): string
-    {
-        return ArrayHelper::getValue($this->images[0], 'mediumImageUrl', Yii::getAlias('@images/nophoto.svg'));
-    }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function getImageMain(): string
-    {
-        return ArrayHelper::getValue($this->images[0], 'imageUrl', Yii::getAlias('@images/nophoto.svg'));
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getImages(): ActiveQuery
-    {
-        return $this->hasMany(ShopPhotos::class, ['product_id' => 'id'])->orderBy('sort');
-    }
-
-    /**
      * @return array
      */
     public function getImagesLinks(): array
@@ -264,31 +164,10 @@ class ShopProducts extends ActiveRecord
 
     /**
      * @return ActiveQuery
-     * @throws InvalidConfigException
-     */
-    public function getTags(): ActiveQuery
-    {
-        return $this->hasMany(Tags::class, ['id' => 'tag_id'])->viaTable(ShopTags::tableName(), ['item_id' => 'id']);
-    }
-
-    /**
-     * @return ActiveQuery
      */
     public function getWishes(): ActiveQuery
     {
         return $this->hasMany(UserWishlistItems::class, ['product_id' => 'id']);
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getTranslate(): ActiveQuery
-    {
-        $langDef = Yii::$app->params['defaultLanguage'];
-        return $this->hasOne(ShopProductsLng::class, ['item_id' => 'id'])
-            ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
-            ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
-            ->indexBy('lng');
     }
 
     /**

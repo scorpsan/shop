@@ -1,29 +1,11 @@
 <?php
 namespace backend\models;
 
-use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
+use common\models\Tags as BaseTags;
 use Yii;
 
-/**
- * This is the model class for table "{{%tags}}".
- *
- * @property int $id
- * @property int $frequency
- * @property string $name
- *
- * @property-read mixed $shopTags
- */
-class Tags extends ActiveRecord
+class Tags extends BaseTags
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName(): string
-    {
-        return '{{%tags}}';
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -46,14 +28,6 @@ class Tags extends ActiveRecord
             'frequency' => Yii::t('backend', 'Frequency'),
             'name' => Yii::t('backend', 'Name'),
         ];
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getShopTags(): ActiveQuery
-    {
-        return $this->hasMany(ShopTags::class, ['tag_id' => 'id']);
     }
 
 }

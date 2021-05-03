@@ -758,6 +758,9 @@ $(document).ready(function(){
         if ($('#wish-pjax').length) {
             $.pjax.reload({container: '#wish-pjax', timeout: false});
         }
+        if ($('#order-pjax').length) {
+            $.pjax.reload({container: '#order-pjax', timeout: false});
+        }
     }
 
     $(document).on('click', '.add-to-cart, .from-wish-to-cart', function (event) {
@@ -850,6 +853,24 @@ $(document).ready(function(){
                     setTimeout(function () {
                         $('.wishlist-popup').removeClass('active');
                     }, 10000);
+                    SuccessChange(resp);
+                } else {
+                    errorMessage(resp.message);
+                }
+            }
+        });
+    });
+    $(document).on('click', '.order-received, .order-cancel', function (event) {
+        event.preventDefault();
+        var url = $(this).attr('href');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            error: function (resp) {
+                errorMessage(resp.message);
+            },
+            success: function (resp) {
+                if (resp.success) {
                     SuccessChange(resp);
                 } else {
                     errorMessage(resp.message);

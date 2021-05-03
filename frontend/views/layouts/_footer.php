@@ -17,7 +17,7 @@ $params = Yii::$app->params;
     <div class="footer-top border-bot">
         <div class="container-fluid my-container">
             <div class="row">
-                <div class="footer-column-1 col-xl-3 col-lg-4 col-sm-6 col-12 order-sm-4 order-md-1">
+                <div class="footer-column-1 col-xl-3 col-lg-4 col-sm-6 col-12 order-sm-4 order-md-1 mb-4">
                     <h3><?= Yii::t('frontend', 'Contacts') ?></h3>
                     <div class="footer-address">
                         <?php if (!empty($params['siteSettings']->translates[Yii::$app->language]->address)) { ?>
@@ -48,16 +48,13 @@ $params = Yii::$app->params;
                         <?php } ?>
                     </div>
                     <div class="payment-method">
-                        <img src="/files/f1<?= $style ?>.png" alt="Payment Method" class="mx-1">
-                        <img src="/files/f2<?= $style ?>.png" alt="Payment Method" class="mx-1">
-                        <img src="/files/f3<?= $style ?>.png" alt="Payment Method" class="mx-1">
-                        <img src="/files/f4<?= $style ?>.png" alt="Payment Method" class="mx-1">
+                        <img src="/files/bez-fona-s-tenju.png" alt="Payment Method" class="mx-1" style="width:95%">
                     </div>
                 </div>
-                <div class="footer-column-2 col-xl-3 col-lg-2 col-sm-6 col-12 order-sm-1 order-md-2">
+                <div class="footer-column-2 col-xl-3 col-lg-2 col-sm-6 col-12 order-sm-1 order-md-2 mb-4">
                     <?= $params['siteSettings']->translates[Yii::$app->language]->about_footer ?>
                 </div>
-                <div class="footer-column-3 col-xl-3 col-lg-3 col-sm-6 col-12 order-sm-2 order-md-3">
+                <div class="footer-column-3 col-xl-3 col-lg-3 col-sm-6 col-12 order-sm-2 order-md-3 mb-4">
                     <h3><?= Yii::t('frontend', 'Information') ?></h3>
                     <ul class="list-unstyled mb-0">
                         <li><?= Html::a(Yii::t('frontend', 'Доставка и оплата'), ['/page/view', 'alias' => 'delivery'], ['title' => Yii::t('frontend', 'Доставка и оплата')]) ?></li>

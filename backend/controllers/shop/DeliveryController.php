@@ -71,7 +71,6 @@ class DeliveryController extends AppController
     public function actionCreate()
     {
         $model = new ShopDelivery([
-            'default' => false,
             'published' => true,
         ]);
         $languages = Language::getLanguages();

@@ -15,8 +15,8 @@ use Exception;
  * @property string $logo [varchar(255)]
  * @property string $breadbg [varchar(255)]
  *
- * @property-read null|string $title
- * @property-read null|string $seotitle
+ * @property-read string $title
+ * @property-read string $seotitle
  * @property-read string $keywords
  * @property-read string $description
  * @property-read ActiveQuery $translate
@@ -33,7 +33,7 @@ class ShopBrands extends ActiveRecord
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws Exception
      */
     public function getTitle(): string
@@ -42,12 +42,12 @@ class ShopBrands extends ActiveRecord
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws Exception
      */
     public function getSeotitle(): string
     {
-        return ArrayHelper::getValue($this->translate, 'seotitle');
+        return ArrayHelper::getValue($this->translate, 'seotitle', $this->title);
     }
 
     /**

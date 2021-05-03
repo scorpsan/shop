@@ -123,7 +123,7 @@ $this->title = Yii::t('frontend', 'Shipping');
                                                             <label class=\"radio__label\" for=\"shipping_method_$value\">
                                                                 <span class=\"radio__label__primary\">$label</span>
                                                                 <span class=\"radio__label__accessory\">
-                                                                    <span class=\"content-box__emphasis\">" . Yii::$app->formatter->asCurrency($shippingList[$index]->cost) . "</span>
+                                                                    <span class=\"content-box__emphasis\">" . (($shippingList[$index]->cost) ? Yii::$app->formatter->asCurrency($shippingList[$index]->cost) : Yii::t('frontend','free')) . "</span>
                                                                 </span>
                                                             </label>
                                                         </div> <!-- /radio-wrapper-->

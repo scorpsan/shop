@@ -22,7 +22,7 @@ class ShopController extends AppController
             ->with('translate')
             ->with('images')
             ->with('category')
-            ->orderBy(['new' => SORT_DESC, 'sort' => SORT_ASC]);
+            ->orderBy(['in_stock' => SORT_DESC, 'new' => SORT_DESC, 'sort' => SORT_ASC]);
 
         if ($search = Yii::$app->request->get('search')) {
             $search = trim($search);
@@ -78,7 +78,7 @@ class ShopController extends AppController
             ->with('translate')
             ->with('images')
             ->with('category')
-            ->orderBy(['new' => SORT_DESC, 'sort' => SORT_ASC]);
+            ->orderBy(['in_stock' => SORT_DESC, 'new' => SORT_DESC, 'sort' => SORT_ASC]);
         $pages = new Pagination(['totalCount' => $query->count(), 'defaultPageSize' => 16, 'forcePageParam' => false, 'pageSizeParam' => false, 'pageSizeLimit' => false]);
         $products = $query->offset($pages->offset)->limit($pages->limit)->all();
 
@@ -115,7 +115,7 @@ class ShopController extends AppController
             ->with('translate')
             ->with('images')
             ->with('category')
-            ->orderBy(['new' => SORT_DESC, 'sort' => SORT_ASC]);
+            ->orderBy(['in_stock' => SORT_DESC, 'new' => SORT_DESC, 'sort' => SORT_ASC]);
         $pages = new Pagination(['totalCount' => $query->count(), 'defaultPageSize' => 16, 'forcePageParam' => false, 'pageSizeParam' => false, 'pageSizeLimit' => false]);
         $products = $query->offset($pages->offset)->limit($pages->limit)->all();
 
