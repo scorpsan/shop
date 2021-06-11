@@ -1,6 +1,7 @@
 <?php
 namespace backend\models;
 
+use backend\controllers\AppController;
 use common\models\ShopProducts as BaseShopProducts;
 use yii\db\ActiveQuery;
 use dosamigos\taggable\Taggable;
@@ -139,6 +140,14 @@ class ShopProducts extends BaseShopProducts
         ShopProductsLng::deleteAll(['item_id' => $this->id]);
         UserWishlistItems::deleteAll(['product_id' => $this->id]);
         return parent::beforeDelete();
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getImages(): ActiveQuery
+    {
+        return $this->hasMany(ShopPhotos::class, ['product_id' => 'id'])->orderBy('sort');
     }
 
     /**

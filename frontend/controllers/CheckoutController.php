@@ -10,10 +10,10 @@ use frontend\models\ShopOrdersItems;
 use frontend\models\ShopOrdersStatuses;
 use frontend\models\ShopPayment;
 use frontend\models\ShopProducts;
+use frontend\controllers\user\OrdersController;
 use Yii;
 use Exception;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 /**
  * @property-read float $weight
@@ -242,36 +242,19 @@ class CheckoutController extends AppController
                 $orderItem->save();
             }
 
-            $paymentStatus = new ShopOrdersStatuses([
-                'order_id' => $order->id,
-                'type' => ShopOrdersStatuses::STATUS_TYPE_PAYMENT,
-                'status' => ShopOrdersStatuses::ORDER_NEW,
-            ]);
-            $paymentStatus->save();
+            ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_PAYMENT, ShopOrdersStatuses::ORDER_NEW);
 
-            $deliveryStatus = new ShopOrdersStatuses([
-                'order_id' => $order->id,
-                'type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY,
-                'status' => ShopOrdersStatuses::ORDER_NEW,
-            ]);
-            $deliveryStatus->save();
+            ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_DELIVERY, ShopOrdersStatuses::ORDER_NEW);
 
             $this->_session->remove('cart');
             $this->_session->remove('cart.qty');
 
-            if ($this->payMethod->className) {
-                $payClass = $this->payMethod->className;
-                $payClass::pay($order->order_number, $order->amount, $order->currency, [
-                    'return_url' => Url::to(['/orders/success', 'number' => $order->order_number], true),
-                    'cancel_url' => Url::to(['/orders/cancel', 'number' => $order->order_number], true),
-                    'notification_url' => Url::to(['/orders/notify', 'number' => $order->order_number], true),
-                ]);
-            }
+            OrdersController::payOrder($order, $this->payMethod->className);
 
             if (!Yii::$app->user->isGuest) {
-                return $this->redirect(['/orders/index']);
+                return $this->redirect(['/user/orders/index']);
             }
-            return $this->redirect(['/orders/view', 'number' => $order->order_number, 'token' => $order->token]);
+            return $this->redirect(['/user/orders/view', 'number' => $order->order_number, 'token' => $order->token]);
 
         } else {
             Yii::debug($order->getErrors());

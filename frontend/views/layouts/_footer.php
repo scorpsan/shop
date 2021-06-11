@@ -48,7 +48,8 @@ $params = Yii::$app->params;
                         <?php } ?>
                     </div>
                     <div class="payment-method">
-                        <img src="/files/bez-fona-s-tenju.png" alt="Payment Method" class="mx-1" style="width:95%">
+                        <img src="/files/bez-fona-s-tenju.png" alt="Payment Method" style="width:100%">
+                        <img alt="" src="/files/MTBank-color.png" style="height:49px;" />
                     </div>
                 </div>
                 <div class="footer-column-2 col-xl-3 col-lg-2 col-sm-6 col-12 order-sm-1 order-md-2 mb-4">

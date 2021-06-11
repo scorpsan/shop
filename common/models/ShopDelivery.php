@@ -69,7 +69,7 @@ class ShopDelivery extends ActiveRecord
      */
     public function getPayments(): ActiveQuery
     {
-        return $this->hasMany(ShopPayment::class, ['id' => 'payment_id'])->viaTable(ShopPaymentDelivery::tableName(), ['delivery_id' => 'id']);
+        return $this->hasMany(ShopPayment::class, ['id' => 'payment_id'])->viaTable(ShopPaymentDelivery::tableName(), ['delivery_id' => 'id'])->andFilterWhere(['published' => true]);
     }
 
 }

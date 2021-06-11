@@ -3,6 +3,11 @@ namespace shop\payments;
 
 interface PaymentMethod
 {
+    const PAYMENTS_WAIT = 1;
+    const PAYMENTS_PAID = 2;
+    const PAYMENTS_CANCEL = 3;
+    const PAYMENTS_REFUND = 4;
+
     /**
      * @return string
      */
@@ -13,18 +18,26 @@ interface PaymentMethod
      * @param $amount
      * @param $currency
      * @param $urls array|null
-     * @return bool
+     * @return array
      */
-    public static function pay($order_number, $amount, $currency = null, $urls = null): bool;
+    public static function pay($order_number, $amount, $currency = null, $urls = null): array;
 
     /**
-     * @return bool
+     * @param $token
+     * @return array
      */
-    public static function success(): bool;
+    public static function payNow($token): array;
 
     /**
-     * @return bool
+     * @param $request
+     * @return array
      */
-    public static function notify(): bool;
+    public static function success($request): array;
+
+    /**
+     * @param $request
+     * @return int
+     */
+    public static function notify($request): int;
 
 }

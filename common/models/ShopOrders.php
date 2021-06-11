@@ -11,7 +11,7 @@ use yii\base\Exception;
  * @property int $id [int(11)]
  * @property string $order_number [varchar(100)]
  * @property string $token [varchar(100)]
- * @property string $order_id [char(36)]
+ * @property string $payment_token [char(255)]
  * @property int $user_id [int(11)]
  * @property int $delivery_method_id [int(11)]
  * @property string $delivery_method_name [varchar(255)]
@@ -73,7 +73,7 @@ class ShopOrders extends ActiveRecord
             [['order_number'], 'string', 'max' => 100],
             [['token'], 'string', 'max' => 64],
             [['currency'], 'string', 'max' => 3],
-            [['order_id'], 'string', 'max' => 36],
+            [['payment_token'], 'string', 'max' => 255],
             [['delivery_method_name', 'payment_method_name', 'customer_email', 'customer_phone', 'customer_name', 'tracker'], 'string', 'max' => 255],
             [['delivery_postal'], 'string', 'max' => 10],
             [['delivery_method_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopDelivery::class, 'targetAttribute' => ['delivery_method_id' => 'id']],

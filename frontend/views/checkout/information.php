@@ -8,6 +8,8 @@
  * @var $total float
  */
 
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use common\models\Country;
 use frontend\widgets\phoneInput\phoneInputWidget;
@@ -52,7 +54,7 @@ $user = Yii::$app->user;
                         <div class="section__content mb-4">
                             <div class="logged-in-customer-information">
                                 <div class="logged-in-customer-information__avatar-wrapper">
-                                    <div class="logged-in-customer-information__avatar gravatar" style="background-image: url(<?= $user->identity->avatarUrl ?>);filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//cdn.shopify.com/proxy/5cae64e12cfd032b16d057595aa4c13b78fe982817c339d111d3fd8baee8a446/www.gravatar.com/avatar/d0a155537c3a50b10f8bd67248c29b64.jpg?s=100&amp;d=https%3A%2F%2Fcdn.shopify.com%2Fshopifycloud%2Fshopify%2Fassets%2Fno-gravatar-new-04e7c2331218ac202e79e31be502fd5631bc96cb0206580dbcb0720ebbbd7c73_100x100.png', sizingMethod='scale')" role="img" aria-label="Avatar"></div>
+                                    <div class="logged-in-customer-information__avatar gravatar" style="background-image: url(<?= $user->identity->profile->avatarUrl ?>);" role="img" aria-label="Avatar"></div>
                                 </div>
                                 <p class="logged-in-customer-information__paragraph">
                                     <span class="page-main__emphasis"><?= (empty($user->identity->profile->name)) ? Html::encode($user->identity->username) : Html::encode($user->identity->profile->name) ?></span>
@@ -121,13 +123,13 @@ $user = Yii::$app->user;
                                                     </div></div>\n{hint}\n{error}",
                                                 'options' => ['class' => 'field'],
                                                 'inputOptions' => ['class' => 'field__input field__input--select', 'id' => 'custom_address'],
-                                            ])->dropDownList(\yii\helpers\ArrayHelper::map($user->identity->addresses, 'id', 'fullStringAddress'), [
+                                            ])->dropDownList(ArrayHelper::map($user->identity->addresses, 'id', 'fullStringAddress'), [
                                                 'prompt' => Yii::t('frontend', 'Use a new address'),
-                                                'data' => ['url' => \yii\helpers\Url::to(['/user/address/load'])],
+                                                'data' => ['url' => Url::to(['/user/address/load'])],
                                             ]) ?>
                                         <?php } ?>
 
-                                        <?= $form->field($formInfo, 'name')->textInput(['placeholder' => $formInfo->getAttributeLabel('name') . ' *']) ?>
+                                        <?= $form->field($formInfo, 'name')->textInput(['placeholder' => $formInfo->getAttributeLabel('name') . ' *'])->hint(Yii::t('frontend', 'If you choose Postal delivery method, please enter your Full Name')) ?>
 
                                         <div class="address-fields">
                                             <?= $form->field($formInfo, 'address')->textInput(['placeholder' => $formInfo->getAttributeLabel('address') . ' *']) ?>

@@ -4,7 +4,8 @@
  * @var \frontend\models\ShopOrders $order
  */
 
-use shop\StatusStyle;
+use frontend\models\ShopOrdersStatuses;
+use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap4\Html;
@@ -46,37 +47,100 @@ $this->title = $order->order_number;
 
                 <div class="row mb-4">
                     <div class="col-12">
-                        <h3 class="font-weight-bold"><?= Html::encode(Yii::t('frontend', 'Order') . ' ' . $this->title) ?></h3>
+                        <h3 class="font-weight-bold"><?= Html::encode(Yii::t('frontend', 'My Orders') . ': ' . $this->title) ?></h3>
                     </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-12">
                         <?php Pjax::begin(['id'=> 'order-pjax','enablePushState' => false]); ?>
-                            <div class="table-responsive mb-30">
-                                <table class="table table-hover black-text">
-                                    <thead>
-                                        <tr>
-                                            <th class="font-300 fz-18"><?= Yii::t('frontend', 'Order N') ?></th>
-                                            <th class="font-300 fz-18"><?= Yii::t('frontend', 'Date') ?></th>
-                                            <th class="text-center font-300 fz-18"><?= Yii::t('frontend', 'Total') ?></th>
-                                            <th class="text-center font-300 fz-18"><?= Yii::t('frontend', 'Status') ?></th>
-                                            <th class="text-center font-300 fz-18"><span class="d-mobile-none"><?= Yii::t('frontend', 'Action') ?></span></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $item = $order ?>
-                                            <tr>
-                                                <td><?= Html::a($item->order_number, ['/user/orders/view', 'number' => $item->order_number]) ?></td>
-                                                <td><?= Yii::$app->formatter->asDate($item->created_at) ?></td>
-                                                <td class="text-center dollar"><?= Yii::$app->formatter->asCurrency($item->amount, $item->currency) ?></td>
-                                                <td class="text-center"><?= ($item->paymentStatus->status == $item->deliveryStatus->status) ? StatusStyle::HtmlStatus($item->paymentStatus->status) : StatusStyle::HtmlStatus($item->paymentStatus->status) . ' / ' . StatusStyle::HtmlStatus($item->deliveryStatus->status) ?></td>
-                                                <td class="text-center wish-actions">
-                                                    <?= Html::a('<i class="fas fa-dolly" aria-hidden="true"></i>', ['/user/orders/received', 'number' => $item->order_number], ['title' => Yii::t('frontend', 'Order received'), 'class' => 'order-received', 'data-pjax' => 0]) ?>
-                                                    <?= Html::a('<i class="fas fa-times" aria-hidden="true"></i>', ['/user/orders/cancel', 'number' => $item->order_number], ['title' => Yii::t('frontend', 'Cancel order'), 'class' => 'order-cancel', 'data-pjax' => 0]) ?>
-                                                </td>
-                                            </tr>
-                                    </tbody>
-                                </table>
+                            <!-- Bootstrap collapse-->
+                            <div class="panel-custom-group text-left mb-4" id="accordion1" role="tablist" aria-multiselectable="true">
+                                <!-- Bootstrap panel-->
+                                <div class="panel panel-custom panel-custom-default w-100">
+                                    <div class="panel-custom-heading" id="accordion1Heading<?= $order->id ?>" role="tab">
+                                        <div class="panel-custom-title">
+                                            <a class="" role="button" data-toggle="collapse" data-parent="#accordion1" href="#accordion1Collapse<?= $order->id ?>" aria-controls="accordion1Collapse<?= $order->id ?>" aria-expanded="true">
+                                                &nbsp;
+                                                <span class="col-sm-3"><?= Yii::t('frontend', 'Order N') . ': ' . $order->order_number ?></span>
+                                                <span class="col-sm-3"><?= Yii::$app->formatter->asDate($order->created_at) ?></span>
+                                                <span class="col-sm-2"><?= Yii::$app->formatter->asCurrency($order->amount, $order->currency) ?></span>
+                                                <span class="col-sm-2">
+                                                    <?= ($order->paymentStatus->status == $order->deliveryStatus->status) ? ShopOrdersStatuses::HtmlStatus($order->paymentStatus->status) : ShopOrdersStatuses::HtmlStatus($order->paymentStatus->status) . ' / ' . ShopOrdersStatuses::HtmlStatus($order->deliveryStatus->status) ?>
+                                                </span>
+                                                <span class="col-sm-1"></span>
+                                            </a>
+                                        </div>
+                                        <div class="orders-icon">
+                                            <?php if ($order->canPay) { ?>
+                                                <?= Html::a('<i class="fas fa-hand-holding-usd" aria-hidden="true"></i>', ['/user/orders/pay', 'number' => $order->order_number], ['title' => Yii::t('frontend', 'Pay for the Order'), 'class' => 'order-pay']) ?>
+                                            <?php } ?>
+                                            <?php if ($order->canDelivered) { ?>
+                                                <?= Html::a('<i class="fas fa-clipboard-check" aria-hidden="true"></i>', ['/user/orders/received', 'number' => $order->order_number], ['title' => Yii::t('frontend', 'Order Received'), 'class' => 'order-received']) ?>
+                                            <?php } ?>
+                                            <?php if ($order->canCancel) { ?>
+                                                <?= Html::a('<i class="far fa-trash-alt" aria-hidden="true"></i>', ['/user/orders/cancel', 'number' => $order->order_number], ['title' => Yii::t('frontend', 'Cancel Order'), 'class' => 'order-cancel']) ?>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                    <div class="panel-custom-collapse in collapse show" id="accordion1Collapse<?= $order->id ?>" role="tabpanel" aria-labelledby="accordion1Heading<?= $order->id ?>">
+                                        <div class="panel-custom-body">
+                                            <div class="table-responsive mb-4">
+                                                <table class="shop_table table--responsive cart table bg-white">
+                                                    <thead>
+                                                    <tr class="cart-title">
+                                                        <th colspan="2" class="product-thumbnail"><?= Yii::t('frontend', 'Product') ?></th>
+                                                        <th class="product-quantity text-center"><?= Yii::t('frontend', 'QTY') ?></th>
+                                                        <th class="product-price text-center"><?= Yii::t('frontend', 'Price') ?></th>
+                                                        <th class="product-subtotal text-center"><?= Yii::t('frontend', 'Subtotal') ?></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php $qty = 0; ?>
+                                                    <?php foreach ($order->items as $item) {
+                                                        $url = Url::to(['/shop/product', 'alias' => $item->product->alias]);
+                                                        ?>
+                                                        <tr>
+                                                            <td><?= Html::a(Html::img($item->product->smallImageMain, ['alt' => $item->product_name, 'class' => 'img-fluid', 'width' => '100', 'height' => '100']), $url, ['title' => $item->product_name]) ?></a></td>
+                                                            <td><?= Html::a($item->product_name, $url, ['title' => $item->product_name]) ?><br>Code: <?= $item->product_code ?></td>
+                                                            <td class="text-center"><?= $item->quantity ?></td>
+                                                            <td class="text-center" nowrap><?= Yii::$app->formatter->asCurrency($item->price, $order->currency) ?></td>
+                                                            <td class="text-center" nowrap><?= Yii::$app->formatter->asCurrency($item->quantity * $item->price, $order->currency) ?></td>
+                                                        </tr>
+                                                        <?php $qty += $item->quantity; ?>
+                                                    <?php } ?>
+                                                    <tr>
+                                                        <td colspan="4"><?= Yii::t('frontend', 'Shipping') . ': ' . $order->delivery_method_name ?></td>
+                                                        <td class="text-center"><?= (($order->delivery_cost) ? Yii::$app->formatter->asCurrency($order->delivery_cost, $order->currency) : Yii::t('frontend','free')) ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5"><?= Yii::t('frontend', 'Payment') . ': ' . $order->payment_method_name ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><?= Yii::t('frontend', 'Total') ?></td>
+                                                        <td class="text-center"><?= $qty ?></td>
+                                                        <td nowrap></td>
+                                                        <td class="text-center" nowrap><?= Yii::$app->formatter->asCurrency($order->amount, $order->currency) ?></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="row mb-4 mx-0">
+                                                <div class="col-sm-6 col-xs-12 mb-2 px-4">
+                                                    <h5 class="cart-title"><?= Yii::t('frontend', 'Shipping address') . ':' ?></h5>
+                                                    <p><?= $order->customer_name ?></p>
+                                                    <p><?= $order->delivery_postal ?>, <?= $order->delivery_address ?></p>
+                                                    <p><?= $order->customer_phone ?></p>
+                                                </div>
+                                                <?php if ($order->note) { ?>
+                                                    <div class="col-sm-6 col-xs-12 mb-2 px-4">
+                                                        <h5 class="cart-title"><?= Yii::t('frontend', 'Comment') . ':' ?></h5>
+                                                        <p><?= $order->note ?></p>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         <?php Pjax::end(); ?>
                     </div>

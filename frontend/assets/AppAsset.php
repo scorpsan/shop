@@ -13,7 +13,6 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         '/css/style.css',
-        //'/css/themes.css',
     ];
     public $js = [
         'https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js',

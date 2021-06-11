@@ -292,8 +292,9 @@ class ProductController extends AppController
                     $result = ['error' => Yii::t('backend', 'Can not Save file')];
                 }
             } else {
-                $result = ['error' => Yii::t('backend', 'Can not Upload file')];
+                //$result = ['error' => Yii::t('backend', 'Can not Upload file')];
                 //'error' => $model->getFirstError('attachment')
+                $result = ['error' => $model->getFirstError('attachment')];
             }
         } else {
             $result = ['error' => Yii::t('backend', 'Can not Load file')];

@@ -22,6 +22,7 @@ return [
             'class' => Da\User\Module::class,
             'classMap' => [
                 'User' => common\models\User::class,
+                'Profile' => common\models\Profile::class,
                 'RegistrationForm' => 'frontend\forms\RegistrationForm',
                 'MailService' => 'frontend\components\MailService',
             ],
@@ -78,8 +79,8 @@ return [
             'class' => 'himiklab\yii2\recaptcha\ReCaptchaConfig',
             //'siteKeyV2' => 'your siteKey v2',
             //'secretV2' => 'your secret key v2',
-            'siteKeyV3' => '6LcQH80ZAAAAAHcOaC4WK96xd0IhcF6cjbz1tRlL',
-            'secretV3' => '6LcQH80ZAAAAAHQLv0uzEuFPNdJcX1qEp9kbDSPJ',
+            'siteKeyV3' => '6Ldb79saAAAAAG3uDRftw_KVb7izi4e1OE9VlRqG',
+            'secretV3' => '6Ldb79saAAAAAKQTBaKlrRbJkGeR8qY3pJBQDZmD',
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',

@@ -16,9 +16,7 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
     <?= $this->render('_head') ?>
 </head>
 <body>
-<?php $this->beginBody() ?>
-
-    <?= $this->render('_18plus') ?>
+    <?php $this->beginBody() ?>
 
     <?= $this->render('_header') ?>
     <!-- Page-->
@@ -27,7 +25,9 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
     </main>
     <?= $this->render('_footer') ?>
 
-<?php $this->endBody() ?>
+    <?= $this->render('_18plus') ?>
+
+    <?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

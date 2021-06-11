@@ -20,4 +20,18 @@ class ShopOrdersStatuses extends BaseShopOrdersStatuses
         ];
     }
 
+    public static function newStatus($order_id, $type, $status = 0): bool
+    {
+        if ($order_id && $type) {
+            $newStatus = new ShopOrdersStatuses([
+                'order_id' => $order_id,
+                'type' => $type,
+                'status' => $status,
+            ]);
+            return $newStatus->save();
+        }
+
+        return false;
+    }
+
 }

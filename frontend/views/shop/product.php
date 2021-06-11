@@ -27,6 +27,11 @@ $filter = FilterWidget::widget(['categoryalias' => $product->category->alias]);
 ?>
 <section class="section-product section-product-detail-v3">
     <div class="my-container">
+        <?php if ($product->translate->seo_text) { ?>
+            <div style="height:0px;overflow:hidden">
+                <?= $product->translate->seo_text ?>
+            </div>
+        <?php } ?>
         <div class="js-filter-popup filter-mobile fliter-product">
             <?= $filter ?>
         </div>

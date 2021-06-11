@@ -21,6 +21,7 @@ return [
             'class' => Da\User\Module::class,
             'classMap' => [
                 'User' => common\models\User::class,
+                'Profile' => common\models\Profile::class,
             ],
             'enableRegistration' => false,
             'routes' => [],
@@ -54,39 +55,10 @@ return [
             ]
         ],
         'urlManager' => [
-            'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['ru'],
-            'baseUrl'=>'/admin',
-            'enableLocaleUrls' => true,
+            'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             //'enableStrictParsing' => true,
-            /**
-             * @var array list of route and URL regex patterns to ignore during
-             * language processing. The keys of the array are patterns for routes, the
-             * values are patterns for URLs. Route patterns are checked during URL
-             * creation. If a pattern matches, no language parameter will be added to
-             * the created URL.  URL patterns are checked during processing incoming
-             * requests. If a pattern matches, the language processing will be skipped
-             * for that URL. Examples:
-             *
-             * ~~~php
-             * [
-             *     '#^site/(login|register)#' => '#^(login|register)#'
-             *     '#^api/#' => '#^api/#',
-             * ]
-             * ~~~
-             */
-            'ignoreLanguageUrlPatterns' => [
-                '#^favicon.ico#' => '#^favicon.ico#',
-                '#^robots.txt#' => '#^robots.txt#',
-                '#^elfinder#' => '#^elfinder#',
-                '#^assets#' => '#^assets#',
-                '#^files#' => '#^files#',
-                '#^fonts#' => '#^fonts#',
-                '#^icon#' => '#^icon#',
-                '#^images#' => '#^images#',
-            ],
             'normalizer' => [
                 'class' => 'yii\web\UrlNormalizer',
                 'action' => \yii\web\UrlNormalizer::ACTION_REDIRECT_PERMANENT,
@@ -101,6 +73,14 @@ return [
                 '<_c:[\w\-]+>/<_a:[\w-]+>' => '<_c>/<_a>',
                 '<_c:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => '<_c>/<_a>',
             ],
+        ],
+        'urlManagerForFront' => [
+            'class' => 'yii\web\urlManager',
+            'hostInfo' => '//badkitty.by',
+            'baseUrl' => '',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => require Yii::getAlias('@frontend/config/rules.php'),
         ],
     ],
     'controllerMap' => [

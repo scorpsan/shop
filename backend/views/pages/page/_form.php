@@ -13,7 +13,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
 use kartik\datetime\DateTimePicker;
+use mihaildev\ckeditor\CKEditor;
 use mihaildev\elfinder\InputFile;
+
+mihaildev\elfinder\Assets::noConflict($this);
+
 $this->registerJs('
 $("document").ready(function(){
     $("select#pages-page_style").trigger("change");
@@ -77,9 +81,19 @@ $("document").ready(function(){
                         ]);
                     $tabcontent .= '<hr><h2 class="page-header"><i class="fa fa-internet-explorer"></i> ' . Yii::t('backend', 'SEO') . '</h2>';
                     $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle");
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]description");
                     $tabcontent .= $form->field($modelLng[$key], "[$key]keywords");
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->textarea();
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]description");
+                    $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->widget(CKEditor::class, [
+                        'editorOptions' => [
+                            'allowedContent' => true,
+                            'toolbar' => [
+                                ['Source'],
+                                ['Undo', 'Redo'],
+                                ['Format'],
+                                ['Bold', 'Italic', 'Underline'],
+                            ],
+                        ],
+                    ]);
                     $tabcontent .= '</div></div>';
                 } else {
                     $tabcontent .= '<div class="row"><div class="col-xs-12"><div class="box"><div class="box-body">';

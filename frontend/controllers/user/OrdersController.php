@@ -2,6 +2,7 @@
 namespace frontend\controllers\user;
 
 use frontend\controllers\AppController;
+use frontend\controllers\CheckoutController;
 use frontend\models\ShopOrders;
 use frontend\models\ShopOrdersStatuses;
 use yii\filters\AccessControl;
@@ -9,6 +10,7 @@ use Da\User\Filter\AccessRuleFilter;
 use frontend\models\ProfileAddress;
 use frontend\forms\DeleteForm;
 use Yii;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
@@ -30,12 +32,12 @@ class OrdersController extends AppController
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'cancel', 'received'],
+                        'actions' => ['index'],
                         'roles' => ['@'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['view', 'success'],
+                        'actions' => ['view', 'pay', 'cancel', 'received', 'pay-return', 'pay-cancel', 'pay-notify', 'notification'],
                         'roles' => ['?', '@'],
                     ],
                 ],
@@ -43,8 +45,18 @@ class OrdersController extends AppController
         ];
     }
 
+    public function beforeAction($action)
+    {
+        if ($action->id == 'notification' || $action->id == 'pay-notify') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
+    }
+
     public function actionIndex()
 	{
+        Yii::$app->user->setReturnUrl(['index']);
+
         $orders = ShopOrders::find()->where(['user_id' => Yii::$app->user->id])->all();
 
         return $this->render('index', [
@@ -59,40 +71,95 @@ class OrdersController extends AppController
         }
 
 	    if ($token)
-            $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('items')->limit(1)->one();
+            $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('items')->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
         else
-            $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('items')->limit(1)->one();
+            $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('items')->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
 
         if (!$order)
             throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+
+        if ($token)
+            Yii::$app->user->setReturnUrl(['view', 'number' => $number, 'token' => $token]);
+        else
+            Yii::$app->user->setReturnUrl(['view', 'number' => $number]);
 
         return $this->render('view', [
 			'order' => $order,
         ]);
     }
 
-    public function actionCancel($number)
+    public function actionPay($number, $token = null)
     {
         if (!$number) {
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if (!$order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one())
+        if ($token)
+            $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
+        else
+            $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
+
+        if (!$order)
             throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
 
-        $paymentStatus = new ShopOrdersStatuses([
-            'order_id' => $order->id,
-            'type' => ShopOrdersStatuses::STATUS_TYPE_PAYMENT,
-            'status' => ShopOrdersStatuses::ORDER_CANCEL,
-        ]);
-        $paymentStatus->save();
+        // Вызываем оплату
+        self::payOrder($order, $order->paymentMethod->className);
 
-        $deliveryStatus = new ShopOrdersStatuses([
-            'order_id' => $order->id,
-            'type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY,
-            'status' => ShopOrdersStatuses::ORDER_CANCEL,
-        ]);
-        $deliveryStatus->save();
+        if (!Yii::$app->user->isGuest) {
+            return $this->redirect(['index']);
+        }
+        return $this->redirect(['view', 'number' => $order->order_number, 'token' => $order->token]);
+    }
+
+    public static function payOrder($order, $payClass)
+    {
+        if ($payClass) {
+            if ($order->payment_token) {
+                $response = $payClass::payNow($order->payment_token);
+                if (isset($response['redirect_url'])) {
+                    header('Location: ' . $response['redirect_url']);
+                    die();
+                }
+            }
+
+            $response = $payClass::pay($order->order_number, $order->amount, $order->currency, [
+                'return_url' => Url::to(['/user/orders/pay-return', 'number' => $order->order_number], true),
+                'cancel_url' => Url::to(['/user/orders/pay-cancel', 'number' => $order->order_number], true),
+                'notification_url' => Url::to(['/user/orders/notification', 'number' => $order->order_number], true),
+            ]);
+
+            if (isset($response['redirect_url'])) {
+                if (isset($response['payment_token'])) {
+                    $order->payment_token = $response['payment_token'];
+                    $order->save();
+                }
+
+                header('Location: ' . $response['redirect_url']);
+                die();
+            } elseif (isset($response['message'])) {
+                Yii::$app->getSession()->setFlash('error', 'Failed: Pay Gateway Error - ' . $response['message']);
+                Yii::debug('Failed: Pay Gateway Error - ' . $response['message']);
+            }
+        }
+    }
+
+    public function actionCancel($number, $token = null)
+    {
+        if (!$number) {
+            throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
+        }
+
+        if ($token)
+            $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
+        else
+            $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
+
+        if (!$order)
+            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+
+        ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_PAYMENT, ShopOrdersStatuses::ORDER_CANCEL);
+
+        ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_DELIVERY, ShopOrdersStatuses::ORDER_CANCEL);
 
         if (!Yii::$app->request->isAjax) {
             return $this->goBack();
@@ -103,21 +170,21 @@ class OrdersController extends AppController
         ];
     }
 
-    public function actionReceived($number)
+    public function actionReceived($number, $token = null)
     {
         if (!$number) {
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if (!$order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one())
+        if ($token)
+            $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
+        else
+            $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
+
+        if (!$order)
             throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
 
-        $deliveryStatus = new ShopOrdersStatuses([
-            'order_id' => $order->id,
-            'type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY,
-            'status' => ShopOrdersStatuses::DELIVERY_DELIVER,
-        ]);
-        $deliveryStatus->save();
+        ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_DELIVERY, ShopOrdersStatuses::DELIVERY_DELIVER);
 
         if (!Yii::$app->request->isAjax) {
             return $this->goBack();
@@ -128,7 +195,7 @@ class OrdersController extends AppController
         ];
     }
 
-    public function actionSuccess($number)
+    public function actionPayReturn($number)
     {
         if (!$number) {
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
@@ -137,13 +204,97 @@ class OrdersController extends AppController
         if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('paymentStatus')->limit(1)->one())
             throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
 
-        if ($payClass = $order->paymentMethod->className) {
-            if ($order->order_id = $payClass::success()) {
-                $order->save();
-
-
+        if ($order->canPay) {
+            $payClass = $order->paymentMethod->className;
+            $status = $payClass::success(Yii::$app->request->get());
+            if (isset($status['status'])) {
+                if ($status['status'])
+                    ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_PAYMENT, $status['status']);
+                Yii::$app->getSession()->setFlash($status['type'], $status['message']);
             }
         }
+
+        if (!Yii::$app->user->isGuest) {
+            return $this->redirect(['index']);
+        }
+        return $this->redirect(['view', 'number' => $order->order_number, 'token' => $order->token]);
+    }
+
+    public function actionPayCancel($number)
+    {
+        if (!$number) {
+            throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
+        }
+
+        if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('paymentStatus')->limit(1)->one())
+            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+
+        Yii::$app->getSession()->setFlash('error', Yii::t('frontend', 'Payment canceled'));
+
+        if (!Yii::$app->user->isGuest) {
+            return $this->redirect(['index']);
+        }
+        return $this->redirect(['view', 'number' => $order->order_number, 'token' => $order->token]);
+    }
+
+    public function actionPayNotify($number)
+    {
+        if (!Yii::$app->request->isPost) {
+            return false;
+        }
+
+        if (!$number) {
+            throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
+        }
+
+        if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('paymentStatus')->limit(1)->one())
+            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+
+        $response = json_decode(Yii::$app->request->getRawBody());
+
+        Yii::info(print_r($response, true));
+
+        if ($order->canPay) {
+            $payClass = $order->paymentMethod->className;
+            if ($status = $payClass::notify($response)) {
+                ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_PAYMENT, $status);
+            } else {
+                return false;
+            }
+        }
+
+        //header("HTTP/1.1 200 OK");
+        return true;
+    }
+
+    public function actionNotification($number)
+    {
+        if (!Yii::$app->request->isPost) {
+            return false;
+        }
+
+        if (!$number) {
+            throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
+        }
+
+        if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('paymentStatus')->limit(1)->one())
+            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+
+        $response = json_decode(Yii::$app->request->getRawBody());
+
+        Yii::info(print_r($response, true));
+
+        if ($order->canPay) {
+            $payClass = $order->paymentMethod->className;
+            if ($status = $payClass::notify($response)) {
+                ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_PAYMENT, $status);
+            } else {
+                return false;
+            }
+        }
+
+        //header("HTTP/1.1 200 OK");
+        return true;
     }
 
 }

@@ -16,11 +16,13 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
     <?= $this->render('_head') ?>
 </head>
 <body>
-<?php $this->beginBody() ?>
+    <?php $this->beginBody() ?>
+
     <main>
         <?= $content ?>
     </main>
-<?php $this->endBody() ?>
+
+    <?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

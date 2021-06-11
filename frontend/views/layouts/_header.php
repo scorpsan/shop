@@ -71,6 +71,7 @@ $params = Yii::$app->params;
     </div>
 </div>
 <div class="menu-overlay"></div>
+<?php if (Yii::$app->params['searchOnSite']) { ?>
 <!-- box search mobile -->
 <div class="form-search__destop">
     <?php $form = ActiveForm::begin([
@@ -90,6 +91,8 @@ $params = Yii::$app->params;
         </div>
     <?php ActiveForm::end(); ?>
 </div>
+<?php } ?>
+<?php if (Yii::$app->params['shopOnSite']) { ?>
 <!-- add to cart  -->
 <div class="js-cart-popup header-cart-content">
     <?php Pjax::begin(['id' => 'mini-cart-pjax']); ?>
@@ -100,6 +103,7 @@ $params = Yii::$app->params;
         </div>
     <?php Pjax::end(); ?>
 </div>
+<?php } ?>
 <div class="js-bg bg-canvas-overlay"></div>
 <!-- MENU POPUP -->
 <header class="js-header <?= $this->context->headerClass ?> header-destop">
@@ -175,6 +179,7 @@ $params = Yii::$app->params;
                 </div>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-10 col-10 header-right">
+                <?php if (Yii::$app->params['searchOnSite']) { ?>
                 <?php $form = ActiveForm::begin([
                     'id' => 'search-form2',
                     'action' => ['/page/search'],
@@ -188,13 +193,16 @@ $params = Yii::$app->params;
                         </div>
                     </div>
                 <?php ActiveForm::end(); ?>
+                <?php } ?>
                 <?= Html::a('<i class="fas fa-user"></i>', ['/user/profile/index'], ['title' => Yii::t('frontend', 'My Account'), 'class' => 'btn-login-icon']) ?>
+                <?php if (Yii::$app->params['shopOnSite']) { ?>
                 <div class="js-cart-pull-right cart">
                     <i class="fas fa-shopping-cart"></i>
                     <div class="number">
                         <span class="qty-in-cart"><?= Yii::$app->session->get('cart.qty', 0) ?></span>
                     </div>
                 </div>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -210,12 +218,15 @@ $params = Yii::$app->params;
                 <?= Html::a(Html::img(['/images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
             </div>
             <div class="right-box">
+                <?php if (Yii::$app->params['searchOnSite']) { ?>
                 <div class="search">
                     <?= Html::a('<i class="fas fa-search"></i>', '#', ['title' => Yii::t('frontend', 'Search'), 'class' => 'js-search']) ?>
                 </div>
+                <?php } ?>
                 <div class="login">
                     <?= Html::a('<i class="fas fa-user"></i>', ['/user/profile/index'], ['title' => Yii::t('frontend', 'My Account'), 'class' => 'btn-login-icon']) ?>
                 </div>
+                <?php if (Yii::$app->params['shopOnSite']) { ?>
                 <div class="js-cart-pull-right cart">
                     <div class="shopping-cart">
                         <i class="fas fa-shopping-cart"></i>
@@ -224,6 +235,7 @@ $params = Yii::$app->params;
                         <span class="qty-in-cart"><?= Yii::$app->session->get('cart.qty', 0) ?></span>
                     </div>
                 </div>
+                <?php } ?>
             </div>
         </div>
     </header>

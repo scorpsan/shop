@@ -33,4 +33,14 @@ class Profile extends BaseProfile
         ];
     }
 
+    /**
+     * @param int $size
+     *
+     * @return mixed
+     */
+    public function getAvatarUrl($size = 200): string
+    {
+        return '/images/default-avatar.png';
+    }
+
 }

@@ -18,6 +18,11 @@ $filter = FilterWidget::widget();
 ?>
 <section class="section-product section-product-v1 p-0 m-0">
     <div class="my-container">
+        <?php if ($category->translate->seo_text) { ?>
+            <div style="height:0px;overflow:hidden">
+                <?= $category->translate->seo_text ?>
+            </div>
+        <?php } ?>
         <div class="js-filter-popup filter-mobile fliter-product">
             <?= $filter ?>
         </div>

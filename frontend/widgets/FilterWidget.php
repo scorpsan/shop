@@ -41,7 +41,7 @@ class FilterWidget extends Widget
                     $brands[] = ['label' => $brand->title, 'count' => $brand->countProd, 'url' => ['/shop/brand', 'brandalias' => $brand->alias]];
                 }
             }
-            ArrayHelper::multisort($items, 'label', SORT_ASC);
+            ArrayHelper::multisort($brands, 'label', SORT_ASC);
             $brands = ArrayHelper::merge([
                 ['label' => Yii::t('frontend', 'All Brands'), 'url' => ['/shop/index']]
             ], $brands);

@@ -17,6 +17,7 @@ use yii\helpers\Url;
 use kartik\form\ActiveForm;
 use kartik\datetime\DateTimePicker;
 use mihaildev\ckeditor\CKEditor;
+use mihaildev\elfinder\ElFinder;
 use kartik\file\FileInput;
 use yii\web\JsExpression;
 
@@ -59,8 +60,13 @@ $("document").ready(function(){
                 }
                 $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
                 $tabcontent .= $form->field($modelLng[$key], "[$key]short_content")->textarea(['rows' => 8]);
-                $tabcontent .= $form->field($modelLng[$key], "[$key]content")->widget(CKEditor::className(), [
-                    'editorOptions' => ['allowedContent' => true,],
+                $tabcontent .= $form->field($modelLng[$key], "[$key]content")->widget(CKEditor::class, [
+                    'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
+                        'preset' => 'full',
+                        'path' => '@files',
+                        'allowedContent' => true,
+                        'removePlugins' => 'forms,about',
+                    ]),
                 ]);
                 $tabcontent .= '<h2 class="page-header"><i class="fa fa-paperclip"></i> ' . Yii::t('backend', 'Product Characteristics') . '</h2>';
                 $tabcontent .= $form->field($modelParams[$key], "[$key]product_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
@@ -93,7 +99,17 @@ $("document").ready(function(){
                 $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle");
                 $tabcontent .= $form->field($modelLng[$key], "[$key]keywords");
                 $tabcontent .= $form->field($modelLng[$key], "[$key]description");
-                $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->textarea();
+                $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->widget(CKEditor::class, [
+                    'editorOptions' => [
+                        'allowedContent' => true,
+                        'toolbar' => [
+                            ['Source'],
+                            ['Undo', 'Redo'],
+                            ['Format'],
+                            ['Bold', 'Italic', 'Underline'],
+                        ],
+                    ],
+                ]);
                 if ($count > 1) {
                     $tabcontent .= '</div>';
                 }

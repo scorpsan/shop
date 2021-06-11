@@ -12,6 +12,7 @@ return [
             'class' => Da\User\Module::class,
             'classMap' => [
                 'User' => common\models\User::class,
+                'Profile' => common\models\Profile::class,
             ],
             'switchIdentitySessionKey' => 'shop_user_key',
             'emailChangeStrategy' => 2,

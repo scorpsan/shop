@@ -1,9 +1,15 @@
 <?php
 namespace common\models;
 
-class SwiperSlides extends \yii\db\ActiveRecord {
+use yii\db\ActiveRecord;
 
-    public static function tableName() {
+class SwiperSlides extends ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName(): string
+    {
         return '{{%swiper_slides}}';
     }
 

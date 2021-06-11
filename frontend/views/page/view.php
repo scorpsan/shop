@@ -7,6 +7,11 @@ if (Yii::$app->layout != 'main') {
     $this->params['breadcrumbs'][] = $this->title;
 }
 ?>
+<?php if ($model->translate->seo_text) { ?>
+    <div style="height:0px;overflow:hidden">
+        <?= $model->translate->seo_text ?>
+    </div>
+<?php } ?>
 <?php if (!empty($model->content)) { ?>
     <?php foreach ($model->content as $key => $section) { ?>
         <?php if ($key === 0 && $section->widget_type != 'SwiperWidget') { ?>

@@ -15,7 +15,7 @@ class ShopOrders extends BaseShopOrders
             'id' => Yii::t('backend', 'ID'),
             'order_number' => Yii::t('backend', 'Order Number'),
             'token' => Yii::t('backend', 'Token'),
-            'order_id' => Yii::t('backend', 'Order ID'),
+            'payment_token' => Yii::t('backend', 'Payment Token'),
             'user_id' => Yii::t('backend', 'User ID'),
             'delivery_method_id' => Yii::t('backend', 'Delivery Method ID'),
             'delivery_method_name' => Yii::t('backend', 'Delivery Method Name'),

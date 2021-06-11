@@ -1,31 +1,16 @@
 <?php
 namespace backend\models;
 
-use yii\db\ActiveRecord;
+use common\models\Swiper as BaseSwiper;
 use Yii;
+use yii\helpers\ArrayHelper;
 
-/**
- * This is the model class for table "{{%swiper}}".
- *
- * @property int $id
- * @property string $title
- * @property string $description
- * @property int $published
- * @property int $player
- *
- * @property-read mixed $slides
- */
-class Swiper extends ActiveRecord
+class Swiper extends BaseSwiper
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
-        return '{{%swiper}}';
-    }
-
-    public function rules()
+    public function rules(): array
     {
         return [
             [['title'], 'required'],
@@ -36,7 +21,10 @@ class Swiper extends ActiveRecord
         ];
     }
 
-    public function attributeLabels()
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('backend', 'ID'),
@@ -47,15 +35,27 @@ class Swiper extends ActiveRecord
         ];
     }
 
-    public function beforeDelete()
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeDelete(): bool
     {
         SwiperSlides::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
     }
 
-    public function getSlides()
+    public static function getOptionsList(): array
     {
-        return $this->hasMany(SwiperSlides::class, ['item_id' => 'id'])->orderBy('sort');
+        $options = [
+            'id' => [
+                'title' => Yii::t('backend', 'Choose slider...'),
+                'dropList' => ArrayHelper::map(self::find()->where(['published' => true])->orderBy('title')->all(), 'id', 'title')
+            ]
+        ];
+        if (isset(Yii::$app->params['widgetsList']['SwiperWidget']['options'])) {
+            $options = ArrayHelper::merge($options, Yii::$app->params['widgetsList']['SwiperWidget']['options']);
+        }
+        return $options;
     }
 
 }

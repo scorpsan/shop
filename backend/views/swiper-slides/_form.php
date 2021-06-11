@@ -93,7 +93,7 @@ mihaildev\elfinder\Assets::noConflict($this);
             ]) ?>
         </div>
         <div class="col-xs-12">
-            <?= $form->field($model, 'image')->widget(InputFile::className(), [
+            <?= $form->field($model, 'image')->widget(InputFile::class, [
                 'controller'    => 'elfinder',
                 'filter'        => 'image',
                 'template'      => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
@@ -102,12 +102,12 @@ mihaildev\elfinder\Assets::noConflict($this);
                 'multiple'      => false
             ]) ?>
 
-            <?= $form->field($model, 'content')->widget(CKEditor::className(),[
+            <?= $form->field($model, 'content')->widget(CKEditor::class,[
                 'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
-                    'preset' => 'standart',
-                    'inline' => false,
-                    'path' => '/files',
+                    'preset' => 'full',
+                    'path' => '@files',
                     'allowedContent' => true,
+                    'removePlugins' => 'save,newpage,preview,print,templates,forms,about',
                 ]),
             ]) ?>
         </div>

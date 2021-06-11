@@ -4,15 +4,17 @@
  * @var $sortingList    array
  */
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\form\ActiveForm;
 use mihaildev\ckeditor\CKEditor;
 use mihaildev\elfinder\ElFinder;
 use mihaildev\elfinder\InputFile;
+
 mihaildev\elfinder\Assets::noConflict($this);
 ?>
 <?php $form = ActiveForm::begin([
     'id' => 'section-form',
-    'action' => \yii\helpers\Url::to(),
+    'action' => Url::to(),
     'options' => [
         'data' => [
             'item_id' => $model->item_id,
@@ -53,7 +55,7 @@ mihaildev\elfinder\Assets::noConflict($this);
         <div class="col-sm-6">
             <?= $form->field($model, 'parallax', ['options' => ['class' => 'hidden']])->checkbox() ?>
 
-            <?= $form->field($model, 'background')->widget(InputFile::className(), [
+            <?= $form->field($model, 'background')->widget(InputFile::class, [
                 'controller'    => 'elfinder',
                 'filter'        => 'image',
                 'template'      => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
@@ -68,12 +70,12 @@ mihaildev\elfinder\Assets::noConflict($this);
             ]) ?>
         </div>
         <div class="col-xs-12">
-            <?= $form->field($model, 'content')->widget(CKEditor::className(),[
+            <?= $form->field($model, 'content')->widget(CKEditor::class,[
                 'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
                     'preset' => 'full',
-                    'inline' => false,
                     'path' => '/files',
                     'allowedContent' => true,
+                    'removePlugins' => 'forms,about',
                 ]),
             ]) ?>
         </div>

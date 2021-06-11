@@ -12,8 +12,6 @@ use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use backend\components\grid\TranslatesDataColumn;
-use backend\components\grid\BooleanDataColumn;
 
 $this->title = Yii::t('backend', 'Orders');
 $this->params['breadcrumbs'][] = $this->title;

@@ -3,6 +3,7 @@
  * Events For All App
  */
 
+use common\models\ShopOrders;
 use yii\base\Event;
 use common\models\User;
 use common\models\Profile;
@@ -43,14 +44,6 @@ Event::on(User::class, UserEvent::EVENT_AFTER_CONFIRMATION, function (UserEvent 
         $user->username = $user->email;
         $user->save();
     }
-});
-
-Event::on(SecurityController::class, FormEvent::EVENT_AFTER_LOGIN, function (FormEvent $event) {
-//    $user = $event->getForm()->user;
-});
-
-Event::on( SettingsController::class, UserEvent::EVENT_AFTER_ACCOUNT_UPDATE, function (UserEvent $event) {
-    $user = $event->getUser();
     $profile = Profile::find()->where(['user_id' => $user->id])->one();
     if ($profile->public_email != $user->email) {
         $profile->public_email = $user->email;
@@ -58,7 +51,21 @@ Event::on( SettingsController::class, UserEvent::EVENT_AFTER_ACCOUNT_UPDATE, fun
     }
 });
 
+Event::on(SecurityController::class, FormEvent::EVENT_AFTER_LOGIN, function (FormEvent $event) {
+    $user = $event->getForm()->user;
+    ShopOrders::updateAll(['user_id' => $user->id], ['customer_email' => $user->email, 'user_id' => null]);
+});
+
+Event::on( SettingsController::class, UserEvent::EVENT_AFTER_ACCOUNT_UPDATE, function (UserEvent $event) {
+//    $user = $event->getUser();
+});
+
 Event::on( SettingsController::class, UserEvent::EVENT_AFTER_PROFILE_UPDATE, function (ProfileEvent $event) {
 //    $profile = $event->getProfile();
 //    $user = $profile->user;
+});
+
+Event::on(ShopOrders::class, ShopOrders::EVENT_AFTER_INSERT, function ($event) {
+    $order = $event->sender;
+
 });

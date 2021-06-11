@@ -5,6 +5,7 @@ use common\models\ShopOrders as BaseShopOrders;
 use Yii;
 
 /**
+ * @property-read bool $canPay
  * @property-read bool $canCancel
  * @property-read bool $canDelivered
  */
@@ -18,7 +19,7 @@ class ShopOrders extends BaseShopOrders
         return [
             'id' => Yii::t('frontend', 'ID'),
             'order_number' => Yii::t('frontend', 'Order Number'),
-            'order_id' => Yii::t('frontend', 'Order ID'),
+            'payment_token' => Yii::t('frontend', 'Payment Token'),
             'user_id' => Yii::t('frontend', 'User ID'),
             'delivery_method_id' => Yii::t('frontend', 'Delivery Method ID'),
             'delivery_method_name' => Yii::t('frontend', 'Delivery Method Name'),
@@ -38,9 +39,17 @@ class ShopOrders extends BaseShopOrders
         ];
     }
 
+    public function getCanPay(): bool
+    {
+        if (($this->paymentStatus->status == ShopOrdersStatuses::ORDER_NEW || $this->paymentStatus->status == ShopOrdersStatuses::PAYMENTS_WAIT) && $this->paymentMethod->className) {
+            return true;
+        }
+        return false;
+    }
+
     public function getCanCancel(): bool
     {
-        if ($this->deliveryStatus->status == ShopOrdersStatuses::ORDER_NEW) {
+        if ($this->deliveryStatus->status == ShopOrdersStatuses::ORDER_NEW && ($this->paymentStatus->status == ShopOrdersStatuses::ORDER_NEW || $this->paymentStatus->status == ShopOrdersStatuses::PAYMENTS_WAIT)) {
             return true;
         }
         return false;

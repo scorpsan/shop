@@ -46,16 +46,26 @@ mihaildev\elfinder\Assets::noConflict($this);
                 $tabcontent .= $form->field($modelLng[$key], "[$key]content")->widget(CKEditor::class, [
                     'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
                         'preset' => 'full',
-                        'inline' => false,
                         'path' => '@files',
                         'allowedContent' => true,
+                        'removePlugins' => 'forms,about',
                     ]),
                 ]);
                 $tabcontent .= '<hr><h2 class="page-header"><i class="fa fa-internet-explorer"></i> ' . Yii::t('backend', 'SEO') . '</h2>';
                 $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle");
                 $tabcontent .= $form->field($modelLng[$key], "[$key]description");
                 $tabcontent .= $form->field($modelLng[$key], "[$key]keywords");
-                $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->textarea();
+                $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->widget(CKEditor::class, [
+                    'editorOptions' => [
+                        'allowedContent' => true,
+                        'toolbar' => [
+                            ['Source'],
+                            ['Undo', 'Redo'],
+                            ['Format'],
+                            ['Bold', 'Italic', 'Underline'],
+                        ],
+                    ],
+                ]);
                 if ($count > 1) {
                     $tabcontent .= '</div>';
                 }

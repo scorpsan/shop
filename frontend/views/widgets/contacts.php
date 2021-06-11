@@ -39,7 +39,7 @@ use yii\helpers\Html;
                                 </li>
                                 <li>
                                     <address>
-                                        <a class="text-gray-light" href="#"><?= Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address ?></a>
+                                        <a class="text-gray-light" href="#"><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address) ?></a>
                                     </address>
                                 </li>
                             <?php } ?>
@@ -106,7 +106,7 @@ use yii\helpers\Html;
                         <div class="cell-sm-4">
                             <h4><?= Yii::t('frontend', 'Address') ?></h4>
                             <address>
-                                <a class="text-gray-light" href="#"><?= Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address ?></a>
+                                <a class="text-gray-light" href="#"><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address) ?></a>
                             </address>
                         </div>
                         <?php } ?>

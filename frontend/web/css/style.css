@@ -13601,3 +13601,34 @@ a[disabled] {
     cursor: default;
     color: #666666 !important;
 }
+/** Panels Custom **/
+.panel {margin-bottom:0;box-shadow:none;border:none;border-radius:0;}
+.panel-custom.panel-custom-default {border-top:1px solid #f5f5f5;border-left:1px solid #f5f5f5;border-right:1px solid #f5f5f5;}
+.panel-custom.panel-custom-default:last-child {border-bottom:1px solid #f5f5f5;}
+.panel-custom.panel-custom-menu {border-top:1px solid #f5f5f5;border-left:1px solid #f5f5f5;border-right:1px solid #f5f5f5;}
+.panel-custom.panel-custom-menu:last-child {border-bottom:1px solid #f5f5f5;}
+.panel-custom .panel-custom-heading {position:relative;}
+.panel-custom .panel-custom-heading .orders-icon {position:absolute;right:0;bottom:0;display:block;padding:12px 0 13px 40px;}
+.panel-custom .panel-custom-heading .orders-icon a {margin:0 10px;}
+.panel-custom .panel-custom-title {font-size:15px;font-weight:700;color:#898989;background:#f5f5f5;}
+.panel-custom .panel-custom-title > a {display:block;width:100%;position:relative;padding:12px 0 13px 40px;color:#444;background:#f5f5f5;transition:.3s all ease;}
+.panel-custom .panel-custom-title > a > span {display:inline-block;padding:0;}
+.panel-custom.panel-custom-menu .panel-custom-title > a {text-align:left;padding:12px 57px 13px 40px;}
+.panel-custom .panel-custom-title > a:before {content:"\f078";position:absolute;top:50%;left:10px;font-family:'Font Awesome 5 Free';font-weight:900;font-size:24px;line-height:24px;color:#f52626;transform:translateY(-50%) rotate(-180deg);transition:.3s all ease;}
+.panel-custom.panel-custom-menu .panel-custom-title > a:before {content:none;}
+.panel-custom.panel-custom-menu .panel-custom-title > a.active:after {content:"\f054";position:absolute;top:50%;right:10px;font-family:'Font Awesome 5 Free';font-weight:900;font-size:24px;line-height:24px;color:#f52626;transform:translateY(-50%) rotate(-180deg);transition:.3s all ease;}
+.panel-custom.panel-custom-menu .panel-custom-title ul,
+.panel-custom.panel-custom-menu .panel-custom-title ul a {background:#fcfcfc;}
+.panel-custom.panel-custom-menu .panel-custom-title ul {padding-left:20px;}
+.panel-custom .panel-custom-title > a.collapsed {background:#fff;}
+.panel-custom .panel-custom-title > a.collapsed:before {transform:translateY(-50%) rotate(0deg);}
+.panel-custom .panel-custom-title > a:hover {text-decoration:none;background:#f5f5f5;}
+.panel-custom .panel-custom-title.active > a {color:#f52626;}
+.panel-custom .panel-custom-collapse {background:#f5f5f5;}
+.panel-custom .panel-custom-collapse .panel-custom-body {padding:0 1px;}
+@media (min-width:768px) {
+    .panel-custom .panel-custom-heading .orders-icon {padding:12px 0 13px 40px;}
+    .panel-custom .panel-custom-title > a {padding:12px 0 13px 71px;}
+    .panel-custom .panel-custom-title > a:before {left:31px;}
+}
+h3 + .panel-custom-group-wrap {margin-top:30px;}

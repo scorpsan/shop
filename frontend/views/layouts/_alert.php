@@ -8,7 +8,8 @@ if (count($Flashes)) { ?>
     <div class="container my-4">
         <div class="row">
             <?php foreach ($Flashes as $type => $message): ?>
-                <?php if ($type != 'contactFormSubmitted') { ?>
+                <?php if (in_array($type, ['primary', 'success', 'danger', 'error', 'warning', 'info'], true)) { ?>
+                    <?php if ($type == 'error') $type = 'danger'; ?>
                     <div class="col-12 <?= $type ?>">
                     <?= Alert::widget([
                         'options' => ['class' => 'alert-dismissible alert-' . $type],
