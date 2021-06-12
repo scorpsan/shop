@@ -141,7 +141,7 @@ return [
     'Email' => 'E-mail',
     'Message' => 'Message',
     'Name' => 'Your Name',
-    'If you choose Postal delivery method, please enter your Full Name' => 'If you choose Postal delivery method, please enter your Full Name',
+    'If you choose Postal delivery method, please enter your Full Name' => 'If you choose Postal delivery method or by courier across the Republic of Belarus, please enter your Full Name',
     'Phone' => 'Phone',
     'Subject' => 'Subject',
     'Verification Code' => 'Verification Code',

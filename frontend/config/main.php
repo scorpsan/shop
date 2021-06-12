@@ -30,6 +30,7 @@ return [
                 'profile' => 'frontend\controllers\user\ProfileController',
                 'settings' => 'frontend\controllers\user\SettingsController',
                 'registration' => 'frontend\controllers\user\RegistrationController',
+                'recovery' => 'frontend\controllers\user\RecoveryController',
                 'security' => 'frontend\controllers\user\SecurityController',
                 'address' => 'frontend\controllers\user\AddressController',
                 'orders' => 'frontend\controllers\user\OrdersController',

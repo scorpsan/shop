@@ -141,7 +141,7 @@ return [
     'Email' => 'E-mail',
     'Message' => 'Сообщение',
     'Name' => 'Ваше Имя',
-    'If you choose Postal delivery method, please enter your Full Name' => 'Если вы вибираете способ доставки Почтовый, введите пожалуйста полностью Фамилию Имя Отчество',
+    'If you choose Postal delivery method, please enter your Full Name' => 'Если вы выбираете способ доставки Почтой или курьером по РБ, введите пожалуйста полностью Фамилию Имя Отчество',
     'Phone' => 'Телефон',
     'Subject' => 'Тема',
     'Verification Code' => 'Проверочный код',
