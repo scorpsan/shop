@@ -64,8 +64,3 @@ Event::on( SettingsController::class, UserEvent::EVENT_AFTER_PROFILE_UPDATE, fun
 //    $profile = $event->getProfile();
 //    $user = $profile->user;
 });
-
-Event::on(ShopOrders::class, ShopOrders::EVENT_AFTER_INSERT, function ($event) {
-    $order = $event->sender;
-
-});

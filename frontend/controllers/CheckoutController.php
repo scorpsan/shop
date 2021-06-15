@@ -11,6 +11,7 @@ use frontend\models\ShopOrdersStatuses;
 use frontend\models\ShopPayment;
 use frontend\models\ShopProducts;
 use frontend\controllers\user\OrdersController;
+use shop\MailFactory;
 use Yii;
 use Exception;
 use yii\helpers\ArrayHelper;
@@ -245,6 +246,9 @@ class CheckoutController extends AppController
             ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_PAYMENT, ShopOrdersStatuses::ORDER_NEW);
 
             ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_DELIVERY, ShopOrdersStatuses::ORDER_NEW);
+
+            MailFactory::sendOrderToUser($order);
+            MailFactory::sendOrderToAdmin($order);
 
             $this->_session->remove('cart');
             $this->_session->remove('cart.qty');

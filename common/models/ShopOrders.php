@@ -35,9 +35,8 @@ use yii\base\Exception;
  * @property-read ActiveQuery $paymentMethod
  * @property-read ActiveQuery $user
  * @property-read ActiveQuery $items
- * @property-read ActiveQuery $deliveryStatuses
+ * @property-read ActiveQuery $statuses
  * @property-read mixed $deliveryStatus
- * @property-read ActiveQuery $paymentStatuses
  * @property-read mixed $paymentStatus
  */
 class ShopOrders extends ActiveRecord
@@ -133,9 +132,9 @@ class ShopOrders extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getDeliveryStatuses(): ActiveQuery
+    public function getStatuses(): ActiveQuery
     {
-        return $this->hasMany(ShopOrdersStatuses::class, ['order_id' => 'id'])->where(['type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY])->orderBy(['created_at' => SORT_DESC]);
+        return $this->hasMany(ShopOrdersStatuses::class, ['order_id' => 'id']);
     }
 
     /**
@@ -144,14 +143,6 @@ class ShopOrders extends ActiveRecord
     public function getDeliveryStatus()
     {
         return $this->hasOne(ShopOrdersStatuses::class, ['order_id' => 'id'])->where(['type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY])->orderBy(['created_at' => SORT_DESC]);
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getPaymentStatuses(): ActiveQuery
-    {
-        return $this->hasMany(ShopOrdersStatuses::class, ['order_id' => 'id'])->where(['type' => ShopOrdersStatuses::STATUS_TYPE_PAYMENT])->orderBy(['created_at' => SORT_DESC]);
     }
 
     /**

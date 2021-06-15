@@ -25,7 +25,7 @@ use yii\helpers\Url;
                     <tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 100%; line-height: 1.6; margin: 0; padding: 0;">
                         <td align="center" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 100%; line-height: 1.6; margin: 0; padding: 0;">
                             <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 12px; line-height: 1.6; color: #666; font-weight: normal; margin: 0 0 10px; padding: 0;">
-                                <?= Html::a(Html::img(['/images/logo.png'], ['alt' => Yii::$app->name]), Url::to(['/page/index'], true), ['title' => Yii::$app->name]) ?>
+                                <?= Html::a(Html::img(Url::to(['/images/logo.png'], true), ['alt' => Yii::$app->name]), Url::to(['/page/index'], true), ['title' => Yii::$app->name]) ?>
                             </p>
                         </td>
                     </tr>

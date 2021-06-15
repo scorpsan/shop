@@ -8,11 +8,31 @@ use backend\components\widgets\DetailView;
 use backend\models\ShopOrdersStatuses;
 use yii\helpers\Html;
 
-$this->title = Yii::t('backend', 'Update Order') . ' <small>' . $order->order_number . '</small>';
+$this->title = Yii::t('backend', 'View Order') . ' <small>' . $order->order_number . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Orders'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $order->order_number;
-$this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('backend', 'View');
 ?>
+<?php if (Yii::$app->user->can('editPages')) { ?>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <?= Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $order->id], ['class' => 'btn btn-primary']) ?>
+                    <?php if (Yii::$app->user->can('deletePages')) { ?>
+                        <?= Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $order->id], [
+                            'class' => 'btn btn-danger',
+                            'data' => [
+                                'confirm' => Yii::t('backend', 'Are you sure you want to delete this item?'),
+                                'method' => 'post',
+                            ],
+                        ]) ?>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 <div class="row">
     <div class="col-md-4">
         <div class="box">

@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'order_number',
                             'label' => Yii::t('backend', 'Order N'),
                             'value' => function($data) {
-                                return Html::a(Html::encode($data->order_number), ['update', 'id' => $data->id]);
+                                return Html::a(Html::encode($data->order_number), ['view', 'id' => $data->id]);
                             },
                             'headerOptions' => ['width' => '150'],
                             'format' => 'raw',

@@ -187,6 +187,11 @@ return [
     'minutes' => 'минут',
     'seconds' => 'секунд',
     'Our website is under construction, we are working very hard to give you the best experience on our new web site.' => 'Наш сайт находится в стадии разработки, мы прилагаем все усилия, чтобы дать Вам больше информации и комфорта на нашем новом веб-сайте.',
+    // Mail
+    'We received your order number {orderN}' => 'Мы получили Ваш заказ номер {orderN}',
+    'You can track the status of the order, see the details, notify of the receipt by clicking on the link' => 'Отслеживать статус заказа, посмотреть подробности, уведомить о получении можно перейдя по ссылке',
+    'Or in the My Account on the page "My Orders"' => 'Либо в личном кабинете пользователя на странице "Мои покупки"',
+    'We will contact you as soon as possible to confirm the order and clarify the terms of delivery' => 'Мы свяжемся с Вами в ближайшее время для подтверждения заказа и уточнения условий доставки',
     // Coockies and other Messages
     '18plus' => '<h2>Внимание! Данный сайт содержит материалы для <span>взрослых</span></h2><p>неприемлемые для несовершеннолетних лиц.</p><p>Просматривая этот сайт, Вы подтверждаете, что Вам исполнилось 18 лет. Если Вы не достигли возраста 18 лет, пожалуйста, покиньте наш сайт!</p>',
     'answerNo' => '<p>Вы указали, что Вам меньше 18 лет, просмотр содержимого данного сайта ограничен.</p>',

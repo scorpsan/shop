@@ -25,7 +25,7 @@ class OrdersController extends AppController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'view'],
                         'allow' => true,
                         'roles' => ['viewPages'],
                     ],
@@ -58,6 +58,17 @@ class OrdersController extends AppController
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
+        ]);
+    }
+
+    public function actionView($id)
+    {
+        if (!$model = ShopOrders::find()->where(['id' => $id])->with('items')->limit(1)->one()) {
+            throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
+        }
+
+        return $this->render('view', [
+            'order' => $model,
         ]);
     }
 

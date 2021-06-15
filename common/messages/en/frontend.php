@@ -187,6 +187,11 @@ return [
     'minutes' => 'minutes',
     'seconds' => 'seconds',
     'Our website is under construction, we are working very hard to give you the best experience on our new web site.' => 'Our website is under construction, we are working very hard to give you the best experience on our new web site.',
+    // Mail
+    'We received your order number {orderN}' => 'We received your order number {orderN}',
+    'You can track the status of the order, see the details, notify of the receipt by clicking on the link' => 'You can track the status of the order, see the details, notify of the receipt by clicking on the link',
+    'Or in the My Account on the page "My Orders"' => 'Or in the My Account on the page "My Orders"',
+    'We will contact you as soon as possible to confirm the order and clarify the terms of delivery ' => 'We will contact you as soon as possible to confirm the order and clarify the terms of delivery ',
     // Coockies and other Messages
     '18plus' => '<h2>Attention! This site contains materials for <span>adults</span></h2><p>inappropriate for minors.</p><p>By browsing this site, you confirm that you are at least 18 years of age. If you are under the age of 18, please leave our site!</p>',
     'answerNo' => '<p>You have indicated that you are under 18, to view the contents of this website is limited.</p>',

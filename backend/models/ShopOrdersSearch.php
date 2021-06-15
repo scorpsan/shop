@@ -1,8 +1,11 @@
 <?php
 namespace backend\models;
 
+use backend\controllers\AppController;
+use common\models\ShopOrdersStatuses;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 /**
  * Class ShopOrdersSearch
@@ -31,9 +34,11 @@ class ShopOrdersSearch extends ShopOrders
     public function search($params): ActiveDataProvider
     {
         $query = ShopOrders::find()
-            ->joinWith('items')
-            ->with('deliveryStatus')
-            ->with('paymentStatus')
+            //->joinWith('items')
+            ->joinWith(['statuses' => function ($query) {
+                $query->select(ShopOrdersStatuses::tableName() . '.status as del_status')->andWhere([ShopOrdersStatuses::tableName() . '.type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY])->limit(1);
+            }])
+            //->with('paymentStatus')
         ;
 
         // add conditions that should always apply here
@@ -47,6 +52,7 @@ class ShopOrdersSearch extends ShopOrders
                     'created_at',
                 ],
                 'defaultOrder' => [
+                    //'status' => SORT_ASC,
                     'order_number' => SORT_DESC,
                 ],
             ],
@@ -66,10 +72,12 @@ class ShopOrdersSearch extends ShopOrders
             'delivery_method_id' => $this->delivery_method_id,
             'payment_method_id' => $this->payment_method_id,
         ]);
-        $query->andFilterWhere(['like', 'order_number', $this->order_number])
-            ->andFilterWhere(['like', 'customer_name', $this->customer_name]);
-        $query->andFilterWhere([ShopOrdersStatuses::tableName().'.id' => $this->delivery_status])
-            ->andFilterWhere([ShopOrdersStatuses::tableName().'.id' => $this->payment_status]);
+        $query->andFilterWhere(['like', 'order_number', $this->order_number]);
+        $query->andFilterWhere(['like', 'customer_name', $this->customer_name]);
+        $query->andFilterWhere([ShopOrdersStatuses::tableName() . '.status' => $this->delivery_status]);
+        $query->andFilterWhere([ShopOrdersStatuses::tableName() . '.status' => $this->payment_status]);
+
+        AppController::debug($query->all());die;
 
         return $dataProvider;
     }
