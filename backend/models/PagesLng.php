@@ -1,41 +1,17 @@
 <?php
 namespace backend\models;
 
-use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
+use common\models\PagesLng as BasePagesLng;
 use Yii;
 
-/**
- * This is the model class for table "{{%pages_lng}}".
- *
- * @property int $id
- * @property int $item_id
- * @property string $lng
- * @property string $title
- * @property string $seotitle
- * @property string $keywords
- * @property string $description
- * @property string $seo_text
- * @property string $breadbg
- *
- * @property-read mixed $content
- */
-class PagesLng extends ActiveRecord
+class PagesLng extends BasePagesLng
 {
     public $sections;
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
-        return '{{%pages_lng}}';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['item_id', 'lng', 'title'], 'required'],
@@ -51,7 +27,7 @@ class PagesLng extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('backend', 'ID'),
@@ -69,18 +45,10 @@ class PagesLng extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function beforeDelete()
+    public function beforeDelete(): bool
     {
         PagesSection::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getContent()
-    {
-        return $this->hasMany(PagesSection::class, ['item_id' => 'id'])->orderBy(['sort' => SORT_ASC]);
     }
 
 }

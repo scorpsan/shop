@@ -12,10 +12,7 @@ class ShopOrdersItems extends BaseShopOrdersItems
     public function attributeLabels(): array
     {
         return [
-            'id' => Yii::t('frontend', 'ID'),
-            'order_id' => Yii::t('frontend', 'Order ID'),
-            'product_id' => Yii::t('frontend', 'Product ID'),
-            'product_name' => Yii::t('frontend', 'Product Name'),
+            'product_name' => Yii::t('frontend', 'Product'),
             'product_code' => Yii::t('frontend', 'Product Code'),
             'price' => Yii::t('frontend', 'Price'),
             'quantity' => Yii::t('frontend', 'Quantity'),

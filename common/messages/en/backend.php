@@ -270,5 +270,8 @@ return [
     'Create' => 'Create',
     'Characteristic' => 'Characteristic',
     'Page' => 'Page',
-    'Tag' => 'Tag'
+    'Tag' => 'Tag',
+    'Discount' => 'Discount',
+    'Amount Change' => 'Amount Change',
+    'Admin Note' => 'Admin Note'
 ];

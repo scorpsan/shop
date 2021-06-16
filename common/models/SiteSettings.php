@@ -38,7 +38,6 @@ use Exception;
  * @property-read string $keywords
  * @property-read string $description
  * @property-read ActiveQuery $translate
- * @property-read ActiveQuery $translates
  */
 class SiteSettings extends ActiveRecord
 {
@@ -74,7 +73,7 @@ class SiteSettings extends ActiveRecord
      */
     public function getKeywords(): string
     {
-        return ArrayHelper::getValue($this->translate, 'keywords', Yii::$app->params['keywords']);
+        return ArrayHelper::getValue($this->translate, 'keywords');
     }
 
     /**
@@ -83,7 +82,7 @@ class SiteSettings extends ActiveRecord
      */
     public function getDescription(): string
     {
-        return ArrayHelper::getValue($this->translate, 'description', Yii::$app->params['description']);
+        return ArrayHelper::getValue($this->translate, 'description');
     }
 
     /**
@@ -96,14 +95,6 @@ class SiteSettings extends ActiveRecord
             ->onCondition(['lng' => Yii::$app->language])->orOnCondition(['lng' => $langDef])
             ->orderBy([new Expression("FIELD(lng, '".Yii::$app->language."', '".$langDef."')")])
             ->indexBy('lng');
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getTranslates(): ActiveQuery
-    {
-        return $this->hasMany(SiteSettingsLng::class, ['item_id' => 'id'])->indexBy('lng');
     }
 
 }

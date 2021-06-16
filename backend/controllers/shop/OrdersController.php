@@ -7,11 +7,11 @@ use backend\models\ShopOrdersSearch;
 use backend\models\ShopOrdersStatuses;
 use backend\models\ShopPayment;
 use backend\models\ShopDelivery;
+use yii\filters\AccessControl;
 use Da\User\Filter\AccessRuleFilter;
+use yii\filters\VerbFilter;
 use Yii;
 use yii\base\DynamicModel;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
 class OrdersController extends AppController

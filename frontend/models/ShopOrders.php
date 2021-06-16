@@ -17,16 +17,10 @@ class ShopOrders extends BaseShopOrders
     public function attributeLabels(): array
     {
         return [
-            'id' => Yii::t('frontend', 'ID'),
             'order_number' => Yii::t('frontend', 'Order Number'),
-            'payment_token' => Yii::t('frontend', 'Payment Token'),
-            'user_id' => Yii::t('frontend', 'User ID'),
-            'delivery_method_id' => Yii::t('frontend', 'Delivery Method ID'),
-            'delivery_method_name' => Yii::t('frontend', 'Delivery Method Name'),
             'delivery_cost' => Yii::t('frontend', 'Delivery Cost'),
-            'payment_method_id' => Yii::t('frontend', 'Payment Method ID'),
-            'payment_method_name' => Yii::t('frontend', 'Payment Method Name'),
             'amount' => Yii::t('frontend', 'Amount'),
+            'discount' => Yii::t('frontend', 'Discount'),
             'note' => Yii::t('frontend', 'Comment'),
             'cancel_reason' => Yii::t('frontend', 'Cancel Reason'),
             'customer_email' => Yii::t('frontend', 'Customer Email'),

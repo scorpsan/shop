@@ -270,5 +270,8 @@ return [
     'Create' => 'Создать',
     'Characteristic' => 'Characteristic',
     'Page' => 'Страница',
-    'Tag' => 'Tag'
+    'Tag' => 'Tag',
+    'Discount' => 'Скидка',
+    'Amount Change' => 'Изменение суммы',
+    'Admin Note' => 'Заметки администратора',
 ];

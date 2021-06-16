@@ -56,24 +56,24 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
         </div>
         <div class="box">
             <div class="box-body">
-                <?= $form->field($order, "tracker")->textInput(); ?>
+                <?= $form->field($order, 'tracker')->textInput(); ?>
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="box">
             <div class="box-body">
-                <?= $form->field($order, "customer_name")->textInput(); ?>
+                <?= $form->field($order, 'customer_name')->textInput(); ?>
 
-                <?= $form->field($order, "customer_email")->textInput(); ?>
+                <?= $form->field($order, 'customer_email')->textInput(); ?>
 
-                <?= $form->field($order, "customer_phone")->textInput(); ?>
+                <?= $form->field($order, 'customer_phone')->textInput(); ?>
 
                 <h4 class="box-title"><?= Yii::t('backend', 'Shipping address') . ':' ?></h4>
 
-                <?= $form->field($order, "delivery_postal")->textInput(); ?>
+                <?= $form->field($order, 'delivery_postal')->textInput(); ?>
 
-                <?= $form->field($order, "delivery_address")->textarea(); ?>
+                <?= $form->field($order, 'delivery_address')->textarea(['rows' => 5]); ?>
             </div>
         </div>
     </div>
@@ -82,6 +82,11 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
             <div class="box-body">
                 <h4 class="box-title"><?= Yii::t('backend', 'Comment') . ':' ?></h4>
                 <p><?= $order->note ?></p>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($order, 'admin_note')->textarea(['rows' => 10]); ?>
             </div>
         </div>
     </div>
@@ -119,10 +124,14 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
                             <td class="text-center"><?= (($order->delivery_cost) ? Yii::$app->formatter->asCurrency($order->delivery_cost, $order->currency) : Yii::t('backend','free')) ?></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><?= Yii::t('backend', 'Total') ?></td>
-                            <td class="text-center"><?= $qty ?></td>
+                            <td colspan="4" style="color: red;"><?= Yii::t('backend', 'Discount') ?></td>
+                            <td class="text-center"><?= $form->field($order, 'discount')->textInput()->label(false); ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold;font-size: 1.5em;"><?= Yii::t('backend', 'Total') ?></td>
+                            <td class="text-center" style="font-weight: bold;font-size: 1.3em;"><?= $qty ?></td>
                             <td nowrap></td>
-                            <td class="text-center" nowrap><?= Yii::$app->formatter->asCurrency($order->amount, $order->currency) ?></td>
+                            <td class="text-center" style="font-weight: bold;font-size: 1.5em;" nowrap><?= Yii::$app->formatter->asCurrency($order->amount - $order->discount, $order->currency) ?></td>
                         </tr>
                         </tbody>
                     </table>

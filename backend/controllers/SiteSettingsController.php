@@ -1,20 +1,28 @@
 <?php
 namespace backend\controllers;
 
-use Yii;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use Da\User\Filter\AccessRuleFilter;
+use yii\filters\VerbFilter;
+use Yii;
 use backend\models\Language;
 use backend\models\SiteSettings;
 use backend\models\SiteSettingsLng;
 use yii\base\Model;
 
-class SiteSettingsController extends AppController {
-
-    public function behaviors() {
+class SiteSettingsController extends AppController
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors(): array
+    {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
+                'ruleConfig' => [
+                    'class' => AccessRuleFilter::class,
+                ],
                 'only' => ['index', 'update', 'change-setting'],
                 'rules' => [
                     [
@@ -30,7 +38,7 @@ class SiteSettingsController extends AppController {
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -39,7 +47,7 @@ class SiteSettingsController extends AppController {
     }
 
     public function actionIndex() {
-        $model = SiteSettings::find()->where(['id' => 1])
+        $model = SiteSettings::find()
             ->with('translate')
             ->with('translates')
             ->limit(1)->one();

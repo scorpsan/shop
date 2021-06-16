@@ -20,9 +20,9 @@ $params = Yii::$app->params;
                 <div class="footer-column-1 col-xl-3 col-lg-4 col-sm-6 col-12 order-sm-4 order-md-1 mb-4">
                     <h3><?= Yii::t('frontend', 'Contacts') ?></h3>
                     <div class="footer-address">
-                        <?php if (!empty($params['siteSettings']->translates[Yii::$app->language]->address)) { ?>
+                        <?php if (!empty($params['siteSettings']->translate->address)) { ?>
                             <span class="fas fa-home"></span>
-                            <p class="mb-0"><?= str_replace("\n", "<br>", $params['siteSettings']->translates[Yii::$app->language]->address) ?></p>
+                            <p class="mb-0"><?= str_replace("\n", "<br>", $params['siteSettings']->translate->address) ?></p>
                         <?php } ?>
                     </div>
                     <div class="footer-tel">
@@ -42,9 +42,9 @@ $params = Yii::$app->params;
                         <p class="mb-0">Email: <?= Html::a($params['supportEmail'], 'mailto:'.$params['supportEmail']) ?></p>
                     </div>
                     <div class="footer-clock">
-                        <?php if (!empty($params['siteSettings']->translates[Yii::$app->language]->opening_hours)) { ?>
+                        <?php if (!empty($params['siteSettings']->translate->opening_hours)) { ?>
                             <span class="fas fa-clock"></span>
-                            <p class="mb-0"><?= str_replace("\n", "<br>", $params['siteSettings']->translates[Yii::$app->language]->opening_hours) ?></p>
+                            <p class="mb-0"><?= str_replace("\n", "<br>", $params['siteSettings']->translate->opening_hours) ?></p>
                         <?php } ?>
                     </div>
                     <div class="payment-method">
@@ -53,7 +53,7 @@ $params = Yii::$app->params;
                     </div>
                 </div>
                 <div class="footer-column-2 col-xl-3 col-lg-2 col-sm-6 col-12 order-sm-1 order-md-2 mb-4">
-                    <?= $params['siteSettings']->translates[Yii::$app->language]->about_footer ?>
+                    <?= $params['siteSettings']->translate->about_footer ?>
                 </div>
                 <div class="footer-column-3 col-xl-3 col-lg-3 col-sm-6 col-12 order-sm-2 order-md-3 mb-4">
                     <h3><?= Yii::t('frontend', 'Information') ?></h3>

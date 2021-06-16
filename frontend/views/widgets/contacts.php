@@ -3,6 +3,8 @@
  * @var $params array
  * @var $options array
  */
+
+use frontend\widgets\ContactFormWidget;
 use yii\helpers\Html;
 /**
 'c' => 'Contacts Only',
@@ -23,7 +25,7 @@ use yii\helpers\Html;
             <?php if (!empty($options['pretext'])) { ?>
                 <p><?= $options['pretext'] ?></p>
             <?php } ?>
-            <?= \frontend\widgets\ContactFormWidget::widget() ?>
+            <?= ContactFormWidget::widget() ?>
         <?php } else { ?>
             <div class="row">
                 <?php if ($options['type'] == 'cf' || $options['type'] == 'cfm') { ?>
@@ -33,19 +35,20 @@ use yii\helpers\Html;
                             <p class="col-10 para-fs18 font-2 pl-0" style="padding-right: 20px"><?= $options['pretext'] ?></p>
                         <?php } ?>
                         <ul>
-                            <?php if (!empty(Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address)) { ?>
+                            <?php if (!empty(Yii::$app->params['siteSettings']->translate->address)) { ?>
                                 <li>
-                                    <span><?= Yii::t('frontend', 'Address') ?>: </span>
-                                </li>
-                                <li>
-                                    <address>
-                                        <a class="text-gray-light" href="#"><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address) ?></a>
-                                    </address>
+                                    <span>
+                                        <?= Yii::t('frontend', 'Address') ?>:
+
+                                        <address>
+                                            <a class="text-gray-light" href="#"><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translate->address) ?></a>
+                                        </address>
+                                    </span>
                                 </li>
                             <?php } ?>
-                            <?php if (!empty(Yii::$app->params['siteSettings']->translates[Yii::$app->language]->opening_hours_full)) { ?>
+                            <?php if (!empty(Yii::$app->params['siteSettings']->translate->opening_hours_full)) { ?>
                                 <li>
-                                    <?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->opening_hours_full) ?>
+                                    <span><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translate->opening_hours_full) ?></span>
                                 </li>
                             <?php } ?>
                             <li></li>
@@ -88,7 +91,7 @@ use yii\helpers\Html;
                         <?php if ($params['show_title']) { ?>
                             <h3 class="heading-3"><?= $params['title'] ?></h3>
                         <?php } ?>
-                        <?= \frontend\widgets\ContactFormWidget::widget() ?>
+                        <?= ContactFormWidget::widget() ?>
                     </div>
                 <?php } elseif ($options['type'] == 'c' || $options['type'] == 'cm') { ?>
                     <div class="row">
@@ -102,11 +105,11 @@ use yii\helpers\Html;
                         </div>
                     </div>
                     <div class="row">
-                    <?php if (!empty(Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address)) { ?>
+                    <?php if (!empty(Yii::$app->params['siteSettings']->translate->address)) { ?>
                         <div class="cell-sm-4">
                             <h4><?= Yii::t('frontend', 'Address') ?></h4>
                             <address>
-                                <a class="text-gray-light" href="#"><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address) ?></a>
+                                <a class="text-gray-light" href="#"><?= str_replace("\n", "<br>", Yii::$app->params['siteSettings']->translate->address) ?></a>
                             </address>
                         </div>
                         <?php } ?>
@@ -147,10 +150,10 @@ use yii\helpers\Html;
                             <h4>E-mail</h4>
                             <div><a class="text-primary text-italic" href="mailto:<?= Yii::$app->params['supportEmail'] ?>" target="_blank"><?= Yii::$app->params['supportEmail'] ?></a></div>
                         </div>
-                        <?php if (!empty(Yii::$app->params['siteSettings']->translates[Yii::$app->language]->opening_hours_full)) { ?>
+                        <?php if (!empty(Yii::$app->params['siteSettings']->translate->opening_hours_full)) { ?>
                         <div class="cell-sm-4 offset-top-20 offset-md-top-60">
                             <h4><?= Yii::t('frontend', 'Opening hours') ?></h4>
-                            <p><?= str_replace("\n", "</p><p>", Yii::$app->params['siteSettings']->translates[Yii::$app->language]->opening_hours_full) ?></p>
+                            <p><?= str_replace("\n", "</p><p>", Yii::$app->params['siteSettings']->translate->opening_hours_full) ?></p>
                         </div>
                     <?php } ?>
                     </div>
@@ -169,7 +172,7 @@ use yii\helpers\Html;
 $long_map = Yii::$app->params['siteSettings']->long_map;
 $lat_map = Yii::$app->params['siteSettings']->lat_map;
 $name = Yii::$app->name;
-$address = Yii::$app->params['siteSettings']->translates[Yii::$app->language]->address_map;
+$address = Yii::$app->params['siteSettings']->translate->address_map;
 $script = <<< JS
 ymaps.ready(init);
 function init() {

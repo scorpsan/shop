@@ -5,7 +5,7 @@
  * @var $languages      \backend\models\Language
  */
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use backend\components\widgets\DetailView;
 
 $this->title = Yii::t('backend', 'Settings');
 $this->params['breadcrumbs'][] = $this->title;
@@ -35,27 +35,29 @@ $this->params['breadcrumbs'][] = $this->title;
             foreach ($languages as $key => $lang) {
                 if ($count > 1) {
                     if ($lang->default) {
-                        $licontent .= '<li class="active"><a data-toggle="tab" id="' . $lang->url . '_tab" role="tab" href="#lng_' . $lang->url . '" aria-expanded="true">' . $lang->title . ' <span class="fa fa-star"></span></a></li>';
-                        $tabcontent .= '<div id="lng_' . $lang->url . '" class="tab-pane fade active in" role="tabpanel">';
+                        $licontent .= '<li class="active"><a data-toggle="tab" id="' . $key . '_tab" role="tab" href="#lng_' . $key . '" aria-expanded="true">' . $lang->title . ' <span class="fa fa-star"></span></a></li>';
+                        $tabcontent .= '<div id="lng_' . $key . '" class="tab-pane fade active in" role="tabpanel">';
                     } else {
-                        $licontent .= '<li><a data-toggle="tab" id="' . $lang->url . '_tab" role="tab" href="#lng_' . $lang->url . '" aria-expanded="false">' . $lang->title . '</a></li>';
-                        $tabcontent .= '<div id="lng_' . $lang->url . '" class="tab-pane fade" role="tabpanel">';
+                        $licontent .= '<li><a data-toggle="tab" id="' . $key . '_tab" role="tab" href="#lng_' . $key . '" aria-expanded="false">' . $lang->title . '</a></li>';
+                        $tabcontent .= '<div id="lng_' . $key . '" class="tab-pane fade" role="tabpanel">';
                     }
                 }
-                if (!empty($model->translates[$lang->url])) {
+                if (!empty($model->translates[$key])) {
+                    echo $model->translate->getAttributeLabel('seotitle');
                     $tabcontent .= DetailView::widget([
-                        'model' => $model->translates[$lang->url],
+                        'model' => $model->translates[$key],
+                        'template' => '<tr><th{captionOptions} width="300px">{label}</th><td{contentOptions}>{value}</td></tr>',
                         'attributes' => [
                             'title',
-                            'seotitle',
-                            'description',
-                            'keywords',
-                            'address',
-                            'about_footer',
+                            'seotitle:ntext',
+                            'keywords:ntext',
+                            'description:ntext',
+                            'address:html',
+                            'about_footer:html',
                             'opening_hours',
                             'opening_hours_full',
                             'contact_info:html',
-                            'address_map',
+                            'address_map:html',
                         ],
                     ]);
                 } else {
@@ -90,6 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-body">
                 <?= DetailView::widget([
                     'model' => $model,
+                    'template' => '<tr><th{captionOptions} width="300px">{label}</th><td{contentOptions}>{value}</td></tr>',
                     'attributes' => [
                         'admin_email',
                         'support_email',
@@ -110,6 +113,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         'link_to_twitter',
                         'link_to_instagram',
                         'instagram_token',
+                        [
+                            'attribute' => 'coming_soon',
+                            'value' => function($data) {
+                                return Html::tag('span', Yii::$app->formatter->asBoolean($data->coming_soon), ['class' => 'label label-' . (($data->coming_soon) ? 'danger' : 'success')]);
+                            },
+                            'format' => 'html',
+                        ],
+                        [
+                            'attribute' => 'search_on_site',
+                            'value' => function($data) {
+                                return Html::tag('span', Yii::$app->formatter->asBoolean($data->search_on_site), ['class' => 'label label-' . (($data->search_on_site) ? 'success' : 'danger')]);
+                            },
+                            'format' => 'html',
+                        ],
+                        [
+                            'attribute' => 'shop_on_site',
+                            'value' => function($data) {
+                                return Html::tag('span', Yii::$app->formatter->asBoolean($data->shop_on_site), ['class' => 'label label-' . (($data->shop_on_site) ? 'success' : 'danger')]);
+                            },
+                            'format' => 'html',
+                        ],
                     ],
                 ]) ?>
             </div>

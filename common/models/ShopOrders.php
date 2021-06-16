@@ -19,8 +19,11 @@ use yii\base\Exception;
  * @property int $payment_method_id [int(11)]
  * @property string $payment_method_name [varchar(255)]
  * @property float $amount [float]
+ * @property float $amount_change [float]
+ * @property float $discount [float]
  * @property string $currency [char(3)]
  * @property string $note
+ * @property string $admin_note
  * @property string $cancel_reason
  * @property string $customer_email [char(255)]
  * @property string $customer_phone [varchar(255)]
@@ -67,8 +70,8 @@ class ShopOrders extends ActiveRecord
         return [
             [['order_number', 'token', 'delivery_method_name', 'payment_method_name', 'amount', 'currency', 'customer_email', 'customer_phone', 'customer_name', 'delivery_address'], 'required'],
             [['user_id', 'delivery_method_id', 'payment_method_id'], 'integer'],
-            [['delivery_cost', 'amount'], 'number'],
-            [['note', 'cancel_reason', 'delivery_address'], 'string'],
+            [['delivery_cost', 'amount', 'amount_change', 'discount'], 'number'],
+            [['note', 'admin_note', 'cancel_reason', 'delivery_address'], 'string'],
             [['order_number'], 'string', 'max' => 100],
             [['token'], 'string', 'max' => 64],
             [['currency'], 'string', 'max' => 3],

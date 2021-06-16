@@ -15,7 +15,7 @@ class SetUp implements BootstrapInterface
         /** Set Default Language in system */
         $app->params['defaultLanguage'] = Language::getLanguageDefault()->url;
         /** Get Currency Code and Region */
-        $siteSettings = SiteSettings::find()->joinWith('translates')->limit(1)->one();
+        $siteSettings = SiteSettings::find()->joinWith('translate')->limit(1)->one();
         $app->formatter->currencyCode = $siteSettings->currency_code;
         $app->formatter->defaultTimeZone = $app->params['userTimeZone'];
         $app->setTimeZone($app->params['userTimeZone']);
@@ -27,11 +27,14 @@ class SetUp implements BootstrapInterface
         $app->params['supportEmail'] = $siteSettings->support_email;
         $app->params['senderEmail'] = $siteSettings->sender_email;
         $app->params['senderName'] = $siteSettings->title;
-        $app->params['siteSettings'] = $siteSettings;
+
         $app->params['title'] = $siteSettings->title;
         $app->params['seotitle'] = $siteSettings->seotitle;
         $app->params['keywords'] = $siteSettings->keywords;
         $app->params['description'] = $siteSettings->description;
+
+        $app->params['siteSettings'] = $siteSettings;
+
         $app->params['components']['mailer']['messageConfig'] = [
             'from' => [$app->params['senderEmail'] => $app->params['senderName']],
         ];

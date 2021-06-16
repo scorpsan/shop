@@ -78,6 +78,7 @@ $this->title = Yii::t('frontend', 'Payment');
                                                 <?= Html::a('<span aria-hidden="true">' . Yii::t('frontend', 'Change') . '</span>', ['/checkout/information'], ['class' => 'link--small']) ?>
                                             </div>
                                         </div>
+                                        <?php if (!$shipMethod->pickup) { ?>
                                         <div role="row" class="review-block">
                                             <div class="review-block__inner">
                                                 <div role="rowheader" class="review-block__label"><?= Yii::t('frontend', 'Ship to') ?></div>
@@ -102,6 +103,7 @@ $this->title = Yii::t('frontend', 'Payment');
                                                 <?= Html::a('<span aria-hidden="true">' . Yii::t('frontend', 'Change') . '</span>', ['/checkout/information'], ['class' => 'link--small']) ?>
                                             </div>
                                         </div>
+                                        <?php } ?>
                                         <div role="row" class="review-block">
                                             <div class="review-block__inner">
                                                 <div role="rowheader" class="review-block__label"><?= Yii::t('frontend', 'Method') ?></div>

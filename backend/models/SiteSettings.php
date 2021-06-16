@@ -3,13 +3,18 @@ namespace backend\models;
 
 use common\models\SiteSettings as BaseSiteSettings;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
-* This is the model class for table "{{%settings}}".
-*/
-class SiteSettings extends BaseSiteSettings {
-
-    public function rules() {
+ * @property-read ActiveQuery $translates
+ */
+class SiteSettings extends BaseSiteSettings
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
         return [
             [['phone', 'admin_email', 'support_email', 'sender_email', 'currency_code'], 'required'],
             [['currency_code'], 'string', 'max' => 3],
@@ -22,9 +27,12 @@ class SiteSettings extends BaseSiteSettings {
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels(): array
+    {
         return [
-            'id' => Yii::t('backend', 'ID'),
             'phone' => Yii::t('backend', 'Top Phone Number'),
             'currency_code' => Yii::t('backend', 'Currency Code'),
             'admin_email' => Yii::t('backend', 'Administrator Email'),
@@ -48,6 +56,14 @@ class SiteSettings extends BaseSiteSettings {
             'search_on_site' => Yii::t('backend', 'Search on Site on/off'),
             'shop_on_site' => Yii::t('backend', 'Shop on Site on/off'),
         ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getTranslates(): ActiveQuery
+    {
+        return $this->hasMany(SiteSettingsLng::class, ['item_id' => 'id'])->indexBy('lng');
     }
 
 }

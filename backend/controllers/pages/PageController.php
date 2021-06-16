@@ -2,7 +2,6 @@
 namespace backend\controllers\pages;
 
 use backend\controllers\AppController;
-use backend\models\ShopProducts;
 use yii\filters\AccessControl;
 use Da\User\Filter\AccessRuleFilter;
 use yii\data\ActiveDataProvider;
@@ -18,8 +17,10 @@ use yii\web\NotFoundHttpException;
 
 class PageController extends AppController
 {
-
-    public function behaviors()
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors(): array
     {
         return [
             'access' => [

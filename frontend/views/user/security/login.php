@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $this->render('../shared/_alert') ?>
 
                     <div class="login-form">
-                        <?= $form->field($model, 'login') ?>
+                        <?= $form->field($model, 'login')->label(Yii::t('frontend', 'Email')) ?>
 
                         <?= $form->field($model, 'password')->passwordInput()
                             ->label( Yii::t('usuario', 'Password')

@@ -6,9 +6,9 @@
  */
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\DetailView;
+use backend\components\widgets\DetailView;
 
-$this->title = Yii::t('backend', 'Pages') . ' <small>' . $model->title . '</small>';
+$this->title = Yii::t('backend', 'Page') . ' <small>' . $model->title . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->title;
 ?>
@@ -50,16 +50,8 @@ $this->params['breadcrumbs'][] = $model->title;
                                         : '',
                                 ],
                                 'alias',
-                                [
-                                    'attribute' => 'created_at',
-                                    'value' => Yii::$app->formatter->asDatetime($model->created_at),
-                                    'format' => 'ntext',
-                                ],
-                                [
-                                    'attribute' => 'updated_at',
-                                    'value' => Yii::$app->formatter->asDatetime($model->updated_at),
-                                    'format' => 'ntext',
-                                ],
+                                'created_at:datetime',
+                                'updated_at:datetime',
                             ],
                         ]) ?>
                     </div>

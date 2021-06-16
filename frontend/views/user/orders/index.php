@@ -60,7 +60,7 @@ $this->title = Yii::t('frontend', 'My Orders');
                                                         &nbsp;
                                                         <span class="col-sm-3"><?= Yii::t('frontend', 'Order N') . ': ' . $order->order_number ?></span>
                                                         <span class="col-sm-3"><?= Yii::$app->formatter->asDate($order->created_at) ?></span>
-                                                        <span class="col-sm-2"><?= Yii::$app->formatter->asCurrency($order->amount, $order->currency) ?></span>
+                                                        <span class="col-sm-2"><?= Yii::$app->formatter->asCurrency($order->amount - $order->discount, $order->currency) ?></span>
                                                         <span class="col-sm-2">
                                                             <?= ($order->paymentStatus->status == $order->deliveryStatus->status) ? ShopOrdersStatuses::HtmlStatus($order->paymentStatus->status) : ShopOrdersStatuses::HtmlStatus($order->paymentStatus->status) . ' / ' . ShopOrdersStatuses::HtmlStatus($order->deliveryStatus->status) ?>
                                                         </span>
@@ -110,21 +110,32 @@ $this->title = Yii::t('frontend', 'My Orders');
                                                                 <td class="text-center"><?= (($order->delivery_cost) ? Yii::$app->formatter->asCurrency($order->delivery_cost, $order->currency) : Yii::t('frontend','free')) ?></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2"><?= Yii::t('frontend', 'Total') ?></td>
-                                                                <td class="text-center"><?= $qty ?></td>
+                                                                <td colspan="5"><?= Yii::t('frontend', 'Payment') . ': ' . $order->payment_method_name ?></td>
+                                                            </tr>
+                                                            <?php if ($order->discount) { ?>
+                                                                <tr>
+                                                                    <td colspan="4" style="color: red;"><?= Yii::t('frontend', 'Discount') ?></td>
+                                                                    <td class="text-center" style="color: red;" nowrap>- <?= Yii::$app->formatter->asCurrency($order->discount, $order->currency) ?></td>
+                                                                </tr>
+                                                            <?php } ?>
+                                                            <tr>
+                                                                <td colspan="2" style="font-weight: bold;font-size: 1.3em;"><?= Yii::t('frontend', 'Total') ?></td>
+                                                                <td class="text-center" style="font-weight: bold;font-size: 1.1em;"><?= $qty ?></td>
                                                                 <td nowrap></td>
-                                                                <td class="text-center" nowrap><?= Yii::$app->formatter->asCurrency($order->amount, $order->currency) ?></td>
+                                                                <td class="text-center" style="font-weight: bold;font-size: 1.3em;" nowrap><?= Yii::$app->formatter->asCurrency($order->amount - $order->discount, $order->currency) ?></td>
                                                             </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                     <div class="row mb-4 mx-0">
-                                                        <div class="col-sm-6 col-xs-12 mb-2 px-4">
-                                                            <h5 class="cart-title"><?= Yii::t('frontend', 'Shipping address') . ':' ?></h5>
-                                                            <p><?= $order->customer_name ?></p>
-                                                            <p><?= $order->delivery_postal ?>, <?= $order->delivery_address ?></p>
-                                                            <p><?= $order->customer_phone ?></p>
-                                                        </div>
+                                                        <?php if (!$order->deliveryMethod->pickup) { ?>
+                                                            <div class="col-sm-6 col-xs-12 mb-2 px-4">
+                                                                <h5 class="cart-title"><?= Yii::t('frontend', 'Shipping address') . ':' ?></h5>
+                                                                <p><?= $order->customer_name ?></p>
+                                                                <p><?= $order->delivery_postal ?>, <?= $order->delivery_address ?></p>
+                                                                <p><?= $order->customer_phone ?></p>
+                                                            </div>
+                                                        <?php } ?>
                                                         <?php if ($order->note) { ?>
                                                             <div class="col-sm-6 col-xs-12 mb-2 px-4">
                                                                 <h5 class="cart-title"><?= Yii::t('frontend', 'Comment') . ':' ?></h5>

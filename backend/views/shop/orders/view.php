@@ -80,6 +80,12 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'View');
                 <p><?= $order->note ?></p>
             </div>
         </div>
+        <div class="box">
+            <div class="box-body">
+                <h4 class="box-title"><?= Yii::t('backend', 'Admin Note') . ':' ?></h4>
+                <p><?= $order->admin_note ?></p>
+            </div>
+        </div>
     </div>
 </div>
 <?php $form = ActiveForm::begin([
@@ -160,11 +166,17 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'View');
                             <td colspan="4"><?= Yii::t('backend', 'Shipping') ?></td>
                             <td class="text-center"><?= (($order->delivery_cost) ? Yii::$app->formatter->asCurrency($order->delivery_cost, $order->currency) : Yii::t('backend','free')) ?></td>
                         </tr>
+                        <?php if ($order->discount) { ?>
                         <tr>
-                            <td colspan="2"><?= Yii::t('backend', 'Total') ?></td>
-                            <td class="text-center"><?= $qty ?></td>
+                            <td colspan="4" style="color: red;"><?= Yii::t('backend', 'Discount') ?></td>
+                            <td class="text-center" style="color: red;" nowrap>- <?= Yii::$app->formatter->asCurrency($order->discount, $order->currency) ?></td>
+                        </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold;font-size: 1.5em;"><?= Yii::t('backend', 'Total') ?></td>
+                            <td class="text-center" style="font-weight: bold;font-size: 1.3em;"><?= $qty ?></td>
                             <td nowrap></td>
-                            <td class="text-center" nowrap><?= Yii::$app->formatter->asCurrency($order->amount, $order->currency) ?></td>
+                            <td class="text-center" style="font-weight: bold;font-size: 1.5em;" nowrap><?= Yii::$app->formatter->asCurrency($order->amount - $order->discount, $order->currency) ?></td>
                         </tr>
                         </tbody>
                     </table>
