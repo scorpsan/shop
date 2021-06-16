@@ -9,7 +9,21 @@ use yii\bootstrap4\Html;
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PN3H2TW');</script>
     <!-- End Google Tag Manager -->
-<link rel="shortcut icon" type="image/png" href="/images/favicon.png" sizes="16x16">
+<link type="image/png" rel="shortcut icon" sizes="16x16" href="/icon/favicon_16x16.png">
+<link type="image/png" rel="icon" sizes="32x32" href="/icon/favicon_32x32.png">
+<link type="image/png" rel="icon" sizes="96x96" href="/icon/favicon_96x96.png">
+<link type="image/png" rel="icon" sizes="120x120" href="/icon/favicon_120x120.png">
+<link type="image/png" rel="icon" sizes="192x192"  href="/icon/android-icon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/icon/apple-touch-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/icon/apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/icon/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/icon/apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/icon/apple-touch-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-touch-icon-57x57.png">
+
 <meta name="theme-color" content="#7fc9c4">
 <?= Html::csrfMetaTags() ?>
 <?php
@@ -26,22 +40,12 @@ Yii::$app->view->on(\yii\web\View::EVENT_BEGIN_BODY, function () use ($gt) {
 });
 
 /*
-<link rel="apple-touch-icon-precomposed" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile.png?v=12793611169492794772" />
-<link rel="apple-touch-icon-precomposed" sizes="57x57" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile_57x57.png?v=12793611169492794772" />
-<link rel="apple-touch-icon-precomposed" sizes="60x60" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile_60x60.png?v=12793611169492794772" />
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile_72x72.png?v=12793611169492794772" />
-<link rel="apple-touch-icon-precomposed" sizes="76x76" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile_76x76.png?v=12793611169492794772" />
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile_114x114.png?v=12793611169492794772" />
-<link rel="apple-touch-icon-precomposed" sizes="120x120" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile_120x120.png?v=12793611169492794772" />
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile_144x144.png?v=12793611169492794772" />
-<link rel="apple-touch-icon-precomposed" sizes="152x152" href="//cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/icon-for-mobile_152x152.png?v=12793611169492794772" />
-
 <meta property="og:type" content="website">
-<meta property="og:title" content="BadKitty - Clothing &amp; Fashion Responsive Shopify Theme">
-<meta property="og:image" content="http://cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/logo.png?3308">
-<meta property="og:image:secure_url" content="https://cdn.shopify.com/s/files/1/0260/6681/3005/t/3/assets/logo.png?3308">
+<meta property="og:title" content="<?= Yii::$app->name ?>">
+<meta property="og:image" content="">
+<meta property="og:image:secure_url" content="">
 <meta property="og:url" content="https://badkitty.by/">
-<meta property="og:site_name" content="Lamode - Clothing &amp; Fashion Responsive Shopify Theme">
+<meta property="og:site_name" content="<?= Yii::$app->params['seotitle'] ?>">
 
 <meta name="twitter:card" content="summary">
 */
