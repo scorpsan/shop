@@ -1,7 +1,8 @@
 <?php
 /**
  * @var View          $this
- * @var \Da\User\Model\Profile $profile
+ * @var \common\models\Profile      $profile
+ * @var \frontend\models\ProfileAddress     $userAddresses
  */
 
 use yii\web\View;
@@ -79,8 +80,8 @@ $name = empty($profile->name) ? Html::encode($user->username) : Html::encode($pr
                 </div>
 
                 <div class="row mb-4">
-                    <?php if (count($user->addresses)) { ?>
-                        <?php foreach ($user->addresses as $key => $address) { ?>
+                    <?php if (count($userAddresses)) { ?>
+                        <?php foreach ($userAddresses as $key => $address) { ?>
                             <div class="col-lg-4 col-sm-6 mb-4">
                                 <div class="card border rounded active h-100">
                                     <div class="card-body">

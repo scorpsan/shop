@@ -43,7 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 }
                 if (!empty($model->translates[$key])) {
-                    echo $model->translate->getAttributeLabel('seotitle');
                     $tabcontent .= DetailView::widget([
                         'model' => $model->translates[$key],
                         'template' => '<tr><th{captionOptions} width="300px">{label}</th><td{contentOptions}>{value}</td></tr>',

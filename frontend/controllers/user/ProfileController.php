@@ -2,6 +2,7 @@
 namespace frontend\controllers\user;
 
 use Da\User\Controller\ProfileController as BaseProfileController;
+use frontend\models\ProfileAddress;
 use yii\filters\AccessControl;
 use Da\User\Filter\AccessRuleFilter;
 use Yii;
@@ -51,7 +52,12 @@ class ProfileController extends BaseProfileController
             throw new NotFoundHttpException();
         }
 
-        return $this->render('index', ['profile' => $profile]);
+        $userAddresses = ProfileAddress::find()->where(['user_id' => Yii::$app->user->id])->all();
+
+        return $this->render('index', [
+            'profile' => $profile,
+            'userAddresses' => $userAddresses,
+        ]);
     }
 
     public function actionShow($id)

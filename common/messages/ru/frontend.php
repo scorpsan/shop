@@ -98,7 +98,7 @@ return [
     'Address' => 'Адрес',
     'Apartment, suite, etc. (optional)' => 'Квартира, комната, др. (по желанию)',
     'Addresses' => 'Адреса',
-    'Postal' => 'Почтовый индекс',
+    'Postal' => 'Индекс',
     'Address not found.' => 'Адрес не найден.',
     'Your Address has been created' => 'Ваш адрес записан',
     'Your Address has been updated' => 'Ваш адрес обновлен',
