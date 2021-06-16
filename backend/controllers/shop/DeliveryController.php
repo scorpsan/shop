@@ -72,6 +72,7 @@ class DeliveryController extends AppController
     {
         $model = new ShopDelivery([
             'published' => true,
+            'pickup' => false,
         ]);
         $languages = Language::getLanguages();
         foreach ($languages as $lang) {

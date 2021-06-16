@@ -27,7 +27,7 @@ class ShopOrders extends BaseShopOrders
             'payment_method_id' => Yii::t('frontend', 'Payment Method ID'),
             'payment_method_name' => Yii::t('frontend', 'Payment Method Name'),
             'amount' => Yii::t('frontend', 'Amount'),
-            'note' => Yii::t('frontend', 'Note'),
+            'note' => Yii::t('frontend', 'Comment'),
             'cancel_reason' => Yii::t('frontend', 'Cancel Reason'),
             'customer_email' => Yii::t('frontend', 'Customer Email'),
             'customer_phone' => Yii::t('frontend', 'Customer Phone'),

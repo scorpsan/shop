@@ -9,7 +9,7 @@
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 
-$this->title = Yii::t('backend', 'Update Settings');
+$this->title = Yii::t('backend', 'Update') . ' ' . Yii::t('backend', 'Settings');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Settings'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
 ?>

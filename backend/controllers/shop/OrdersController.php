@@ -4,8 +4,12 @@ namespace backend\controllers\shop;
 use backend\controllers\AppController;
 use backend\models\ShopOrders;
 use backend\models\ShopOrdersSearch;
+use backend\models\ShopOrdersStatuses;
+use backend\models\ShopPayment;
+use backend\models\ShopDelivery;
 use Da\User\Filter\AccessRuleFilter;
 use Yii;
+use yii\base\DynamicModel;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
@@ -63,34 +67,76 @@ class OrdersController extends AppController
 
     public function actionView($id)
     {
-        if (!$model = ShopOrders::find()->where(['id' => $id])->with('items')->limit(1)->one()) {
+        if (!$order = ShopOrders::find()->where(['id' => $id])->with('items', 'deliveryStatus', 'paymentStatus')->limit(1)->one()) {
             throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
         }
 
+        $modelCn = new DynamicModel(['pay_status_new', 'del_status_new', 'tracker_new']);
+        $modelCn->addRule('pay_status_new', 'integer')
+            ->addRule('del_status_new', 'integer')
+            ->addRule('tracker_new', 'string')
+            ->addRule('tracker_new', 'trim');
+        if ($modelCn->load(Yii::$app->request->post())) {
+            if ($modelCn->tracker_new) {
+                $order->tracker = $modelCn->tracker_new;
+                $order->save();
+            }
+            if ($modelCn->pay_status_new != $order->paymentStatus->status) {
+                ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_PAYMENT, $modelCn->pay_status_new);
+            }
+            if ($modelCn->del_status_new != $order->deliveryStatus->status) {
+                ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_DELIVERY, $modelCn->del_status_new);
+            }
+
+            $modelCn->pay_status_new = null;
+            $modelCn->del_status_new = null;
+            $modelCn->tracker_new = null;
+            $order = ShopOrders::find()->where(['id' => $id])->with('items', 'deliveryStatus', 'paymentStatus')->limit(1)->one();
+        }
+
         return $this->render('view', [
-            'order' => $model,
+            'order' => $order,
+            'modelCn' => $modelCn,
         ]);
     }
 
     public function actionUpdate($id)
     {
-        if (!$model = ShopOrders::find()->where(['id' => $id])->with('items')->limit(1)->one()) {
+        if (!$order = ShopOrders::find()->where(['id' => $id])->with('items')->limit(1)->one()) {
             throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
         }
 
+        if ($order->load(Yii::$app->request->post())) {
+
+            if(isset($order->oldAttributes['payment_method_id']) && $order->payment_method_id != $order->oldAttributes['payment_method_id']) {
+                $payMethod = ShopPayment::find()->where(['id' => $order->payment_method_id])->with('translate')->one();
+                $order->payment_method_name = $payMethod->title;
+            }
+
+            if(isset($order->oldAttributes['delivery_method_id']) && $order->delivery_method_id != $order->oldAttributes['delivery_method_id']) {
+                $shipMethod = ShopDelivery::find()->where(['id' => $order->delivery_method_id])->with('translate')->one();
+                $order->delivery_method_name = $shipMethod->title;
+                $order->delivery_cost = $shipMethod->cost;
+            }
+
+            if ($order->save()) {
+                return $this->redirect(['view', 'id' => $order->id]);
+            }
+        }
+
         return $this->render('update', [
-            'order' => $model,
+            'order' => $order,
         ]);
     }
 
     public function actionDelete($id)
     {
-        if (!$model = ShopOrders::findOne($id)) {
+        if (!$order = ShopOrders::findOne($id)) {
             throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
         }
 
         if (Yii::$app->request->isAjax) {
-            return $model->delete();
+            return $order->delete();
         }
         return $this->redirect(['index']);
     }

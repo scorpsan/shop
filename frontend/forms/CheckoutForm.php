@@ -73,7 +73,7 @@ class CheckoutForm extends Model
             'shipping_method' => Yii::t('frontend', 'Shipping method'),
             'payment_method' => Yii::t('frontend', 'Payment'),
             'note' => Yii::t('frontend', 'Comment'),
-            'user_address' => Yii::t('frontend', 'User address'),
+            'user_address' => Yii::t('frontend', 'Address'),
             'remember_me' => Yii::t('frontend', 'Save this address for next time'),
         ];
     }

@@ -57,7 +57,7 @@ class OrdersController extends AppController
 	{
         Yii::$app->user->setReturnUrl(['index']);
 
-        $orders = ShopOrders::find()->where(['user_id' => Yii::$app->user->id])->all();
+        $orders = ShopOrders::find()->where(['user_id' => Yii::$app->user->id])->orderBy(['updated_at' => SORT_DESC])->all();
 
         return $this->render('index', [
             'orders' => $orders,

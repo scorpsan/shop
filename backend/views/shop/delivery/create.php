@@ -5,7 +5,7 @@
  * @var $modelLng       backend\models\ShopDeliveryLng
  * @var $languages      backend\models\Language
  */
-$this->title = Yii::t('backend', 'Create Delivery Method');
+$this->title = Yii::t('backend', 'Create') . ' ' . Yii::t('backend', 'Delivery Method');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Delivery Methods'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

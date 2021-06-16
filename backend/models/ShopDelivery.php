@@ -42,8 +42,9 @@ class ShopDelivery extends BaseShopDelivery
         return [
             [['cost'], 'number'],
             [['max_weight', 'min_summa', 'max_summa'], 'integer'],
-            [['published'], 'boolean'],
+            [['published', 'pickup'], 'boolean'],
             [['published'], 'default', 'value' => true],
+            [['pickup'], 'default', 'value' => false],
             [['payment_list'], 'each', 'rule' => ['integer']],
             [['sorting'], 'safe'],
         ];
@@ -60,6 +61,7 @@ class ShopDelivery extends BaseShopDelivery
             'max_weight' => Yii::t('backend', 'Max Weight (gr)'),
             'min_summa' => Yii::t('backend', 'Min Summa'),
             'max_summa' => Yii::t('backend', 'Max Summa'),
+            'pickup' => Yii::t('backend', 'Pickup'),
             'published' => Yii::t('backend', 'Published'),
             'sort' => Yii::t('backend', 'Sort'),
             'sorting' => Yii::t('backend', 'Sort After'),
@@ -90,7 +92,7 @@ class ShopDelivery extends BaseShopDelivery
      * @param bool $asArray
      * @return array
      */
-    public static function listAll($keyField = 'id', $valueField = 'translate.title', $asArray = true): array
+    public static function listAll(string $keyField = 'id', string $valueField = 'translate.title', bool $asArray = true): array
     {
         $query = static::find()->with('translate');
         if ($asArray) {

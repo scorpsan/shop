@@ -5,14 +5,18 @@
  */
 
 use backend\components\widgets\DetailView;
+use backend\models\ShopDelivery;
 use backend\models\ShopOrdersStatuses;
+use backend\models\ShopPayment;
+use kartik\form\ActiveForm;
 use yii\helpers\Html;
 
-$this->title = Yii::t('backend', 'Update Order') . ' <small>' . $order->order_number . '</small>';
+$this->title = Yii::t('backend', 'Update') . ' ' . Yii::t('backend', 'Order') . ' <small>' . $order->order_number . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Orders'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $order->order_number;
 $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
 ?>
+<?php $form = ActiveForm::begin(); ?>
 <div class="row">
     <div class="col-md-4">
         <div class="box">
@@ -23,45 +27,61 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
                         'order_number',
                         'created_at:datetime',
                         'updated_at:datetime',
-                        'customer_name',
-                        'customer_email:email',
-                        'customer_phone',
+                        'payment_status' => [
+                            'attribute' => 'payment_status',
+                            'label' => Yii::t('backend', 'Payment Status'),
+                            'value' => function($order) {
+                                return ShopOrdersStatuses::HtmlStatus($order->paymentStatus->status);
+                            },
+                            'format' => 'raw',
+                        ],
+                        'delivery_status' => [
+                            'attribute' => 'delivery_status',
+                            'label' => Yii::t('backend', 'Delivery Status'),
+                            'value' => function($order) {
+                                return ShopOrdersStatuses::HtmlStatus($order->deliveryStatus->status);
+                            },
+                            'format' => 'raw',
+                        ],
                     ],
                 ]) ?>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($order, 'payment_method_id')->dropDownList(ShopPayment::listAll())->label(Yii::t('backend', 'Payment Method')); ?>
+
+                <?= $form->field($order, 'delivery_method_id')->dropDownList(ShopDelivery::listAll())->label(Yii::t('backend', 'Delivery Method')); ?>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-body">
+                <?= $form->field($order, "tracker")->textInput(); ?>
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="box">
             <div class="box-body">
-                <h5 class="cart-title"><?= Yii::t('backend', 'Shipping address') . ':' ?></h5>
-                <?= DetailView::widget([
-                    'model' => $order,
-                    'attributes' => [
-                        'delivery_postal',
-                        'delivery_address',
-                    ],
-                ]) ?>
+                <?= $form->field($order, "customer_name")->textInput(); ?>
+
+                <?= $form->field($order, "customer_email")->textInput(); ?>
+
+                <?= $form->field($order, "customer_phone")->textInput(); ?>
+
+                <h4 class="box-title"><?= Yii::t('backend', 'Shipping address') . ':' ?></h4>
+
+                <?= $form->field($order, "delivery_postal")->textInput(); ?>
+
+                <?= $form->field($order, "delivery_address")->textarea(); ?>
             </div>
         </div>
+    </div>
+    <div class="col-md-4">
         <div class="box">
             <div class="box-body">
-                <h5 class="cart-title"><?= Yii::t('backend', 'Comment') . ':' ?></h5>
+                <h4 class="box-title"><?= Yii::t('backend', 'Comment') . ':' ?></h4>
                 <p><?= $order->note ?></p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="box">
-            <div class="box-body">
-                <?= Yii::t('backend', 'Payment') . ': ' . $order->payment_method_name ?>
-                <h5 class="cart-title"><?= Yii::t('backend', 'Status') . ': ' . ShopOrdersStatuses::HtmlStatus($order->paymentStatus->status) ?></h5>
-            </div>
-        </div>
-        <div class="box">
-            <div class="box-body">
-                <?= Yii::t('backend', 'Shipping') . ': ' . $order->delivery_method_name ?>
-                <h5 class="cart-title"><?= Yii::t('backend', 'Status') . ': ' . ShopOrdersStatuses::HtmlStatus($order->deliveryStatus->status) ?></h5>
             </div>
         </div>
     </div>
@@ -111,3 +131,14 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
         </div>
     </div>
 </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <?= Html::a(Yii::t('backend', 'Cancel'), ['index'], ['class' => 'btn btn-warning']) ?>
+                    <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php ActiveForm::end(); ?>

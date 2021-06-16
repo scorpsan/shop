@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body">
-                <?= Html::a(Yii::t('backend', 'Create Product'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('backend', 'Create') . ' ' . Yii::t('backend', 'Product'), ['create'], ['class' => 'btn btn-success']) ?>
             </div>
         </div>
     </div>

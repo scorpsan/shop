@@ -7,7 +7,7 @@
                     ['label' => Yii::t('backend', 'Dashboard'), 'icon' => 'dashboard', 'url' => ['/site/index'], 'active' => $this->context->id == 'site/index'],
 
                 ['label' => Yii::t('backend', 'Shop'), 'options' => ['class' => 'header']],
-                    ['label' => 'Orders', 'icon' => 'shopping-basket', 'url' => ['/shop/orders/index'], 'active' => $this->context->id == 'shop/orders'],
+                    ['label' => Yii::t('backend','Orders'), 'icon' => 'shopping-basket', 'url' => ['/shop/orders/index'], 'active' => $this->context->id == 'shop/orders'],
                     ['label' => Yii::t('backend', 'Categories'), 'icon' => 'folder-open-o', 'url' => ['/shop/categories/index'], 'active' => $this->context->id == 'shop/categories'],
                     ['label' => Yii::t('backend', 'Products'), 'icon' => 'cubes', 'url' => ['/shop/product/index'], 'active' => $this->context->id == 'shop/product'],
                     ['label' => Yii::t('backend', 'Brands'), 'icon' => 'th-list', 'url' => ['/shop/brand/index'], 'active' => $this->context->id == 'shop/brand'],

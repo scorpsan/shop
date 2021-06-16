@@ -7,7 +7,7 @@
  * @var $typeList       array
  * @var $sortingList    array
  */
-$this->title = Yii::t('backend', 'Update Characteristic') . ' <small>' . $model->title . '</small>';
+$this->title = Yii::t('backend', 'Update') . ' ' . Yii::t('backend', 'Characteristic') . ' <small>' . $model->title . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Product Characteristics'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->title;
 $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');

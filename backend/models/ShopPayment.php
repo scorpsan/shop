@@ -96,7 +96,7 @@ class ShopPayment extends BaseShopPayments
      * @param bool $asArray
      * @return array
      */
-    public static function listAll($keyField = 'id', $valueField = 'translate.title', $asArray = true): array
+    public static function listAll(string $keyField = 'id', string $valueField = 'translate.title', bool $asArray = true): array
     {
         $query = static::find()->with('translate');
         if ($asArray) {

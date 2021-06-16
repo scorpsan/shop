@@ -25,8 +25,8 @@ class ShopPaymentDelivery extends BaseShopPaymentDelivery
     public function attributeLabels(): array
     {
         return [
-            'delivery_id' => Yii::t('backend', 'Delivery ID'),
-            'payment_id' => Yii::t('backend', 'Payment ID'),
+            'delivery_id' => Yii::t('backend', 'Delivery Method'),
+            'payment_id' => Yii::t('backend', 'Payment Method'),
         ];
     }
 

@@ -1,10 +1,10 @@
 <?php
 namespace common\models;
 
-use Yii;
-use yii\bootstrap4\Html;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
+use Yii;
+use yii\bootstrap4\Html;
 use yii\behaviors\TimestampBehavior;
 
 /**
@@ -127,22 +127,36 @@ class ShopOrdersStatuses extends ActiveRecord
     public static function HtmlStatus($status): string
     {
         switch ($status) {
-            case ShopOrdersStatuses::PAYMENTS_PAID:
-            case ShopOrdersStatuses::DELIVERY_DELIVER:
+            case self::PAYMENTS_PAID:
+            case self::DELIVERY_DELIVER:
                 return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-success label label-success font-size-12']);
-            case ShopOrdersStatuses::PAYMENTS_REFUND:
+            case self::PAYMENTS_REFUND:
                 return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-warning label label-warning font-size-12']);
-            case ShopOrdersStatuses::PAYMENTS_CANCEL:
-            case ShopOrdersStatuses::ORDER_CANCEL:
+            case self::PAYMENTS_CANCEL:
+            case self::ORDER_CANCEL:
                 return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-danger label label-danger font-size-12']);
-            case ShopOrdersStatuses::DELIVERY_SEND:
+            case self::DELIVERY_SEND:
                 return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-info label label-info font-size-12']);
-            case ShopOrdersStatuses::PAYMENTS_WAIT:
-            case ShopOrdersStatuses::DELIVERY_APPROVE:
-            case ShopOrdersStatuses::ORDER_NEW:
+            case self::PAYMENTS_WAIT:
+            case self::DELIVERY_APPROVE:
+            case self::ORDER_NEW:
             default:
                 return Html::tag('span', self::listAll()[$status], ['class' => 'badge badge-primary label label-primary font-size-12']);
         }
+    }
+
+    public static function newStatus($order_id, $type, $status = 0): bool
+    {
+        if ($order_id && $type) {
+            $newStatus = new self([
+                'order_id' => $order_id,
+                'type' => $type,
+                'status' => $status,
+            ]);
+            return $newStatus->save();
+        }
+
+        return false;
     }
 
 }

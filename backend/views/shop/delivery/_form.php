@@ -91,12 +91,11 @@ use kartik\form\ActiveForm;
             <div class="box-body">
                 <?= $form->field($model, 'id')->textInput(['readonly' => 'readonly']) ?>
 
-                <?= $form->field($model, 'cost')->textInput(['maxlength' => true]) ?>
-            </div>
-        </div>
-        <div class="box">
-            <div class="box-body">
                 <?= $form->field($model, 'published')->checkbox() ?>
+
+                <?= $form->field($model, 'pickup')->checkbox() ?>
+
+                <?= $form->field($model, 'cost')->textInput(['maxlength' => true]) ?>
             </div>
         </div>
     </div>

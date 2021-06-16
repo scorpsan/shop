@@ -35,10 +35,11 @@ class ShopOrdersSearch extends ShopOrders
     {
         $query = ShopOrders::find()
             //->joinWith('items')
-            ->joinWith(['statuses' => function ($query) {
-                $query->select(ShopOrdersStatuses::tableName() . '.status as del_status')->andWhere([ShopOrdersStatuses::tableName() . '.type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY])->limit(1);
-            }])
-            //->with('paymentStatus')
+//            ->joinWith(['statuses' => function ($query) {
+//                $query->select(ShopOrdersStatuses::tableName() . '.status as del_status')->andWhere([ShopOrdersStatuses::tableName() . '.type' => ShopOrdersStatuses::STATUS_TYPE_DELIVERY])->limit(1);
+//            }])
+            ->with('deliveryStatus')
+            ->with('paymentStatus')
         ;
 
         // add conditions that should always apply here
@@ -77,7 +78,7 @@ class ShopOrdersSearch extends ShopOrders
         $query->andFilterWhere([ShopOrdersStatuses::tableName() . '.status' => $this->delivery_status]);
         $query->andFilterWhere([ShopOrdersStatuses::tableName() . '.status' => $this->payment_status]);
 
-        AppController::debug($query->all());die;
+        //AppController::debug($query->all());die;
 
         return $dataProvider;
     }

@@ -10,7 +10,7 @@
  * @var $paramsList     backend\models\ShopCharacteristics
  * @var $brandList      array
  */
-$this->title = Yii::t('backend', 'Create Product');
+$this->title = Yii::t('backend', 'Create') . ' ' . Yii::t('backend', 'Product');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -8,7 +8,7 @@
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 
-$this->title = Yii::t('backend', 'Update Tag') . ' <small>' . $model->name . '</small>';
+$this->title = Yii::t('backend', 'Update') . ' ' . Yii::t('backend', 'Tag') . ' <small>' . $model->name . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Tags'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->name;
 $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');

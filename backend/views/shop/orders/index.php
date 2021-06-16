@@ -72,6 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'payment_method_id',
+                            'label' => Yii::t('backend', 'Payment Method'),
                             'content' => function($data) {
                                 return $data->payment_method_name;
                             },
@@ -80,6 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'delivery_method_id',
+                            'label' => Yii::t('backend', 'Delivery Method'),
                             'content' => function($data) {
                                 return $data->delivery_method_name;
                             },
@@ -88,6 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'payment_status',
+                            'label' => Yii::t('backend', 'Payment Status'),
                             'content' => function($data) {
                                 return ShopOrdersStatuses::HtmlStatus($data->paymentStatus->status);
                             },
@@ -96,6 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'delivery_status',
+                            'label' => Yii::t('backend', 'Delivery Status'),
                             'content' => function($data) {
                                 return ShopOrdersStatuses::HtmlStatus($data->deliveryStatus->status);
                             },

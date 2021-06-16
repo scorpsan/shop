@@ -7,7 +7,7 @@
  * @var $parentList     array
  * @var $clearRoot      bool
  */
-$this->title = Yii::t('backend', 'Update Category') . ' <small>' . $model->title . '</small>';
+$this->title = Yii::t('backend', 'Update') . ' ' . Yii::t('backend', 'Category') . ' <small>' . $model->title . '</small>';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Shop Categories'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
