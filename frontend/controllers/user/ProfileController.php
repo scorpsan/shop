@@ -38,7 +38,7 @@ class ProfileController extends BaseProfileController
     public function init()
     {
         parent::init();
-        $this->view->title = Yii::$app->name . ' - ' . Yii::t('frontend', 'My Account');
+        $this->view->title = Yii::$app->name . ' | ' . Yii::t('frontend', 'My Account');
         Yii::$app->layout = Yii::$app->params['pageStyle'][2]['layouts'];
         $this->headerClass = Yii::$app->params['pageStyle'][2]['headclass'];
         $this->backBreadcrumbs = false;

@@ -19,6 +19,7 @@
 return [
     'Home' => 'Home',
     'Catalog' => 'Catalog',
+    'Filter' => 'Filter',
     'Contacts' => 'Contacts',
     'Your Cart' => 'Your Cart',
     'View Cart' => 'View Cart',

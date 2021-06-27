@@ -7,6 +7,7 @@ use yii\helpers\HtmlPurifier;
 
 class AppController extends Controller
 {
+    public $title;
     public $backBreadcrumbs;
     public $headerClass;
 

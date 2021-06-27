@@ -2,13 +2,13 @@
 /**
  * @var $model \frontend\models\Pages
  */
-$this->title = $model->title;
+//$this->title = $model->title;
 if (Yii::$app->layout != 'main') {
-    $this->params['breadcrumbs'][] = $this->title;
+    $this->params['breadcrumbs'][] = $model->title;
 }
 ?>
 <?php if ($model->translate->seo_text) { ?>
-    <div style="height:0px;overflow:hidden">
+    <div style="position:absolute;height:0;overflow:hidden;">
         <?= $model->translate->seo_text ?>
     </div>
 <?php } ?>

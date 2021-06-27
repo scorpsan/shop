@@ -50,6 +50,7 @@ class CartController extends AppController
         $this->_session->open();
 
         Yii::$app->layout = 'page';
+        $this->title = Yii::t('frontend', 'Shopping Cart');
         $this->headerClass = 'header-v2 header-absolute';
     }
 
@@ -67,7 +68,7 @@ class CartController extends AppController
      */
     public function actionIndex()
     {
-        $this->setMeta(Yii::$app->name . ' | ' . Yii::t('frontend', 'Your Shopping Cart'), '', '');
+        $this->setMeta(Yii::$app->name . ' | ' . Yii::t('frontend', 'Your Shopping Cart'), Yii::$app->params['keywords'], Yii::$app->params['description']);
 
         if (!Yii::$app->request->isAjax) {
             return $this->render('index', [

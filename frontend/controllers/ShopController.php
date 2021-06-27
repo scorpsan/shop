@@ -44,6 +44,7 @@ class ShopController extends AppController
         $root = Categories::find()->where(['alias' => 'shop'])->with('translate')->limit(1)->one();
 
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$root->page_style]['layouts'];
+        $this->title = $root->title;
         $this->headerClass = Yii::$app->params['categoryStyle'][$root->page_style]['headclass'];
 
         if (Yii::$app->params['categoryStyle'][$root->page_style]['breadbg'] && !empty($root->translate->breadbg)) {
@@ -83,6 +84,7 @@ class ShopController extends AppController
         $products = $query->offset($pages->offset)->limit($pages->limit)->all();
 
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$category->page_style]['layouts'];
+        $this->title = $category->title;
         $this->headerClass = Yii::$app->params['categoryStyle'][$category->page_style]['headclass'];
 
         if (Yii::$app->params['categoryStyle'][$category->page_style]['breadbg'] && !empty($category->translate->breadbg)) {
@@ -122,6 +124,7 @@ class ShopController extends AppController
         $root = Categories::find()->where(['alias' => 'shop'])->with('translate')->limit(1)->one();
 
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$root->page_style]['layouts'];
+        $this->title = $brand->title;
         $this->headerClass = Yii::$app->params['categoryStyle'][$root->page_style]['headclass'];
 
         if (Yii::$app->params['categoryStyle'][$root->page_style]['breadbg'] && !empty($brand->breadbg)) {
@@ -153,6 +156,7 @@ class ShopController extends AppController
         $categoryParent = $product->category->parents()->andWhere(['published' => true])->with('translate')->all();
 
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$product->category->page_style]['layouts'];
+        $this->title = $product->title;
         $this->headerClass = Yii::$app->params['categoryStyle'][$product->category->page_style]['headclass'];
 
         if (Yii::$app->params['categoryStyle'][$product->category->page_style]['breadbg'] && !empty($product->category->translate->breadbg)) {

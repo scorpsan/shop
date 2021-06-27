@@ -61,12 +61,15 @@ class ShopProducts extends ActiveRecord
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws Exception
      */
     public function getSeotitle(): string
     {
-        return ArrayHelper::getValue($this->translate, 'seotitle', $this->title);
+        if ($this->translate->seotitle)
+            return ArrayHelper::getValue($this->translate, 'seotitle');
+        else
+            return $this->title;
     }
 
     /**
@@ -75,7 +78,10 @@ class ShopProducts extends ActiveRecord
      */
     public function getKeywords(): string
     {
-        return ArrayHelper::getValue($this->translate, 'keywords', Yii::$app->params['keywords']);
+        if ($this->translate->keywords)
+            return ArrayHelper::getValue($this->translate, 'keywords');
+        else
+            return Yii::$app->params['keywords'];
     }
 
     /**
@@ -84,7 +90,10 @@ class ShopProducts extends ActiveRecord
      */
     public function getDescription(): string
     {
-        return ArrayHelper::getValue($this->translate, 'description', Yii::$app->params['description']);
+        if ($this->translate->description)
+            return ArrayHelper::getValue($this->translate, 'description');
+        else
+            return Yii::$app->params['description'];
     }
 
     /**

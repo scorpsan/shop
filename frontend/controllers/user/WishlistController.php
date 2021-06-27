@@ -43,6 +43,9 @@ class WishlistController extends AppController
 	{
         $wishlist = UserWishlistItems::find()->where(['user_id' => Yii::$app->user->id])->with('product')->all();
 
+        $this->title = Yii::t('frontend', 'My Wish List');
+        $this->setMeta(Yii::$app->name . ' | ' . $this->title, Yii::$app->params['keywords'], Yii::$app->params['description']);
+
         return $this->render('index', [
             'wishlist' => $wishlist,
         ]);

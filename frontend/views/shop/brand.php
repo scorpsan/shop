@@ -11,7 +11,7 @@
 use frontend\widgets\FilterWidget;
 use yii\bootstrap4\Html;
 
-$this->title = $brand->title;
+//$this->title = $brand->title;
 
 $this->params['breadcrumbs'][] = ['label' => $category->title, 'url' => ['/shop/index']];
 $this->params['breadcrumbs'][] = $brand->title;

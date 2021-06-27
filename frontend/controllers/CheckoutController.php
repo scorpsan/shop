@@ -45,6 +45,7 @@ class CheckoutController extends AppController
         $this->_session->open();
 
         Yii::$app->layout = 'checkouts';
+        $this->title = Yii::t('frontend', 'Checkout');
         $this->setMeta(Yii::$app->name . ' | ' . Yii::t('frontend', 'Checkout'), '', '');
 
         $this->cartList = ArrayHelper::getValue($this->_session, 'cart');

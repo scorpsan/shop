@@ -11,7 +11,7 @@
 
 use frontend\widgets\FilterWidget;
 
-$this->title = $category->title;
+//$this->title = $category->title;
 
 if (count($categoryParent)) {
     foreach ($categoryParent as $parent) {

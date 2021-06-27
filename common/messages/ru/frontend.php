@@ -19,6 +19,7 @@
 return [
     'Home' => 'Главная',
     'Catalog' => 'Каталог',
+    'Filter' => 'Фильтр',
     'Contacts' => 'Контакты',
     'Your Cart' => 'Корзина',
     'View Cart' => 'В корзину',

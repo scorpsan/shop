@@ -12,7 +12,7 @@ use yii\bootstrap4\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\Breadcrumbs;
 
-$this->title = $product->title;
+//$this->title = $product->title;
 
 if (count($categoryParent)) {
     foreach ($categoryParent as $parent) {

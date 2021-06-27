@@ -9,7 +9,7 @@ use yii\widgets\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\widgets\Pjax;
 
-$this->title = Yii::t('frontend', 'My Wish List');
+//$this->title = Yii::t('frontend', 'My Wish List');
 ?>
 <section class="section-account p-0 m-0">
     <div class="my-container">
@@ -26,7 +26,7 @@ $this->title = Yii::t('frontend', 'My Wish List');
             <div class="col-xl-9 col-lg-9 col-md-12 category-right">
                 <?php
                 $breadcrumbs[] = ['label' => Yii::t('frontend', 'My Account'), 'url' => ['/user/profile/index']];
-                $breadcrumbs[] = $this->title;
+                $breadcrumbs[] = Yii::t('frontend', 'My Wish List');
                 ?>
                 <?= Breadcrumbs::widget([
                     'links' => isset($breadcrumbs) ? $breadcrumbs : [],

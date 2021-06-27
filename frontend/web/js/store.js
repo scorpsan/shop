@@ -622,10 +622,13 @@ $(document).ready(function(){
         });
     }
     function menudestopscroll() {
-        var $nav = $(".js-header");
+        var $nav = $(".js-header"),
+            $cat = $(".js-filter");
         $nav.removeClass('menu-scroll-v1');
+        $cat.removeClass('menu-scroll-v1');
         $(document).scroll(function() {
             $nav.toggleClass('menu-scroll-v1', $(this).scrollTop() > $nav.height());
+            $cat.toggleClass('menu-scroll-v1', $(this).scrollTop() > $nav.height());
         });
     }
     function slideHeaderHome4() {

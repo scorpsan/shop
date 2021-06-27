@@ -12104,20 +12104,31 @@ body.mobile .col-mobile-12 {
 }
 .button-filter {
     position:fixed;
-    left:2px;
-    top:50%;
+    left:0;
+    top:85px;
+    width:100%;
+    padding:0 20px 0 20px;
+    height:50px;
+    line-height:52px;
+    background:#c90215;
+    font-style:normal;
+    font-size:18px;
+    display:inline-block;
+    color:#fff;
     -webkit-transform:translateY(-50%);
     -ms-transform:translateY(-50%);
     transform:translateY(-50%);
-    z-index:900;
+    z-index:9;
+}
+.button-filter.menu-scroll-v1 {
+    top:25px;
 }
 .change-button-filter {
     position:fixed;
     left:2px;
-    top:50%;
+    top:52px;
     z-index:900;
 }
-.button-filter:before,
 .change-button-filter:before {
     font-style:normal;
     font-size:18px;

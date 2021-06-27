@@ -9,7 +9,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
-$this->title = Yii::t('frontend', 'Shopping Cart');
+//$this->title = Yii::t('frontend', 'Shopping Cart');
 
 $this->params['breadcrumbs'][] = Yii::t('frontend', 'Your Shopping Cart');
 

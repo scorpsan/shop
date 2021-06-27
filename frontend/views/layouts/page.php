@@ -26,7 +26,7 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
         <section class="section-slide img-fluid" style="background-image:url(<?= $this->context->backBreadcrumbs ?>);background-position:top center;">
             <div class="breadcrumb-title text-center">
                 <div class="section-title">
-                    <h2><?= Html::encode($this->title) ?></h2>
+                    <h2><?= Html::encode($this->context->title) ?></h2>
                 </div>
                 <?= Breadcrumbs::widget([
                     'homeLink' => ['label' => Yii::t('frontend', 'Home'), 'url' => Url::home()],

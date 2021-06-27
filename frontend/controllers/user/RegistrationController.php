@@ -20,7 +20,7 @@ class RegistrationController extends BaseRegistrationController
     public function init()
     {
         parent::init();
-        $this->view->title = Yii::$app->name . ' - ' . Yii::t('usuario', 'Sign up');
+        $this->view->title = Yii::$app->name . ' | ' . Yii::t('usuario', 'Sign up');
         Yii::$app->layout = Yii::$app->params['pageStyle'][2]['layouts'];
         $this->headerClass = Yii::$app->params['pageStyle'][2]['headclass'];
         $this->backBreadcrumbs = false;

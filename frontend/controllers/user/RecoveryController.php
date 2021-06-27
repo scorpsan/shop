@@ -12,7 +12,7 @@ class RecoveryController extends BaseRecoveryController
     public function init()
     {
         parent::init();
-        $this->view->title = Yii::$app->name . ' - ' . Yii::t('usuario', 'Recover your password');
+        $this->view->title = Yii::$app->name . ' | ' . Yii::t('usuario', 'Recover your password');
         Yii::$app->layout = Yii::$app->params['pageStyle'][2]['layouts'];
         $this->headerClass = Yii::$app->params['pageStyle'][2]['headclass'];
         $this->backBreadcrumbs = false;
