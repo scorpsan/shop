@@ -15,12 +15,12 @@ use yii\helpers\ArrayHelper;
 
 class CategoriesController extends AppController
 {
-    public $clearRoot = true;
+    public $clearRoot = false;
 
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [

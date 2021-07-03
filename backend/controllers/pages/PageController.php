@@ -106,8 +106,6 @@ class PageController extends AppController
             if ($model->save()) {
                 foreach ($modelLng as $key => $modelL) {
                     $modelL->item_id = $model->id;
-                    if ($model->page_style > 5)
-                        $modelL->breadbg = null;
                     if ($modelL->validate())
                         $modelL->save(false);
                 }
@@ -149,8 +147,6 @@ class PageController extends AppController
             if ($model->save()) {
                 foreach ($modelLng as $key => $modelL) {
                     $modelL->item_id = $model->id;
-                    if ($model->page_style > 5)
-                        $modelL->breadbg = null;
                     if ($modelL->validate())
                         $modelL->save(false);
                 }

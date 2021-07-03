@@ -1,2 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /shop/cart/
+Disallow: /cabinet/
+Disallow: /checkout/
+Disallow: /debug/

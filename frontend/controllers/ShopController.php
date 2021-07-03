@@ -46,10 +46,10 @@ class ShopController extends AppController
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$root->page_style]['layouts'];
         $this->title = $root->title;
         $this->headerClass = Yii::$app->params['categoryStyle'][$root->page_style]['headclass'];
-
         if (Yii::$app->params['categoryStyle'][$root->page_style]['breadbg'] && !empty($root->translate->breadbg)) {
             $this->backBreadcrumbs = $root->translate->breadbg;
         }
+
         $this->setMeta(Yii::$app->name . ' | ' . $root->seotitle, $root->keywords, $root->description);
 
         return $this->render('index', [
@@ -86,10 +86,10 @@ class ShopController extends AppController
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$category->page_style]['layouts'];
         $this->title = $category->title;
         $this->headerClass = Yii::$app->params['categoryStyle'][$category->page_style]['headclass'];
-
         if (Yii::$app->params['categoryStyle'][$category->page_style]['breadbg'] && !empty($category->translate->breadbg)) {
             $this->backBreadcrumbs = $category->translate->breadbg;
         }
+
         $this->setMeta(Yii::$app->name . ' | ' . $category->seotitle, $category->keywords, $category->description);
 
         return $this->render('category', [
@@ -126,10 +126,10 @@ class ShopController extends AppController
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$root->page_style]['layouts'];
         $this->title = $brand->title;
         $this->headerClass = Yii::$app->params['categoryStyle'][$root->page_style]['headclass'];
-
         if (Yii::$app->params['categoryStyle'][$root->page_style]['breadbg'] && !empty($brand->breadbg)) {
             $this->backBreadcrumbs = $brand->breadbg;
         }
+
         $this->setMeta(Yii::$app->name . ' | ' . $brand->seotitle, $brand->keywords, $brand->description);
 
         return $this->render('brand', [
@@ -158,10 +158,10 @@ class ShopController extends AppController
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$product->category->page_style]['layouts'];
         $this->title = $product->title;
         $this->headerClass = Yii::$app->params['categoryStyle'][$product->category->page_style]['headclass'];
-
         if (Yii::$app->params['categoryStyle'][$product->category->page_style]['breadbg'] && !empty($product->category->translate->breadbg)) {
             $this->backBreadcrumbs = $product->category->translate->breadbg;
         }
+
         $this->setMeta(Yii::$app->name . ' | ' . $product->seotitle, $product->keywords, $product->description);
 
         return $this->render('product', [

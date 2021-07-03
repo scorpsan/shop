@@ -6,12 +6,16 @@
  */
 
 $itemClass = '';
-if (!($options['count'] % 4)) {
-    $itemClass = 'col-lg-3 col-md-4';
-} elseif (!($options['count'] % 3)) {
-    $itemClass = 'col-lg-4 col-md-6';
-} elseif (!($options['count'] % 2)) {
-    $itemClass = 'col-lg-6 col-md-6';
+if ($options['count'] > 0) {
+    if (!($options['count'] % 4)) {
+        $itemClass = 'col-xl-3';
+    } elseif (!($options['count'] % 3)) {
+        $itemClass = 'col-xl-4';
+    } elseif (!($options['count'] % 2)) {
+        $itemClass = '';
+    }
+} else {
+    $itemClass = 'col-xl-3';
 }
 ?>
 <!-- Products Widget -->
@@ -26,7 +30,7 @@ if (!($options['count'] % 4)) {
         <?php } ?>
         <div class="row">
             <?php foreach ($items as $product) { ?>
-                <div class="<?= $itemClass ?> col-sm-6 col-12">
+                <div class="<?= $itemClass ?> col-lg-4 col-md-4 col-sm-6 col-xs-6 col-6">
                     <?= $this->render('../shop/_one_product', ['product' => $product]) ?>
                 </div>
             <?php } ?>

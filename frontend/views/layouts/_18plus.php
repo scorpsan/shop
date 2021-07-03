@@ -1,4 +1,5 @@
 <?php
+/**
 use yii\helpers\Url;
 use yii\web\View;
 ?>
@@ -47,3 +48,4 @@ JS;
 $this->registerJs($script, View::POS_READY);
 ?>
 <?php } ?>
+ */ ?>

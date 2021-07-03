@@ -141,12 +141,12 @@ $params = Yii::$app->params;
         <div class="error-message"></div>
     </div>
 </div>
-<div class="product-popup engo-popup d-mobile-none">
+<div class="product-popup engo-popup">
     <div class="overlay"></div>
     <div class="content">
         <a href="javascript:void(0)" class="close-window"><i class="fas fa-times"></i></a>
         <div class="mini-product-item row">
-            <div class="col-md-3 col-sm-3 product-image f-left">
+            <div class="col-md-3 col-sm-3 product-image f-left d-mobile-none">
                 <img alt="img" src="<?= Yii::getAlias('@images/nophoto.svg') ?>" style="max-width:120px; height:auto"/>
             </div>
             <div class="col-md-9 col-sm-9 f-left">
@@ -164,12 +164,12 @@ $params = Yii::$app->params;
     </div>
 </div>
 <?php if (!Yii::$app->user->isGuest) { ?>
-<div class="wishlist-popup engo-popup d-mobile-none">
+<div class="wishlist-popup engo-popup">
     <div class="overlay"></div>
     <div class="content">
         <a href="javascript:void(0)" class="close-window"><i class="fas fa-times"></i></a>
         <div class="mini-product-item row">
-            <div class="col-md-3 col-sm-3 product-image f-left">
+            <div class="col-md-3 col-sm-3 product-image f-left d-mobile-none">
                 <img alt="img" src="<?= Yii::getAlias('@images/nophoto.svg') ?>" style="max-width:120px; height:auto"/>
             </div>
             <div class="col-md-9 col-sm-9 f-left">

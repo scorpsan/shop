@@ -37,7 +37,8 @@
         "mihaildev/yii2-ckeditor": "*",
         "mihaildev/yii2-elfinder": "@dev",
         "yiisoft/yii2-imagine": "^2.2",
-        "voskobovich/yii2-linker-behavior": "^4.1"
+        "voskobovich/yii2-linker-behavior": "^4.1",
+        "yiisoft/yii2-queue": "^2.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

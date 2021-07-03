@@ -87,7 +87,9 @@ class ShopOrders extends ActiveRecord
 
     public function beforeValidate(): bool
     {
-        $this->generateToken();
+        if (empty($this->token)) {
+            $this->generateToken();
+        }
 
         return parent::beforeValidate();
     }

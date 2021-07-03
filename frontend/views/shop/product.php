@@ -12,8 +12,6 @@ use yii\bootstrap4\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\Breadcrumbs;
 
-//$this->title = $product->title;
-
 if (count($categoryParent)) {
     foreach ($categoryParent as $parent) {
         if ($parent->depth == 0)
@@ -35,7 +33,7 @@ $filter = FilterWidget::widget(['categoryalias' => $product->category->alias]);
         <div class="js-filter-popup filter-mobile fliter-product">
             <?= $filter ?>
         </div>
-        <span class="button-filter fas fa-filter js-filter d-lg-none"></span>
+        <span class="button-filter js-filter d-lg-none"><?= Yii::t('frontend', 'Categories') ?> / <?= Yii::t('frontend', 'Filter') ?></span>
         <span class="change-button-filter fas fa-times js-close-filter d-none"></span>
         <div class="js-bg-filter bg-filter-overlay"></div>
         <div class="row">

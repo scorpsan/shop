@@ -6,6 +6,10 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'bootstrap' => [
+        'queue',
+        'queueMail',
+    ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'modules' => [
         'user' => [

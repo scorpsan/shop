@@ -1,6 +1,7 @@
 <?php
 namespace shop;
 
+use shop\jobs\MailSendJob;
 use Yii;
 
 class MailFactory
@@ -9,15 +10,18 @@ class MailFactory
     public static function sendOrderToUser($order): bool
     {
         if (isset($order->customer_email)) {
-            $emailSend = Yii::$app->mailer;
-            $emailSend->setViewPath('@common/mail');
+            Yii::$app->queueMail->delay(3 * 60)->push(new MailSendJob([
+                'view' => 'orderToUser',
+                'lng' => Yii::$app->language,
+                'fromEmail' => [Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']],
+                'toEmail' => $order->customer_email,
+                'subject' => Yii::t('frontend', 'New Order'),
+                'params' => [
+                    'order' => $order,
+                ],
+            ]));
 
-            $view = 'orderToUser';
-            return $emailSend->compose(['html' => $view, 'text' => "text/{$view}"], ['order' => $order])
-                ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
-                ->setTo($order->customer_email)
-                ->setSubject(Yii::t('frontend', 'New Order'))
-                ->send();
+            return true;
         }
 
         return false;
@@ -25,15 +29,18 @@ class MailFactory
 
     public static function sendOrderToAdmin($order): bool
     {
-        $emailSend = Yii::$app->mailer;
-        $emailSend->setViewPath('@common/mail');
+        Yii::$app->queueMail->delay(3 * 60)->push(new MailSendJob([
+            'view' => 'orderToAdmin',
+            'lng' => Yii::$app->language,
+            'fromEmail' => [Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']],
+            'toEmail' => Yii::$app->params['adminEmail'],
+            'subject' => Yii::t('frontend', 'New Order'),
+            'params' => [
+                'order' => $order,
+            ],
+        ]));
 
-        $view = 'orderToAdmin';
-        return $emailSend->compose(['html' => $view, 'text' => "text/{$view}"], ['order' => $order])
-            ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
-            ->setTo(Yii::$app->params['adminEmail'])
-            ->setSubject(Yii::t('frontend', 'New Order'))
-            ->send();
+        return true;
     }
 
 }

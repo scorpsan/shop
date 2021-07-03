@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use backend\controllers\AppController;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 use Yii;
@@ -106,29 +107,35 @@ class ShopProducts extends ActiveRecord
 
     /**
      * @return string
-     * @throws Exception
      */
     public function getImageMain(): string
     {
-        return ArrayHelper::getValue($this->images[0], 'imageUrl');
+        if (isset($this->images[0])) {
+            return $this->images[0]->imageUrl;
+        }
+        return Yii::getAlias('@images/nophoto.svg');
     }
 
     /**
      * @return string
-     * @throws Exception
      */
     public function getMediumImageMain(): string
     {
-        return ArrayHelper::getValue($this->images[0], 'mediumImageUrl');
+        if (isset($this->images[0])) {
+            return $this->images[0]->mediumImageUrl;
+        }
+        return Yii::getAlias('@images/nophoto.svg');
     }
 
     /**
      * @return string
-     * @throws Exception
      */
     public function getSmallImageMain(): string
     {
-        return ArrayHelper::getValue($this->images[0], 'smallImageUrl');
+        if (isset($this->images[0])) {
+            return $this->images[0]->smallImageUrl;
+        }
+        return Yii::getAlias('@images/nophoto.svg');
     }
 
     /**

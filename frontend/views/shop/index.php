@@ -10,8 +10,6 @@
 
 use frontend\widgets\FilterWidget;
 
-//$this->title = $category->title;
-
 $this->params['breadcrumbs'][] = $category->title;
 
 $filter = FilterWidget::widget();

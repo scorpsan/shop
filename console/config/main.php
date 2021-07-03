@@ -24,6 +24,7 @@ return [
             ],
             'migrationNamespaces' => [
                 'Da\User\Migration',
+                'yii\queue\db\migrations',
             ],
         ],
         'fixture' => [
@@ -37,6 +38,14 @@ return [
         ],
     ],
     'components' => [
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'hostInfo' => 'https://badkitty.by',
+            'baseUrl' => '',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => require Yii::getAlias('@frontend/config/rules.php'),
+        ],
         'log' => [
             'targets' => [
                 [

@@ -110,12 +110,17 @@ class CartController extends AppController
     public function actionAdd()
     {
         $data = Yii::$app->request->post();
-        if (!$product = ShopProducts::find()->where(['id' => $data['id']])->one()) {
+        if (!isset($data['id']) || !$product = ShopProducts::find()->where(['id' => $data['id']])->one()) {
+            if (!Yii::$app->request->isAjax) {
+                return $this->goBack();
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
             return [
                 'error' => true,
                 'message' => Yii::t('frontend', 'Error adding to cart! Product not found.'),
             ];
         }
+
         $qty = ArrayHelper::getValue($data, 'qty', 1);
 
         $this->ItemToCart($data['id'], $qty);
@@ -137,7 +142,9 @@ class CartController extends AppController
     {
         $data = Yii::$app->request->post();
 
-        $this->ItemToCart($data['id'], 0);
+        if (isset($data['id'])) {
+            $this->ItemToCart($data['id'], 0);
+        }
 
         if (!Yii::$app->request->isAjax) {
             return $this->goBack();
@@ -153,7 +160,9 @@ class CartController extends AppController
     {
         $data = Yii::$app->request->post();
 
-        $this->ItemToCart($data['id'], -1);
+        if (isset($data['id'])) {
+            $this->ItemToCart($data['id'], -1);
+        }
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['index']);
@@ -169,7 +178,9 @@ class CartController extends AppController
     {
         $data = Yii::$app->request->post();
 
-        $this->ItemToCart($data['id'], 1);
+        if (isset($data['id'])) {
+            $this->ItemToCart($data['id'], 1);
+        }
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['index']);
@@ -217,7 +228,11 @@ class CartController extends AppController
     public function actionToWish()
     {
         $data = Yii::$app->request->post();
-        if (!$product = ShopProducts::find()->where(['id' => $data['id']])->one()) {
+        if (!isset($data['id']) || !$product = ShopProducts::find()->where(['id' => $data['id']])->one()) {
+            if (!Yii::$app->request->isAjax) {
+                return $this->redirect(['index']);
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
             return [
                 'error' => true,
                 'message' => Yii::t('frontend', 'Add to Wishlist failed! Product not found.'),

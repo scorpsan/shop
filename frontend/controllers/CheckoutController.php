@@ -89,7 +89,7 @@ class CheckoutController extends AppController
             return $this->redirect(['/cart/index']);
         }
 
-        Yii::$app->user->setReturnUrl(['checkout/information']);
+        Yii::$app->user->setReturnUrl(['/checkout/information']);
 
         if ($this->formInfo->load(Yii::$app->request->post()) && $this->formInfo->validate()) {
             if (!$this->formInfo->user_address && $this->formInfo->remember_me && !Yii::$app->user->isGuest) {

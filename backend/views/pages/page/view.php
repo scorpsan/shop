@@ -154,7 +154,7 @@ $this->params['breadcrumbs'][] = $model->title;
                             'attributes' => [
                                 [
                                     'attribute' => 'breadbg',
-                                    'value' => ($model->breadbg) ? $model->breadbg : null,
+                                    'value' => (isset($model->translates[$key]->breadbg)) ? $model->translates[$key]->breadbg : null,
                                     'format' => ['image', ['width' => '250']],
                                 ],
                             ],

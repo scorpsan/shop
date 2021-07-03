@@ -1,11 +1,20 @@
 <?php
-$this->title = Yii::t('backend', 'Create Posts Category');
+/**
+ * @var $this           yii\web\View
+ * @var $model          backend\models\Categories
+ * @var $modelLng       backend\models\CategoriesLng
+ * @var $languages      backend\models\Language
+ * @var $parentList     array
+ * @var $clearRoot      bool
+ */
+$this->title = Yii::t('backend', 'Create Category');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Posts Categories'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= $this->render('_form', [
     'model' => $model,
     'modelLng' => $modelLng,
-    'parentList' => $parentList,
     'languages' => $languages,
+    'parentList' => $parentList,
+    'clearRoot' => $clearRoot,
 ]) ?>

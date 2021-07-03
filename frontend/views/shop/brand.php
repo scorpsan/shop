@@ -11,8 +11,6 @@
 use frontend\widgets\FilterWidget;
 use yii\bootstrap4\Html;
 
-//$this->title = $brand->title;
-
 $this->params['breadcrumbs'][] = ['label' => $category->title, 'url' => ['/shop/index']];
 $this->params['breadcrumbs'][] = $brand->title;
 
@@ -28,7 +26,7 @@ $filter = FilterWidget::widget();
         <div class="js-filter-popup filter-mobile fliter-product">
             <?= $filter ?>
         </div>
-        <span class="button-filter fas fa-filter js-filter d-lg-none"></span>
+        <span class="button-filter js-filter d-lg-none"><?= Yii::t('frontend', 'Categories') ?> / <?= Yii::t('frontend', 'Filter') ?></span>
         <span class="change-button-filter fas fa-times js-close-filter d-none"></span>
         <div class="js-bg-filter bg-filter-overlay"></div>
         <div class="row">

@@ -20,7 +20,11 @@ class ProductsWidget extends Widget
      *          'rat' => 'High Ratings Products'
      *      },
      *      'count' => {
-     *          4 => '4 - one row', 8 => '8 - 2 rows', 12 => '12 - 3 rows'},
+     *          0 => 'All in one page',
+     *          4 => '4 - one row',
+     *          8 => '8 - 2 rows',
+     *          12 => '12 - 3 rows'
+     *      },
      * ],
      */
     public $options;
@@ -66,7 +70,10 @@ class ProductsWidget extends Widget
      */
     public function run()
     {
-        $query = ShopProducts::find()->with('category')->with('translate')->with('images')->limit($this->options['count']);
+        $query = ShopProducts::find()->with('category')->with('translate')->with('images');
+        if ($this->options['count'] > 0) {
+            $query->limit($this->options['count']);
+        }
         switch ($this->options['type']) {
             case 'rnd':
                 $items = $query->orderBy('rand()')->all();

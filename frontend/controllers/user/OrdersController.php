@@ -55,7 +55,7 @@ class OrdersController extends AppController
 
     public function actionIndex()
 	{
-        Yii::$app->user->setReturnUrl(['index']);
+        Yii::$app->user->setReturnUrl(['/user/orders/index']);
 
         $orders = ShopOrders::find()->where(['user_id' => Yii::$app->user->id])->orderBy(['updated_at' => SORT_DESC])->all();
 
@@ -70,37 +70,33 @@ class OrdersController extends AppController
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
+        //$order = $this->orderByNumber($number);
+
 	    if ($token)
             $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('items')->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
         else
             $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('items')->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
 
         if (!$order)
-            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+            throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
 
         if ($token)
-            Yii::$app->user->setReturnUrl(['view', 'number' => $number, 'token' => $token]);
+            Yii::$app->user->setReturnUrl(['/user/orders/view', 'number' => $number, 'token' => $token]);
         else
-            Yii::$app->user->setReturnUrl(['view', 'number' => $number]);
+            Yii::$app->user->setReturnUrl(['/user/orders/view', 'number' => $number]);
 
         return $this->render('view', [
 			'order' => $order,
         ]);
     }
 
-    public function actionPay($number, $token = null)
+    public function actionPay($number)
     {
         if (!$number) {
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if ($token)
-            $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
-        else
-            $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
-
-        if (!$order)
-            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+        $order = $this->orderByNumber($number);
 
         // Вызываем оплату
         self::payOrder($order, $order->paymentMethod->className);
@@ -143,19 +139,13 @@ class OrdersController extends AppController
         }
     }
 
-    public function actionCancel($number, $token = null)
+    public function actionCancel($number)
     {
         if (!$number) {
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if ($token)
-            $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
-        else
-            $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
-
-        if (!$order)
-            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+        $order = $this->orderByNumber($number);
 
         ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_PAYMENT, ShopOrdersStatuses::ORDER_CANCEL);
 
@@ -176,13 +166,7 @@ class OrdersController extends AppController
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if ($token)
-            $order = ShopOrders::find()->where(['order_number' => $number, 'token' => $token])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
-        else
-            $order = ShopOrders::find()->where(['order_number' => $number, 'user_id' => Yii::$app->user->id])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one();
-
-        if (!$order)
-            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+        $order = $this->orderByNumber($number);
 
         ShopOrdersStatuses::newStatus($order->id, ShopOrdersStatuses::STATUS_TYPE_DELIVERY, ShopOrdersStatuses::DELIVERY_DELIVER);
 
@@ -201,8 +185,7 @@ class OrdersController extends AppController
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('paymentStatus')->limit(1)->one())
-            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+        $order = $this->orderByNumber($number);
 
         if ($order->canPay) {
             $payClass = $order->paymentMethod->className;
@@ -226,8 +209,7 @@ class OrdersController extends AppController
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('paymentStatus')->limit(1)->one())
-            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+        $order = $this->orderByNumber($number);
 
         Yii::$app->getSession()->setFlash('error', Yii::t('frontend', 'Payment canceled'));
 
@@ -247,8 +229,7 @@ class OrdersController extends AppController
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('paymentStatus')->limit(1)->one())
-            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+        $order = $this->orderByNumber($number);
 
         $response = json_decode(Yii::$app->request->getRawBody());
 
@@ -277,8 +258,7 @@ class OrdersController extends AppController
             throw new BadRequestHttpException(Yii::t('error', 'error400 message'));
         }
 
-        if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('paymentStatus')->limit(1)->one())
-            throw new BadRequestHttpException(Yii::t('error', 'error404 message'));
+        $order = $this->orderByNumber($number);
 
         $response = json_decode(Yii::$app->request->getRawBody());
 
@@ -295,6 +275,17 @@ class OrdersController extends AppController
 
         //header("HTTP/1.1 200 OK");
         return true;
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    private function orderByNumber($number)
+    {
+        if (!$order = ShopOrders::find()->where(['order_number' => $number])->with('deliveryStatus')->with('paymentStatus')->limit(1)->one())
+            throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
+
+        return $order;
     }
 
 }

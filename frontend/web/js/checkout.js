@@ -7,7 +7,7 @@ $(document).ready(function() {
     if (md.tablet()) {
         $('body').addClass('tablet');
     }
-
+    
     $(document).on('click', '.order-summary-toggle', function() {
         if ($(this).attr('aria-expanded') === 'true') {
             $(this).removeClass('order-summary-toggle--hide').addClass('order-summary-toggle--show');

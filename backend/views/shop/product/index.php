@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'images',
                             'value' => function($data) {
-                                return $data->smallImageMain;
+                                return ($data->smallImageMain) ? $data->smallImageMain : null;
                             },
                             'headerOptions' => ['width' => '94'],
                             'format' => ['image', ['width' => '74']],

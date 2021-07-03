@@ -15,6 +15,7 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= $this->render('_head') ?>
 </head>
 <body>

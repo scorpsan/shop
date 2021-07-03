@@ -59,7 +59,7 @@ $params = Yii::$app->params;
                 <?= Html::a('Каталог', ['/shop/index'], ['title' => 'Каталог', 'class' => 'slide-dropdown']) ?>
             </li>
             <li class="menu-item">
-                <?= Html::a('Акции', ['/news/category', 'alias' => 'actions'], ['title' => 'Акции', 'class' => 'slide-dropdown']) ?>
+                <?= Html::a('Акции', ['/page/view', 'alias' => 'actions'], ['title' => 'Акции', 'class' => 'slide-dropdown']) ?>
             </li>
             <li class="menu-item">
                 <?= Html::a('Полезные статьи', ['/blog/index'], ['title' => 'Полезные статьи', 'class' => 'slide-dropdown']) ?>
@@ -166,7 +166,7 @@ $params = Yii::$app->params;
                                 </div>
                             </li>
                             <li class="nav-item top-nav-items">
-                                <?= Html::a(Yii::t('frontend', 'Акции'), ['/news/category', 'alias' => 'actions'], ['title' => Yii::t('frontend', 'Акции'), 'class' => 'nav-link top-nav-link']) ?>
+                                <?= Html::a(Yii::t('frontend', 'Акции'), ['/page/view', 'alias' => 'actions'], ['title' => Yii::t('frontend', 'Акции'), 'class' => 'nav-link top-nav-link']) ?>
                             </li>
                             <li class="nav-item top-nav-items">
                                 <?= Html::a(Yii::t('frontend', 'Полезные статьи'), ['/blog/index'], ['title' => Yii::t('frontend', 'Полезные статьи'), 'class' => 'nav-link top-nav-link']) ?>

@@ -1,10 +1,11 @@
 <?php
 namespace backend\components\grid;
 
+use yii\grid\DataColumn;
 use Yii;
 use yii\helpers\Html;
 
-class BooleanDataColumn extends \yii\grid\DataColumn {
+class BooleanDataColumn extends DataColumn {
 
     protected function renderDataCellContent($model, $key, $index) {
         $value = $this->getDataCellValue($model, $key, $index);

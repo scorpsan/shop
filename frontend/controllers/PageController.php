@@ -46,7 +46,6 @@ class PageController extends AppController
         Yii::$app->layout = Yii::$app->params['pageStyle'][$model->page_style]['layouts'];
         $this->title = $model->title;
         $this->headerClass = Yii::$app->params['pageStyle'][$model->page_style]['headclass'];
-
         if (Yii::$app->params['pageStyle'][$model->page_style]['breadbg'] && !empty($model->translate->breadbg)) {
             $this->backBreadcrumbs = $model->translate->breadbg;
         }

@@ -53,8 +53,8 @@ mihaildev\elfinder\Assets::noConflict($this);
                 ]);
                 $tabcontent .= '<hr><h2 class="page-header"><i class="fa fa-internet-explorer"></i> ' . Yii::t('backend', 'SEO') . '</h2>';
                 $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle");
-                $tabcontent .= $form->field($modelLng[$key], "[$key]description");
                 $tabcontent .= $form->field($modelLng[$key], "[$key]keywords");
+                $tabcontent .= $form->field($modelLng[$key], "[$key]description");
                 $tabcontent .= $form->field($modelLng[$key], "[$key]seo_text")->widget(CKEditor::class, [
                     'editorOptions' => [
                         'allowedContent' => true,

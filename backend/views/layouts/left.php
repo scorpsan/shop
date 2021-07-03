@@ -41,6 +41,7 @@
                     ['label' => Yii::t('backend', 'Site settings'), 'icon' => 'cogs', 'url' => ['/site-settings/index'], 'active' => $this->context->id == 'site-settings'],
 
                 ['label' => Yii::t('backend', 'Other'), 'visible' => 'admin', 'options' => ['class' => 'header']],
+                    ['label' => Yii::t('backend', 'Jobs'), 'icon' => 'angle-double-right', 'url' => ['/jobs/index'], 'visible' => 'admin', 'active' => $this->context->id == 'jobs'],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'], 'visible' => 'admin', 'active' => $this->context->id == 'gii'],
                     ['label' => 'Debug', 'icon' => 'tachometer', 'url' => ['/debug'], 'visible' => 'admin', 'active' => $this->context->id == 'debug'],
 

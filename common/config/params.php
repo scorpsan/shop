@@ -201,7 +201,7 @@ return [
                 ],
                 'count' => [
                     'title' => Yii::t('backend', 'Count Product'),
-                    'dropList' => [4 => '4 - one row', 8 => '8 - 2 rows', 12 => '12 - 3 rows'],
+                    'dropList' => [0 => 'All in one page', 4 => '4 - one row', 8 => '8 - 2 rows', 12 => '12 - 3 rows'],
                 ],
             ],
         ],

@@ -1,50 +1,30 @@
 <?php
 namespace backend\models;
 
-use yii\db\ActiveRecord;
+use common\models\ShopPhotos as BaseShopPhotos;
 use Imagine\Image\ImageInterface;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
 
-/**
- * This is the model class for table "{{%shop_photos}}".
- *
- * @property image $attachment
- * @property int $id
- * @property int $product_id
- * @property string $url
- * @property int|null $sort
- * @property-read string $mediumImageUrl
- * @property-read string $imageUrl
- * @property-read string $smallImageUrl
- */
-class ShopPhotos extends ActiveRecord
+class ShopPhotos extends BaseShopPhotos
 {
     /**
      * @var image
      */
     public $attachment;
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return '{{%shop_photos}}';
-    }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['product_id', 'url'], 'required'],
             [['product_id', 'sort'], 'integer'],
             [['url'], 'string', 'max' => 255],
             [['sort'], 'default', 'value' => function($model) {
-                $count = self::find()->where(['product_id' => $model->product_id])->count();
-                return $count;
+                return self::find()->where(['product_id' => $model->product_id])->count();
             }],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopProducts::class, 'targetAttribute' => ['product_id' => 'id']],
             [['attachment'], 'safe'],
@@ -55,7 +35,7 @@ class ShopPhotos extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('backend', 'ID'),
@@ -65,37 +45,13 @@ class ShopPhotos extends ActiveRecord
         ];
     }
 
-    public function getSmallImageUrl()
-    {
-        if (isset($this->url)) {
-            return Yii::getAlias('@files/products/' . $this->product_id . '/small_') . $this->url;
-        }
-        return Yii::getAlias('@images/nophoto.svg');
-    }
-
-    public function getMediumImageUrl()
-    {
-        if (isset($this->url)) {
-            return Yii::getAlias('@files/products/' . $this->product_id . '/medium_') . $this->url;
-        }
-        return Yii::getAlias('@images/nophoto.svg');
-    }
-
-    public function getImageUrl()
-    {
-        if (isset($this->url)) {
-            return Yii::getAlias('@files/products/' . $this->product_id . '/full_') . $this->url;
-        }
-        return Yii::getAlias('@images/nophoto.svg');
-    }
-
     public static function uploadFile($file = null, $imageSizes = null, $dirRoot)
     {
         if (!empty($file)) {
             if (!file_exists($dirRoot)) {
                 FileHelper::createDirectory($dirRoot);
             }
-            $filename = strtotime('now') . '_' . Yii::$app->getSecurity()->generateRandomString(6) . '.' . $file->extension;
+            $filename = strtotime('now') . '_' . Yii::$app->security->generateRandomString(6) . '.' . $file->extension;
             if ($file->saveAs($dirRoot . $filename)) {
                 $imagine = Image::getImagine()->open($dirRoot . $filename);
                 if (isset($imageSizes['full'])) {

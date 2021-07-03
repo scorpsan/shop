@@ -8,14 +8,15 @@ use yii\helpers\HtmlPurifier;
 class AppController extends Controller
 {
     public $title;
-    public $backBreadcrumbs;
     public $headerClass;
+    public $backBreadcrumbs;
 
     /**
      * @inheritdoc
      */
     public function init() {
         Yii::$app->layout = Yii::$app->params['pageStyle'][2]['layouts'];
+        $this->title = Yii::$app->name;
         $this->headerClass = Yii::$app->params['pageStyle'][2]['headclass'];
         $this->backBreadcrumbs = Yii::getAlias('@files/breadcrumbs-image-default.jpg');
         parent::init();

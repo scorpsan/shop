@@ -117,7 +117,7 @@ $("document").ready(function(){
             <div class="box-body">
                 <?= $form->field($model, 'id')->textInput(['readonly' => 'readonly']) ?>
 
-                <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'alias')->textInput(array_merge($rootOptions, ['maxlength' => true])) ?>
             </div>
         </div>
         <div class="box">
