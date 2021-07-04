@@ -1,5 +1,5 @@
 <?php
-namespace shop\payments;
+namespace frontend\components\payments;
 
 interface PaymentMethod
 {

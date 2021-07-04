@@ -7,12 +7,8 @@ use frontend\models\ShopProducts;
 use frontend\models\UserWishlistItems;
 use yii\filters\AccessControl;
 use Da\User\Filter\AccessRuleFilter;
-use frontend\forms\DeleteForm;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\web\BadRequestHttpException;
-use yii\web\MethodNotAllowedHttpException;
-use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 class WishlistController extends AppController
@@ -41,6 +37,8 @@ class WishlistController extends AppController
 
     public function actionIndex()
 	{
+        Yii::$app->user->setReturnUrl(['index']);
+
         $wishlist = UserWishlistItems::find()->where(['user_id' => Yii::$app->user->id])->with('product')->all();
 
         $this->title = Yii::t('frontend', 'My Wish List');

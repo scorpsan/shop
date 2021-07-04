@@ -12,18 +12,19 @@ use Exception;
  * @property int $id [int(11)]
  * @property int $category_id [int(11)]
  * @property string $alias [varchar(255)]
+ * @property string $breadbg [varchar(255)]
  * @property bool $published [tinyint(1)]
  * @property bool $noindex [tinyint(1)]
  * @property int $created_at [int(11)]
  * @property int $updated_at [int(11)]
+ * @property int $hit [int(11)]
  *
  * @property-read string $title
  * @property-read string $seotitle
  * @property-read string $keywords
  * @property-read string $description
  * @property-read array $content
- * @property-read null|string $mediumImage
- * @property-read null|string $smallImage
+ * @property-read string $image
  * @property-read ActiveQuery $category
  * @property-read ActiveQuery $translate
  */
@@ -91,20 +92,9 @@ class Posts extends ActiveRecord
         return ArrayHelper::getValue($this->translate, 'content');
     }
 
-    public function getMediumImage()
+    public function getImage(): string
     {
-        if (isset($this->translate->breadbg)) {
-            return Yii::getAlias('@files/posts/medium_') . $this->translate->breadbg;
-        }
-        return null;
-    }
-
-    public function getSmallImage()
-    {
-        if (isset($this->translate->breadbg)) {
-            return Yii::getAlias('@files/posts/small_') . $this->translate->breadbg;
-        }
-        return null;
+        return $this->breadbg;
     }
 
     /**

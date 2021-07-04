@@ -1,8 +1,7 @@
 <?php
-namespace shop\payments\methods;
+namespace frontend\components\payments\methods;
 
-use backend\controllers\AppController;
-use shop\payments\PaymentMethod;
+use frontend\components\payments\PaymentMethod;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;

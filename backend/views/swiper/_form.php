@@ -47,7 +47,7 @@ use kartik\form\ActiveForm;
                     'class' => 'btn btn-primary slideButton',
                     'data' => [
                         'title' => Yii::t('backend', 'Create Slide'),
-                        'action' => Url::to(['/swiper-slides/create', 'item_id' => $model->id]),
+                        'action' => Url::to(['swiper-slides/create', 'item_id' => $model->id]),
                     ],
                 ]) ?>
             </div>
@@ -79,7 +79,7 @@ use kartik\form\ActiveForm;
     </div>
 </div>
 <?php
-$url1 = Url::to(['/swiper-slides/index']);
+$url1 = Url::to(['swiper-slides/index']);
 $script = <<< JS
 $("#slides").each(function(i,elem) {
     var data = $(this).data();

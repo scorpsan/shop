@@ -38,9 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'headerOptions' => ['width' => '60'],
                         ],
                         [
-                            'attribute' => 'images',
+                            'attribute' => 'image',
                             'value' => function($data) {
-                                return $data->smallImage;
+                                return $data->image;
                             },
                             'headerOptions' => ['width' => '94'],
                             'format' => ['image', ['width' => '74']],
@@ -96,6 +96,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                             'headerOptions' => ['width' => '90'],
                             'format' => 'boolean',
+                        ],
+                        [
+                            'attribute' => 'hit',
+                            'headerOptions' => ['width' => '60'],
                         ],
                         [
                             'class' => CombinedDataColumn::class,

@@ -8,7 +8,7 @@
  */
 
 use backend\models\ShopDelivery;
-use shop\payments\PaymentsMain;
+use frontend\components\payments\PaymentsMain;
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 ?>

@@ -1,5 +1,5 @@
 <?php
-namespace shop\payments;
+namespace frontend\components\payments;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -10,7 +10,7 @@ class PaymentsMain
 {
     public static function MethodsList(): array
     {
-        $check = "shop\\payments\\methods\\";
+        $check = "frontend\\components\\payments\\methods\\";
 
         $list = array();
 

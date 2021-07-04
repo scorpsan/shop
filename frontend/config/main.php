@@ -87,7 +87,7 @@ return [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            //'enableStrictParsing' => true,
+            'enableStrictParsing' => true,
             'normalizer' => [
                 'class' => 'yii\web\UrlNormalizer',
                 'action' => \yii\web\UrlNormalizer::ACTION_REDIRECT_PERMANENT,

@@ -55,7 +55,7 @@ class OrdersController extends AppController
 
     public function actionIndex()
 	{
-        Yii::$app->user->setReturnUrl(['/user/orders/index']);
+        Yii::$app->user->setReturnUrl(['index']);
 
         $orders = ShopOrders::find()->where(['user_id' => Yii::$app->user->id])->orderBy(['updated_at' => SORT_DESC])->all();
 
@@ -81,9 +81,9 @@ class OrdersController extends AppController
             throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
 
         if ($token)
-            Yii::$app->user->setReturnUrl(['/user/orders/view', 'number' => $number, 'token' => $token]);
+            Yii::$app->user->setReturnUrl(['view', 'number' => $number, 'token' => $token]);
         else
-            Yii::$app->user->setReturnUrl(['/user/orders/view', 'number' => $number]);
+            Yii::$app->user->setReturnUrl(['view', 'number' => $number]);
 
         return $this->render('view', [
 			'order' => $order,

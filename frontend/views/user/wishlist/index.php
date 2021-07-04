@@ -9,7 +9,7 @@ use yii\widgets\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\widgets\Pjax;
 
-//$this->title = Yii::t('frontend', 'My Wish List');
+$this->title = Yii::t('frontend', 'My Wish List');
 ?>
 <section class="section-account p-0 m-0">
     <div class="my-container">
@@ -26,7 +26,7 @@ use yii\widgets\Pjax;
             <div class="col-xl-9 col-lg-9 col-md-12 category-right">
                 <?php
                 $breadcrumbs[] = ['label' => Yii::t('frontend', 'My Account'), 'url' => ['/user/profile/index']];
-                $breadcrumbs[] = Yii::t('frontend', 'My Wish List');
+                $breadcrumbs[] = $this->title;
                 ?>
                 <?= Breadcrumbs::widget([
                     'links' => isset($breadcrumbs) ? $breadcrumbs : [],
@@ -60,7 +60,7 @@ use yii\widgets\Pjax;
                                             <?php $product = $item->product; ?>
                                             <tr>
                                                 <td><?= Html::img($product->smallImageMain, ['alt' => $product->title, 'class' => 'img-fluid', 'width' => '100', 'height' => '100']) ?></td>
-                                                <td><?= Html::a($product->title, ['/shop/product', 'categoryalias' => ($product->category->depth > 0) ? $product->category->alias : null, 'alias' => $product->alias], ['title' => $product->title]) ?></td>
+                                                <td><?= Html::a($product->title, ['/shop/product', 'alias' => $product->alias], ['title' => $product->title]) ?></td>
                                                 <td class="text-center dollar">
                                                     <?php if ($product->in_stock) { ?>
                                                         <?= (($product->sale) ? Yii::$app->formatter->asCurrency($product->sale) . '<br><span>' . Yii::$app->formatter->asCurrency($product->price) . '</span>' : Yii::$app->formatter->asCurrency($product->price)) ?>
@@ -70,9 +70,9 @@ use yii\widgets\Pjax;
                                                 </td>
                                                 <td class="text-center wish-actions">
                                                     <?php if ($product->in_stock) { ?>
-                                                        <?= Html::a('<i class="fas fa-cart-arrow-down" aria-hidden="true"></i>', ['to-cart'], ['title' => Yii::t('frontend', 'Move to cart'), 'class' => 'from-wish-to-cart', 'data-id' => $product->id]) ?>
+                                                        <?= Html::a('<i class="fas fa-cart-arrow-down" aria-hidden="true"></i>', ['/user/wishlist/to-cart'], ['title' => Yii::t('frontend', 'Move to cart'), 'class' => 'from-wish-to-cart', 'data-id' => $product->id]) ?>
                                                     <?php } ?>
-                                                    <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['delete'], ['title' => Yii::t('frontend', 'Delete'), 'class' => 'delete-from-wish remove', 'data-id' => $product->id]) ?>
+                                                    <?= Html::a('<i class="fas fa-trash" aria-hidden="true"></i>', ['/user/wishlist/delete'], ['title' => Yii::t('frontend', 'Delete'), 'class' => 'delete-from-wish remove', 'data-id' => $product->id]) ?>
                                                 </td>
                                             </tr>
                                         <?php } ?>

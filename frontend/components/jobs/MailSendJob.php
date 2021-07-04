@@ -1,5 +1,5 @@
 <?php
-namespace shop\jobs;
+namespace frontend\components\jobs;
 
 use yii\base\BaseObject;
 use yii\queue\RetryableJobInterface;

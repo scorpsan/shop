@@ -12,14 +12,14 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        '/css/style.css',
+        '/css/style.min.css',
     ];
     public $js = [
         'https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js',
         '/js/slick.min.js',
-        '/js/jquery.countdown.js',
+        '/js/jquery.countdown.min.js',
         '/js/jquery.barrating.min.js',
-        '/js/store.js'
+        '/js/store.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

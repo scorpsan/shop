@@ -1,7 +1,7 @@
 <?php
-namespace shop;
+namespace frontend\components;
 
-use shop\jobs\MailSendJob;
+use frontend\components\jobs\MailSendJob;
 use Yii;
 
 class MailFactory

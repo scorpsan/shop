@@ -15,11 +15,11 @@ class AppController extends Controller
      * @inheritdoc
      */
     public function init() {
+        parent::init();
         Yii::$app->layout = Yii::$app->params['pageStyle'][2]['layouts'];
         $this->title = Yii::$app->name;
         $this->headerClass = Yii::$app->params['pageStyle'][2]['headclass'];
         $this->backBreadcrumbs = Yii::getAlias('@files/breadcrumbs-image-default.jpg');
-        parent::init();
     }
 
     /**

@@ -23,10 +23,10 @@ $canCheckout = true;
         ?>
         <ul class="minicart-item list-unstyled">
             <li class="product-cart">
-                <?= Html::a(Html::img($productList[$key]->smallImageMain, ['alt' => $productList[$key]->title, 'class' => 'img-fluid']), ['/shop/product', 'categoryalias' => ($productList[$key]->category->depth > 0) ? $productList[$key]->category->alias : null, 'alias' => $productList[$key]->alias], ['title' => $productList[$key]->title, 'class' => 'product-image product-thumb-link', 'data-pjax' => 0]) ?>
+                <?= Html::a(Html::img($productList[$key]->smallImageMain, ['alt' => $productList[$key]->title, 'class' => 'img-fluid']), ['/shop/product', 'alias' => $productList[$key]->alias], ['title' => $productList[$key]->title, 'class' => 'product-image product-thumb-link', 'data-pjax' => 0]) ?>
                 <div class="product-detail">
                     <h3 class="product-name">
-                        <?= Html::a($productList[$key]->title, ['/shop/product', 'categoryalias' => ($productList[$key]->category->depth > 0) ? $productList[$key]->category->alias : null, 'alias' => $productList[$key]->alias], ['title' => $productList[$key]->title, 'data-pjax' => 0]) ?>
+                        <?= Html::a($productList[$key]->title, ['/shop/product', 'alias' => $productList[$key]->alias], ['title' => $productList[$key]->title, 'data-pjax' => 0]) ?>
                     </h3>
                     <div class="product-detail-info">
                         <span class="product-quantity"><?= Yii::t('frontend', 'QTY') ?>: <?= $prod['qty'] ?></span>

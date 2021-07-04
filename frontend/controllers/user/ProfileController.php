@@ -62,7 +62,7 @@ class ProfileController extends BaseProfileController
 
     public function actionShow($id)
     {
-        return $this->redirect(['index']);
+        return $this->redirect(['/user/profile/index']);
     }
 
 }

@@ -8,10 +8,10 @@ use yii\web\NotFoundHttpException;
 class PageController extends AppController
 {
     /**
-     * @return Pages|string
+     * @return string
      * @throws NotFoundHttpException
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         if (!$model = Pages::findIndexPage()) {
             throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
@@ -30,7 +30,7 @@ class PageController extends AppController
 
     /**
      * @param $alias
-     * @return Pages|string
+     * @return string
      * @throws NotFoundHttpException
      */
     public function actionView($alias)
@@ -40,7 +40,7 @@ class PageController extends AppController
         }
 
         if ($model->main) {
-            return $this->redirect('index');
+            return $this->redirect(['index']);
         }
 
         Yii::$app->layout = Yii::$app->params['pageStyle'][$model->page_style]['layouts'];

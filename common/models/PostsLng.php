@@ -12,7 +12,6 @@ use yii\db\ActiveRecord;
  * @property string $keywords [varchar(255)]
  * @property string $description [varchar(255)]
  * @property string $content [text]
- * @property string $breadbg [varchar(255)]
  */
 class PostsLng extends ActiveRecord
 {

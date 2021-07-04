@@ -158,8 +158,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'headerOptions' => ['width' => '90'],
                             'format' => 'boolean',
                         ],
-                        'rating',
-                        'hit',
+                        [
+                            'attribute' => 'rating',
+                            'headerOptions' => ['width' => '60'],
+                        ],
+                        [
+                            'attribute' => 'hit',
+                            'headerOptions' => ['width' => '60'],
+                        ],
                         [
                             'attribute' => 'wishes',
                             'content' => function($data) {

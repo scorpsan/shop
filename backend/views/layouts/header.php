@@ -32,13 +32,13 @@ use yii\helpers\Html;
                             <li class="user-footer">
                                 <div class="pull-left">
                                     <?= Html::a(Yii::t('backend', 'Profile'),
-                                        ['/user/profile/show'],
+                                        ['user/profile/show'],
                                         ['class' => 'btn btn-default btn-flat']
                                     ) ?>
                                 </div>
                                 <div class="pull-right">
                                     <?= Html::a(Yii::t('backend', 'Log Out'),
-                                        ['/user/security/logout'],
+                                        ['user/security/logout'],
                                         ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                     ) ?>
                                 </div>

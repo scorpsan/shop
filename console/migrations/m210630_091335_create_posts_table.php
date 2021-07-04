@@ -18,8 +18,10 @@ class m210630_091335_create_posts_table extends Migration
             'id' => $this->primaryKey(),
             'category_id' => $this->integer(11)->notNull()->defaultValue(0),
             'alias' => $this->string(255)->unique()->notNull(),
+            'breadbg' => $this->string(255),
             'published' => $this->boolean()->notNull()->defaultValue(1),
             'noindex' => $this->boolean()->notNull()->defaultValue(0),
+            'hit' => $this->integer()->defaultValue(0),
             'created_at' => $this->integer(11)->notNull(),
             'updated_at' => $this->integer(11)->notNull(),
         ], $tableOptions);

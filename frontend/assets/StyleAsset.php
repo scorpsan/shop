@@ -13,9 +13,9 @@ class StyleAsset extends AssetBundle
     public $css = [
         '//fonts.googleapis.com/css?family=Barlow:400,700&display=swap',
         '//fonts.googleapis.com/css?family=Roboto&display=swap',
-        '/css/transition.css',
-        '/css/slick-theme.css',
-        '/css/slick.css',
+        '/css/transition.min.css',
+        '/css/slick-theme.min.css',
+        '/css/slick.min.css',
     ];
     public $js = [];
     public $depends = [

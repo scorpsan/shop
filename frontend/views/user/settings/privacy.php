@@ -130,8 +130,8 @@ $user = Yii::$app->user->identity;
 <?php
     // This script should be in fact in a module as an external file
     // consider overriding this view and include your very own approach
-    $uri = Url::to(['two-factor', 'id' => $user->id]);
-    $verify = Url::to(['two-factor-enable', 'id' => $user->id]);
+    $uri = Url::to(['/user/settings/two-factor', 'id' => $user->id]);
+    $verify = Url::to(['/user/settings/two-factor-enable', 'id' => $user->id]);
 $js = <<<JS
 $('.modal-tfmodal').on('show.bs.modal', function() {
     if(!$('img#qrCode').length) {

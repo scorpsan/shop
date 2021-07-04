@@ -45,15 +45,6 @@ mihaildev\elfinder\Assets::noConflict($this);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]lng", ['enableClientValidation' => false])->hiddenInput(['value' => $key])->label(false);
                 }
                 $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
-                $tabcontent .= $form->field($modelLng[$key], "[$key]breadbg")->widget(InputFile::class, [
-                    'controller' => 'elfinder',
-                    'path' => '/posts/',
-                    'filter' => 'image',
-                    'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
-                    'options' => ['class' => 'form-control'],
-                    'buttonOptions' => ['class' => 'btn btn-default'],
-                    'multiple' => false
-                ]);
                 $tabcontent .= $form->field($modelLng[$key], "[$key]content")->widget(CKEditor::class, [
                     'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
                         'preset' => 'full',
@@ -106,6 +97,18 @@ mihaildev\elfinder\Assets::noConflict($this);
         <div class="box">
             <div class="box-body">
                 <?= $form->field($model, 'category_id')->dropDownList($categoryList) ?>
+
+                <hr>
+
+                <?= $form->field($model, 'breadbg')->widget(InputFile::class, [
+                'controller' => 'elfinder',
+                'path' => '/posts/',
+                'filter' => 'image',
+                'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+                'options' => ['class' => 'form-control'],
+                'buttonOptions' => ['class' => 'btn btn-default'],
+                'multiple' => false
+                ]) ?>
 
                 <hr>
                 <?= $form->field($model, 'created_at', ['enableClientValidation' => false])->widget(DateTimePicker::class, [

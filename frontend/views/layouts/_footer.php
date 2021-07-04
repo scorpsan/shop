@@ -170,7 +170,7 @@ $params = Yii::$app->params;
         <a href="javascript:void(0)" class="close-window"><i class="fas fa-times"></i></a>
         <div class="mini-product-item row">
             <div class="col-md-3 col-sm-3 product-image f-left d-mobile-none">
-                <img alt="img" src="<?= Yii::getAlias('@images/nophoto.svg') ?>" style="max-width:120px; height:auto"/>
+                <?= Html::img(['@images/nophoto.svg'], ['alt' => 'img', 'style' => 'max-width:120px; height:auto']) ?>
             </div>
             <div class="col-md-9 col-sm-9 f-left">
                 <div class="product-info f-left">

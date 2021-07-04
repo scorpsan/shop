@@ -16,7 +16,7 @@ class ShopController extends AppController
     /**
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $query = ShopProducts::find()->where(['published' => true])
             ->with('translate')
@@ -65,7 +65,7 @@ class ShopController extends AppController
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionCategory($categoryalias)
+    public function actionCategory($categoryalias): string
     {
         $category = Categories::find()->where(['published' => true, 'alias' => $categoryalias])->with('translate')->limit(1)->one();
         if (empty($category)) {
@@ -101,13 +101,13 @@ class ShopController extends AppController
     }
 
     /**
-     * @param $categoryalias
+     * @param $alias
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionBrand($brandalias)
+    public function actionBrand($alias): string
     {
-        $brand = ShopBrands::find()->where(['published' => true, 'alias' => $brandalias])->with('translate')->limit(1)->one();
+        $brand = ShopBrands::find()->where(['published' => true, 'alias' => $alias])->with('translate')->limit(1)->one();
         if (empty($brand)) {
             throw new NotFoundHttpException(Yii::t('error', 'error404 message'));
         }
@@ -145,7 +145,7 @@ class ShopController extends AppController
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionProduct($alias)
+    public function actionProduct($alias): string
     {
         $product = ShopProducts::find()->where(['published' => true, 'alias' => $alias])->with('translate')->with('images')->with('characteristics')->limit(1)->one();
         if (empty($product)) {

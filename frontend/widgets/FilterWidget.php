@@ -38,12 +38,12 @@ class FilterWidget extends Widget
             $brandsAll = ShopBrands::find()->where(['published' => true])->with('translate')->all();
             foreach ($brandsAll as $brand) {
                 if ($brand->countProd) {
-                    $brands[] = ['label' => $brand->title, 'count' => $brand->countProd, 'url' => ['/shop/brand', 'brandalias' => $brand->alias]];
+                    $brands[] = ['label' => $brand->title, 'count' => $brand->countProd, 'url' => ['shop/brand', 'alias' => $brand->alias]];
                 }
             }
             ArrayHelper::multisort($brands, 'label', SORT_ASC);
             $brands = ArrayHelper::merge([
-                ['label' => Yii::t('frontend', 'All Brands'), 'url' => ['/shop/index']]
+                ['label' => Yii::t('frontend', 'All Brands'), 'url' => ['shop/index']]
             ], $brands);
             // set cache
             Yii::$app->cache->set('brandsTreeCategories' . Yii::$app->language, $brands, 3600);

@@ -17,7 +17,7 @@ if (Yii::$app->user->can('manager')) { ?>
                     <h3 class="control-sidebar-heading">Reset Cache</h3>
 
                     <div class="form-group">
-                        <?= Html::a(Yii::t('backend', 'Reset Cache'), ['/site/reset-cache'], ['class' => 'btn btn-warning', 'data-metod' => 'POST']) ?>
+                        <?= Html::a(Yii::t('backend', 'Reset Cache'), ['site/reset-cache'], ['class' => 'btn btn-warning', 'data-metod' => 'POST']) ?>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@ if (Yii::$app->user->can('manager')) { ?>
     <div class='control-sidebar-bg'></div>
 <?php } ?>
 <?php
-$url1 = Url::to(['/site-settings/change-setting']);
+$url1 = Url::to(['site-settings/change-setting']);
 $script = <<< JS
     $('aside.control-sidebar input').on('ifChanged', function() {
         $.ajax({

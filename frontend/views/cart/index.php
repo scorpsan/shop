@@ -49,7 +49,7 @@ $canCheckout = true;
                                         <?= Html::a(Html::img($productList[$key]->smallImageMain, ['alt' => $productList[$key]->title, 'class' => 'img-fluid', 'width' => '100', 'height' => '100']), ['/shop/product', 'categoryalias' => ($productList[$key]->category->depth > 0) ? $productList[$key]->category->alias : null, 'alias' => $productList[$key]->alias], ['title' => $productList[$key]->title]) ?>
                                     </td>
                                     <td data-title="Product Name" class="product-name-thumb" data-title="<?= Yii::t('frontend', 'Product') ?>">
-                                        <?= Html::a($productList[$key]->title, ['/shop/product', 'categoryalias' => ($productList[$key]->category->depth > 0) ? $productList[$key]->category->alias : null, 'alias' => $productList[$key]->alias], ['title' => $productList[$key]->title]) ?>
+                                        <?= Html::a($productList[$key]->title, ['/shop/product', 'alias' => $productList[$key]->alias], ['title' => $productList[$key]->title]) ?>
                                     </td>
                                     <?php if ($productList[$key]->in_stock) { ?>
                                         <td data-label="Product Price" class="product-price" data-title="<?= Yii::t('frontend', 'Price') ?>">

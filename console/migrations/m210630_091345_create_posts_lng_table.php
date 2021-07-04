@@ -23,7 +23,6 @@ class m210630_091345_create_posts_lng_table extends Migration
             'keywords' => $this->string(255),
             'description' => $this->string(255),
             'content' => $this->text(),
-            'breadbg' => $this->string(255),
         ], $tableOptions);
 
         $this->createIndex('posts_lng_posts_id_fk', '{{%posts_lng}}', 'item_id');

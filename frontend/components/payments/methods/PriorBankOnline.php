@@ -1,7 +1,7 @@
 <?php
-namespace shop\payments\methods;
+namespace frontend\components\payments\methods;
 
-use shop\payments\PaymentMethod;
+use frontend\components\payments\PaymentMethod;
 use Yii;
 
 class PriorBankOnline implements PaymentMethod

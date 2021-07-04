@@ -11,7 +11,7 @@ use frontend\models\ShopOrdersStatuses;
 use frontend\models\ShopPayment;
 use frontend\models\ShopProducts;
 use frontend\controllers\user\OrdersController;
-use shop\MailFactory;
+use frontend\components\MailFactory;
 use Yii;
 use Exception;
 use yii\helpers\ArrayHelper;

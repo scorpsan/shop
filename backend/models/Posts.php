@@ -34,14 +34,15 @@ class Posts extends BasePosts
     public function rules(): array
     {
         return [
-            [['id'], 'integer'],
-            [['id', 'alias'], 'unique'],
-            [['alias'], 'string', 'max' => 255],
+            [['alias', 'breadbg'], 'string', 'max' => 255],
+            [['alias'], 'unique'],
             [['alias'], 'filter', 'filter'=>'trim'],
             [['alias'], 'filter', 'filter'=>'strtolower'],
             [['published', 'noindex'], 'boolean'],
             [['published'], 'default', 'value' => true],
             [['noindex'], 'default', 'value' => false],
+            [['hit'], 'integer'],
+            [['hit'], 'default', 'value' => 0],
             [['created_at', 'updated_at'], 'safe'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['category_id' => 'id']],
         ];
@@ -56,8 +57,10 @@ class Posts extends BasePosts
             'id' => Yii::t('backend', 'ID'),
             'category_id' => Yii::t('backend', 'Category'),
             'alias' => Yii::t('backend', 'Alias'),
+            'breadbg' => Yii::t('backend', 'Post Image'),
             'published' => Yii::t('backend', 'Published'),
             'noindex' => Yii::t('backend', 'NoIndex'),
+            'hit' => Yii::t('backend', 'Hit'),
             'created_at' => Yii::t('backend', 'Created At'),
             'updated_at' => Yii::t('backend', 'Updated At'),
         ];

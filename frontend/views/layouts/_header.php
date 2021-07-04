@@ -13,7 +13,7 @@ $params = Yii::$app->params;
 <!-- Page header-->
 <!-- BOX MOBILE MENU  -->
 <div class="box-mobile-menu">
-    <span class="box-title"><?= Html::img(['/images/logo-dark.png'], ['alt' => Yii::$app->name]) ?></span>
+    <span class="box-title"><?= Html::img(['@images/logo-dark.png'], ['alt' => Yii::$app->name]) ?></span>
     <a href="javascript:void(0)" class="close-menu" id="pull-closemenu">
         <i class="fas fa-times"></i>
     </a>
@@ -62,7 +62,7 @@ $params = Yii::$app->params;
                 <?= Html::a('Акции', ['/page/view', 'alias' => 'actions'], ['title' => 'Акции', 'class' => 'slide-dropdown']) ?>
             </li>
             <li class="menu-item">
-                <?= Html::a('Полезные статьи', ['/blog/index'], ['title' => 'Полезные статьи', 'class' => 'slide-dropdown']) ?>
+                <?= Html::a('Полезные статьи', ['/post/index'], ['title' => 'Полезные статьи', 'class' => 'slide-dropdown']) ?>
             </li>
             <li class="menu-item">
                 <?= Html::a('Контакты', ['/page/view', 'alias' => 'contacts'], ['title' => 'Контакты', 'class' => 'slide-dropdown']) ?>
@@ -112,7 +112,7 @@ $params = Yii::$app->params;
             <div class="col-xl-8 col-lg-8">
                 <div class="row align-items-center">
                     <div class="col-4__header-home2 logo">
-                        <?= Html::a(Html::img(['/images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
+                        <?= Html::a(Html::img(['@images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
                     </div>
                     <div class="col-8__header-home2 navbar-home2">
                         <ul class="nav">
@@ -169,7 +169,7 @@ $params = Yii::$app->params;
                                 <?= Html::a(Yii::t('frontend', 'Акции'), ['/page/view', 'alias' => 'actions'], ['title' => Yii::t('frontend', 'Акции'), 'class' => 'nav-link top-nav-link']) ?>
                             </li>
                             <li class="nav-item top-nav-items">
-                                <?= Html::a(Yii::t('frontend', 'Полезные статьи'), ['/blog/index'], ['title' => Yii::t('frontend', 'Полезные статьи'), 'class' => 'nav-link top-nav-link']) ?>
+                                <?= Html::a(Yii::t('frontend', 'Полезные статьи'), ['/post/index'], ['title' => Yii::t('frontend', 'Полезные статьи'), 'class' => 'nav-link top-nav-link']) ?>
                             </li>
                             <li class="nav-item top-nav-items">
                                 <?= Html::a(Yii::t('frontend', 'Контакты'), ['/page/view', 'alias' => 'contacts'], ['title' => Yii::t('frontend', 'Контакты'), 'class' => 'nav-link top-nav-link']) ?>
@@ -215,7 +215,7 @@ $params = Yii::$app->params;
                 <i class="fas fa-bars js-click-megamenu"></i>
             </div>
             <div class="logo">
-                <?= Html::a(Html::img(['/images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
+                <?= Html::a(Html::img(['@images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
             </div>
             <div class="right-box">
                 <?php if (Yii::$app->params['searchOnSite']) { ?>
