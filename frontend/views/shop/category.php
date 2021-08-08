@@ -4,9 +4,6 @@
  * @var $category \frontend\models\Categories
  * @var $categoryParent \frontend\models\Categories
  * @var $pages \yii\data\Pagination
- * @var $search string|null
- * @var $secondMenu \frontend\models\Categories
- * @var $brands \frontend\models\ShopBrands
  */
 
 use frontend\widgets\FilterWidget;
@@ -21,7 +18,7 @@ if (count($categoryParent)) {
 }
 $this->params['breadcrumbs'][] = $category->title;
 
-$filter = FilterWidget::widget();
+$filter = FilterWidget::widget(['menu' => 'shop', 'brands' => true, 'tags' => true]);
 ?>
 <section class="section-product section-product-v1 p-0 m-0">
     <div class="my-container">

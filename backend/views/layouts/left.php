@@ -24,7 +24,7 @@
                     ]],
                     ['label' => Yii::t('backend', 'Posts'), 'icon' => 'newspaper-o', 'url' => '#', 'items' => [
                         ['label' => Yii::t('backend', 'Categories'), 'url' => ['posts/categories/index'], 'active' => $this->context->id == 'posts/categories'],
-                        ['label' => Yii::t('backend', 'Posts'), 'url' => ['posts/post/index'], 'active' => $this->context->id == 'posts/post'],
+                        ['label' => Yii::t('backend', 'Posts'), 'url' => ['posts/posts/index'], 'active' => $this->context->id == 'posts/posts'],
                     ]],
                     ['label' => Yii::t('backend', 'Site Menu'), 'icon' => 'sitemap', 'url' => ['menus/index'], 'active' => $this->context->id == 'menus'],
                     ['label' => Yii::t('backend', 'Sliders'), 'icon' => 'picture-o', 'url' => ['swiper/index'], 'active' => $this->context->id == 'swiper'],

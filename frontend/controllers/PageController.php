@@ -21,7 +21,7 @@ class PageController extends AppController
         $this->title = $model->title;
         $this->headerClass = Yii::$app->params['pageStyle'][$model->page_style]['headclass'];
 
-        $this->setMeta(Yii::$app->name . ' | ' . $model->seotitle, $model->keywords, $model->description);
+        $this->setMeta($model->seotitle, $model->keywords, $model->description);
 
         return $this->render('view', [
             'model' => $model,
@@ -50,7 +50,7 @@ class PageController extends AppController
             $this->backBreadcrumbs = $model->translate->breadbg;
         }
 
-        $this->setMeta(Yii::$app->name . ' | ' . $model->seotitle, $model->keywords, $model->description);
+        $this->setMeta($model->seotitle, $model->keywords, $model->description);
 
         return $this->render('view', [
             'model' => $model,
@@ -67,7 +67,7 @@ class PageController extends AppController
 //        $query = htmlspecialchars($query);
 //        Yii::$app->layout = Yii::$app->params['pageStyle'][6]['layouts'];
 //        $this->headerClass = Yii::$app->params['pageStyle'][6]['headclass'];
-//        $this->setMeta(Yii::$app->name . ' | ' . Yii::t('frontend', 'Search results'), Yii::$app->params['keywords'], Yii::$app->params['description']);
+//        $this->setMeta(Yii::t('frontend', 'Search results'), Yii::$app->params['keywords'], Yii::$app->params['description']);
 //
 //        $results = null;
 //        if ($query) {

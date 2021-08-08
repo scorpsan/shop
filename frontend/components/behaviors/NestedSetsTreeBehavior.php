@@ -1,11 +1,12 @@
 <?php
 namespace frontend\components\behaviors;
 
+use yii\base\Behavior;
 use Yii;
 use yii\validators\UrlValidator;
 
-class NestedSetsTreeBehavior extends \yii\base\Behavior {
-
+class NestedSetsTreeBehavior extends Behavior
+{
     /**
      * @var string
      */

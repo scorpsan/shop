@@ -2,11 +2,12 @@
 namespace frontend\models;
 
 use common\models\Pages as BasePages;
+use yii\db\ActiveRecord;
 
 class Pages extends BasePages
 {
     /**
-     * @return Pages|null
+     * @return ActiveRecord|null
      */
     public static function findIndexPage()
     {
@@ -18,7 +19,7 @@ class Pages extends BasePages
 
     /**
      * @param $alias
-     * @return Pages|null
+     * @return ActiveRecord|null
      */
     public static function findAliasPage($alias)
     {

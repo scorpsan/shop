@@ -68,7 +68,7 @@ class CartController extends AppController
      */
     public function actionIndex()
     {
-        $this->setMeta(Yii::$app->name . ' | ' . Yii::t('frontend', 'Your Shopping Cart'), Yii::$app->params['keywords'], Yii::$app->params['description']);
+        $this->setMeta(Yii::t('frontend', 'Your Shopping Cart'), Yii::$app->params['keywords'], Yii::$app->params['description']);
 
         if (!Yii::$app->request->isAjax) {
             return $this->render('index', [

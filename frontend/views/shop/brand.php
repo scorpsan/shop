@@ -14,7 +14,7 @@ use yii\bootstrap4\Html;
 $this->params['breadcrumbs'][] = ['label' => $category->title, 'url' => ['/shop/index']];
 $this->params['breadcrumbs'][] = $brand->title;
 
-$filter = FilterWidget::widget();
+$filter = FilterWidget::widget(['menu' => 'shop', 'brands' => true, 'tags' => true]);
 ?>
 <section class="section-product section-product-v1 p-0 m-0">
     <div class="my-container">

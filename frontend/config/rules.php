@@ -1,5 +1,7 @@
 <?php
 return [
+    'sitemap.xml' => 'sitemap/index',
+
     '' => 'page/index',
 
     'cabinet/<_a:(login|logout)>' => 'user/security/<_a>',
@@ -31,14 +33,19 @@ return [
     'checkout/<_a:[\w_\-]+>' => 'checkout/<_a>',
     'checkout' => 'checkout/index',
 
-    'blog/category/<categoryalias:[\w_\-]+>/page<page:\d+>' => 'post/category',
-    'blog/category/<categoryalias:[\w_\-]+>' => 'post/category',
-    'blog/post/<alias:[\w_\-]+>' => 'post/view',
-    'blog/page<page:\d+>' => 'post/index',
-    'blog' => 'post/index',
+    'blog/category/<categoryalias:[\w_\-]+>/page<page:\d+>' => 'posts/category',
+    'blog/category/<categoryalias:[\w_\-]+>' => 'posts/category',
+    'blog/post/<alias:[\w_\-]+>' => 'posts/view',
+    'blog/page<page:\d+>' => 'posts/index',
+    'blog' => 'posts/index',
 
     '<_c:(site)>/<_a:[\w_\-]+>' => '<_c>/<_a>',
 
     'search' => 'page/search',
     '<alias:[\w_\-]+>' => 'page/view',
+
+    '/<_c:[\w\-]+>/<_a:[\w\-]+>/<id:\d+>' => '<_c>/<_a>',
+    '/<_c:[\w\-]+>/<_a:[\w\-]+>' => '<_c>/<_a>',
+    '/<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',
+    '/<_c:[\w\-]+>' => '<_c>/index',
 ];

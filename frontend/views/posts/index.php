@@ -1,24 +1,24 @@
 <?php
 /**
- * @var $products \frontend\models\ShopProducts
+ * @var $posts \frontend\models\Posts
  * @var $category \frontend\models\Categories
  * @var $pages \yii\data\Pagination
- * @var $search string|null
  */
 
 use frontend\widgets\FilterWidget;
 
 $this->params['breadcrumbs'][] = $category->title;
 
-$filter = FilterWidget::widget(['menu' => 'shop', 'brands' => true, 'tags' => true]);
+$filter = FilterWidget::widget(['menu' => 'posts']);
 ?>
-<section class="section-product section-product-v1 p-0 m-0">
-    <div class="my-container">
+<section class="product-blog-v2 p-0 m-0">
+    <div class="my-container column-right">
         <?php if ($category->translate->seo_text) { ?>
             <div style="height:0px;overflow:hidden">
                 <?= $category->translate->seo_text ?>
             </div>
         <?php } ?>
+        <?php if (!empty($filter)) { ?>
         <div class="js-filter-popup filter-mobile fliter-product">
             <?= $filter ?>
         </div>
@@ -30,7 +30,12 @@ $filter = FilterWidget::widget(['menu' => 'shop', 'brands' => true, 'tags' => tr
                 <?= $filter ?>
             </div>
             <div class="col-xl-9 col-lg-9">
-                <?= $this->render('_products', ['items' => $products, 'pages' => $pages]) ?>
+        <?php } else { ?>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+        <?php } ?>
+                <div class="bread-crumb"></div>
+                <?= $this->render('_posts', ['items' => $posts, 'pages' => $pages]) ?>
             </div>
         </div>
     </div>

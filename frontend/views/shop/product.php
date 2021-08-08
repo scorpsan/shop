@@ -2,8 +2,6 @@
 /**
  * @var $product \frontend\models\ShopProducts
  * @var $categoryParent \frontend\models\Categories
- * @var $secondMenu \frontend\models\Categories
- * @var $brands \frontend\models\ShopBrands
  */
 
 use frontend\widgets\FilterWidget;
@@ -16,12 +14,14 @@ if (count($categoryParent)) {
     foreach ($categoryParent as $parent) {
         if ($parent->depth == 0)
             $this->params['breadcrumbs'][] = ['label' => $parent->title, 'url' => ['/shop/index']];
-        if ($parent->depth == 1)
+        if ($parent->depth == 1 || count($categoryParent) == 1)
             $this->params['breadcrumbs'][] = $parent->title;
     }
+} else {
+    $this->params['breadcrumbs'][] = $product->category->title;
 }
 
-$filter = FilterWidget::widget(['categoryalias' => $product->category->alias]);
+$filter = FilterWidget::widget(['menu' => 'shop', 'brands' => true, 'tags' => true, 'categoryalias' => $product->category->alias]);
 ?>
 <section class="section-product section-product-detail-v3">
     <div class="my-container">
@@ -44,11 +44,16 @@ $filter = FilterWidget::widget(['categoryalias' => $product->category->alias]);
                 <?php
                 if (count($categoryParent)) {
                     foreach ($categoryParent as $parent) {
-                        if ($parent->depth != 0)
+                        if ($parent->depth == 0)
+                            $breadcrumbs[] = ['label' => $parent->title, 'url' => ['/shop/index']];
+                        else
                             $breadcrumbs[] = ['label' => $parent->title, 'url' => ['/shop/category', 'categoryalias' => $parent->alias]];
                     }
                 }
-                $breadcrumbs[] = ['label' => $product->category->title, 'url' => ['/shop/category', 'categoryalias' => $product->category->alias]];
+                if ($product->category->depth == 0)
+                    $breadcrumbs[] = ['label' => $product->category->title, 'url' => ['/shop/index']];
+                else
+                    $breadcrumbs[] = ['label' => $product->category->title, 'url' => ['/shop/category', 'categoryalias' => $product->category->alias]];
                 $breadcrumbs[] = $product->title;
                 ?>
                 <?= Breadcrumbs::widget([

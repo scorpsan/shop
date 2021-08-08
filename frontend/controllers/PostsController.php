@@ -7,7 +7,7 @@ use Yii;
 use yii\data\Pagination;
 use yii\web\NotFoundHttpException;
 
-class PostController extends AppController
+class PostsController extends AppController
 {
     /**
      * @return string
@@ -31,7 +31,7 @@ class PostController extends AppController
             $this->backBreadcrumbs = $root->translate->breadbg;
         }
 
-        $this->setMeta(Yii::$app->name . ' | ' . $root->seotitle, $root->keywords, $root->description);
+        $this->setMeta($root->seotitle, $root->keywords, $root->description);
 
         return $this->render('index', [
             'posts' => $posts,
@@ -69,7 +69,7 @@ class PostController extends AppController
             $this->backBreadcrumbs = $category->translate->breadbg;
         }
 
-        $this->setMeta(Yii::$app->name . ' | ' . $category->seotitle, $category->keywords, $category->description);
+        $this->setMeta($category->seotitle, $category->keywords, $category->description);
 
         return $this->render('category', [
             'posts' => $posts,
@@ -95,17 +95,16 @@ class PostController extends AppController
         $categoryParent = $post->category->parents()->andWhere(['published' => true])->with('translate')->all();
 
         Yii::$app->layout = Yii::$app->params['categoryStyle'][$post->category->page_style]['layouts'];
-        $this->title = $post->title;
-        $this->headerClass = Yii::$app->params['categoryStyle'][$post->category->page_style]['headclass'];
-        if (Yii::$app->params['categoryStyle'][$post->category->page_style]['breadbg'] && !empty($post->category->translate->breadbg)) {
-            $this->backBreadcrumbs = $post->category->translate->breadbg;
+        $this->title = $post->category->title;
+        if (!empty($post->breadbg)) {
+            $this->backBreadcrumbs = $post->breadbg;
         }
 
-        $this->setMeta(Yii::$app->name . ' | ' . $post->seotitle, $post->keywords, $post->description);
+        $this->setMeta($post->seotitle, $post->keywords, $post->description);
 
         return $this->render('view', [
-            'categoryParent' => $categoryParent,
             'post' => $post,
+            'categoryParent' => $categoryParent,
         ]);
     }
 

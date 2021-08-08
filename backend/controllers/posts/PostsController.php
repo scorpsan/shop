@@ -14,7 +14,7 @@ use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 
-class PostController extends AppController
+class PostsController extends AppController
 {
     /**
      * {@inheritdoc}

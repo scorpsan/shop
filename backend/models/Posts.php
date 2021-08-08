@@ -83,15 +83,11 @@ class Posts extends BasePosts
      */
     public function beforeSave($insert): bool
     {
-        if ($this->isNewRecord) {
-            if ($this->created_at) {
-                $this->created_at = Yii::$app->formatter->asTimestamp($this->created_at);
-            } else {
-                $this->created_at = time();
-            }
+        if ($this->created_at) {
+            $this->created_at = Yii::$app->formatter->asTimestamp($this->created_at);
         } else {
-            if ($this->created_at) {
-                $this->created_at = Yii::$app->formatter->asTimestamp($this->created_at);
+            if ($this->isNewRecord) {
+                $this->created_at = time();
             } else {
                 $this->created_at = $this->getOldAttribute('created_at');
             }

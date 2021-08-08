@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 use Yii;
@@ -84,10 +85,10 @@ class Posts extends ActiveRecord
     }
 
     /**
-     * @return array
+     * @return string
      * @throws Exception
      */
-    public function getContent(): array
+    public function getContent(): string
     {
         return ArrayHelper::getValue($this->translate, 'content');
     }
@@ -103,6 +104,16 @@ class Posts extends ActiveRecord
     public function getCategory(): ActiveQuery
     {
         return $this->hasOne(Categories::class, ['id' => 'category_id'])->with('translate');
+    }
+
+    /**
+     * @return ActiveQuery|array
+     * @throws InvalidConfigException
+     */
+    public function getTags()
+    {
+        return array();
+        //return $this->hasMany(Tags::class, ['id' => 'tag_id'])->viaTable(ShopTags::tableName(), ['item_id' => 'id']);
     }
 
     /**

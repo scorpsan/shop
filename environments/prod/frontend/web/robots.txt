@@ -1,3 +1,4 @@
+Sitemap: https://badkitty.by/sitemap.xml
 User-agent: *
 Allow: /
 Disallow: /shop/cart/

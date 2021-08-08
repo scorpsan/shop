@@ -8,7 +8,7 @@ if (!empty($items->slides)) { ?>
     <?php foreach ($items->slides as $slide) : ?>
         <div class="slider-child">
             <div class="img-slider">
-                <img src="<?= Url::to('@web' . $slide->image) ?>" alt="_img-slider" class="img-fluid w-100">
+                <img src="<?= Url::to('@web' . $slide->image) ?>" alt="<?= $slide->title ?>" class="img-fluid w-100">
             </div>
             <?php if (!empty($slide->content)) { ?>
             <div class="title <?= $slide->text_align ?>">

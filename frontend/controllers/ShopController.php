@@ -50,7 +50,7 @@ class ShopController extends AppController
             $this->backBreadcrumbs = $root->translate->breadbg;
         }
 
-        $this->setMeta(Yii::$app->name . ' | ' . $root->seotitle, $root->keywords, $root->description);
+        $this->setMeta($root->seotitle, $root->keywords, $root->description);
 
         return $this->render('index', [
             'products' => $products,
@@ -90,7 +90,7 @@ class ShopController extends AppController
             $this->backBreadcrumbs = $category->translate->breadbg;
         }
 
-        $this->setMeta(Yii::$app->name . ' | ' . $category->seotitle, $category->keywords, $category->description);
+        $this->setMeta($category->seotitle, $category->keywords, $category->description);
 
         return $this->render('category', [
             'products' => $products,
@@ -130,7 +130,7 @@ class ShopController extends AppController
             $this->backBreadcrumbs = $brand->breadbg;
         }
 
-        $this->setMeta(Yii::$app->name . ' | ' . $brand->seotitle, $brand->keywords, $brand->description);
+        $this->setMeta($brand->seotitle, $brand->keywords, $brand->description);
 
         return $this->render('brand', [
             'products' => $products,
@@ -162,11 +162,11 @@ class ShopController extends AppController
             $this->backBreadcrumbs = $product->category->translate->breadbg;
         }
 
-        $this->setMeta(Yii::$app->name . ' | ' . $product->seotitle, $product->keywords, $product->description);
+        $this->setMeta($product->seotitle, $product->keywords, $product->description);
 
         return $this->render('product', [
-            'categoryParent' => $categoryParent,
             'product' => $product,
+            'categoryParent' => $categoryParent,
         ]);
     }
 

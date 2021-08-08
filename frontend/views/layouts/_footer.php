@@ -48,8 +48,8 @@ $params = Yii::$app->params;
                         <?php } ?>
                     </div>
                     <div class="payment-method">
-                        <img src="/files/bez-fona-s-tenju.png" alt="Payment Method" style="width:100%">
-                        <img alt="" src="/files/MTBank-color.png" style="height:49px;" />
+                        <img src="/files/bez-fona-s-tenju.png" alt="Payment Method" class="footer-bank-img">
+                        <img src="/files/MTBank-color.png" alt="Payment Bank" class="footer-bank-img">
                     </div>
                 </div>
                 <div class="footer-column-2 col-xl-3 col-lg-2 col-sm-6 col-12 order-sm-1 order-md-2 mb-4">
@@ -81,7 +81,7 @@ $params = Yii::$app->params;
                     <?php } ?>
                 </div>
                 <div class="footer-column-4 banner-item2 col-xl-3 col-lg-3 col-sm-6 col-12 order-sm-4 order-md-4 d-none d-sm-block">
-                    <img src="/files/badkitty-b.png" class="img-fluid w-100" alt="BadKitty Shop">
+                    <img src="/files/badkitty-b.png" class="img-fluid w-100" alt="<?= Yii::$app->name ?>">
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@ $params = Yii::$app->params;
         <div class="container-fluid my-container">
             <div class="row">
                 <div class="col-md-6 col-12 text-md-left">
-                    <p class="desc mb-0">Copyright <i class="fa fa-copyright"></i> <?= date('Y') ?> by <a href="#"><?= Yii::$app->name ?></a>. All Rights Reserved. Powered by <a href="https://web-made.biz" target="_blank">Web-Made.biz</a></p>
+                    <p class="desc mb-0">Copyright <i class="fa fa-copyright"></i> <?= date('Y') ?> by <a href="#"><?= Yii::$app->name ?></a>. All Rights Reserved. Powered by <a href="https://web-made.biz" target="_blank" title="Production by Web-Made.biz">Web-Made.biz</a></p>
                 </div>
                 <div class="socials col-md-6 col-12 text-md-right">
                     <span>Follow us:</span>
@@ -147,7 +147,7 @@ $params = Yii::$app->params;
         <a href="javascript:void(0)" class="close-window"><i class="fas fa-times"></i></a>
         <div class="mini-product-item row">
             <div class="col-md-3 col-sm-3 product-image f-left d-mobile-none">
-                <img alt="img" src="<?= Yii::getAlias('@images/nophoto.svg') ?>" style="max-width:120px; height:auto"/>
+                <?= Html::img(['@images/nophoto.svg'], ['alt' => 'Product Image']) ?>
             </div>
             <div class="col-md-9 col-sm-9 f-left">
                 <div class="product-info f-left">
@@ -170,7 +170,7 @@ $params = Yii::$app->params;
         <a href="javascript:void(0)" class="close-window"><i class="fas fa-times"></i></a>
         <div class="mini-product-item row">
             <div class="col-md-3 col-sm-3 product-image f-left d-mobile-none">
-                <?= Html::img(['@images/nophoto.svg'], ['alt' => 'img', 'style' => 'max-width:120px; height:auto']) ?>
+                <?= Html::img(['@images/nophoto.svg'], ['alt' => 'Product Image']) ?>
             </div>
             <div class="col-md-9 col-sm-9 f-left">
                 <div class="product-info f-left">
