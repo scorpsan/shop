@@ -231,7 +231,7 @@ button, button:focus {
 }
 
 .menu-mobile .header-mobile .header-menu .logo img {
-    width: 90px;
+    width: 50px;
     height: 100%;
 }
 
@@ -3644,7 +3644,10 @@ header .cart .number-home3 {
 }
 
 .header-destop .logo img {
-    width: 75%;
+    /*width: 75%;*/
+    position: absolute;
+    width: 100px;
+    top: 20px;
 }
 
 .header-v2 ul li a.top-nav-link {

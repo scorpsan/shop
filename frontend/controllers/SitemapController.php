@@ -90,7 +90,7 @@ class SitemapController extends Controller
             $brands = ShopBrands::find()->where(['published' => true])->orderBy(['alias' => SORT_ASC])->all();
             foreach ($brands as $item) {
                 $urls[] = array(
-                    'loc' => ['/shop/brandУк', 'alias' => $item->alias],
+                    'loc' => ['/shop/brand', 'alias' => $item->alias],
                     'changefreq' => 'weekly',
                     'priority' => 0.8
                 );
