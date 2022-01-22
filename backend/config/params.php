@@ -1,7 +1,5 @@
 <?php
 return [
-    'name' => 'Sex <b>Shop</b>',
-    'shortname' => 'Shop',
     // Images
     'avatarImagesSize' => [99, 99],
     'productsImagesSize' => [
