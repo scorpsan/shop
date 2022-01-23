@@ -18,7 +18,7 @@ return [
     'userPhoneCode' => 375,
     // Coming Soon
     'comingSoon' => false,
-    'comingSoonDate' => '31-12-2020 00:00',
+    'comingSoonDate' => '31-12-2022 00:00',
     // Search
     'searchOnSite' => false,
     // Shop

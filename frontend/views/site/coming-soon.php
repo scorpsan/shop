@@ -11,7 +11,7 @@ $this->title = Yii::t('frontend', 'This Site is Coming Soon');
             <div class="title my-container">
                 <div class="caption">
                     <p class="sub-title m-0" style="color:#fff;"><?= Yii::t('frontend', 'This Site is Coming Soon') ?></p>
-                    <h1 class="heading-1" style="color:#fff;">Bad Kitty</h1>
+                    <h1 class="heading-1" style="color:#fff;"><?= Yii::$app->name ?></h1>
                     <div class="countdown countdown-default" style="color:#fff;" data-type="until" data-time="<?php Yii::$app->formatter->locale = 'en-US'; echo Yii::$app->formatter->asDatetime(Yii::$app->params['comingSoonDate'], "dd MMM yyyy HH:mm"); ?>" data-format="dhms"></div>
                     <?php /**
                     <h5><?= Yii::t('frontend', 'If you have questions') ?></h5>
