@@ -36,7 +36,7 @@ class SiteController extends AppController
     {
         $this->setMeta(Yii::t('frontend', 'This Site is Coming Soon'), Yii::$app->params['keywords'], Yii::$app->params['description']);
         Yii::$app->layout = 'coming-soon';
-        return $this->render('coming-soon');
+        return $this->render('coming-soon', ['time' => Yii::$app->params['comingSoonDate']]);
     }
 
     public function actionRulesCheck()
