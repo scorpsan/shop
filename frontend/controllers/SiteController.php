@@ -32,9 +32,6 @@ class SiteController extends AppController
         ];
     }
 
-    /**
-     * @return string
-     */
     public function actionComingSoon()
     {
         $this->setMeta(Yii::t('frontend', 'This Site is Coming Soon'), Yii::$app->params['keywords'], Yii::$app->params['description']);

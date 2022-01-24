@@ -29,8 +29,8 @@ class AppController extends Controller
      */
     public function setMeta($title = null, $keywords = null, $description = null) {
         $this->view->title = implode(' - ', [$title, Yii::$app->name]);
-        $this->view->registerMetaTag(['name' => 'keywords', 'content' => $keywords]);
-        $this->view->registerMetaTag(['name' => 'description', 'content' => $description]);
+        $this->view->registerMetaTag(['name' => 'keywords', 'content' => $keywords], 'keywords');
+        $this->view->registerMetaTag(['name' => 'description', 'content' => $description], 'description');
     }
 
     /**
