@@ -24,7 +24,7 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('',true)]);
     <?= $this->render('_header') ?>
     <!-- Page-->
     <main>
-        <section class="section-slide img-fluid" style="background-image:url(<?= $this->context->backBreadcrumbs ?>);background-position:top center;">
+        <section class="section-slide img-fluid" style="background-image:url(<?= $this->context->backBreadcrumbs ?>);">
             <div class="breadcrumb-title text-center">
                 <div class="section-title">
                     <h2><?= Html::encode($this->context->title) ?></h2>

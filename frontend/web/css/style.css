@@ -13591,6 +13591,7 @@ header .cart .number-home3 {
     min-height: 488px;
     background-repeat: no-repeat;
     background-size: cover;
+    background-position:center 20%;
 }
 
 .section-slide .title {
