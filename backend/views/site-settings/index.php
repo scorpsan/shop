@@ -57,6 +57,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'opening_hours_full',
                             'contact_info:html',
                             'address_map:html',
+                            'logo_b',
+                            'logo_w',
+                            'logo_footer',
                         ],
                     ]);
                 } else {

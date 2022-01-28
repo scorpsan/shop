@@ -8,6 +8,7 @@
  */
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
+use mihaildev\elfinder\InputFile;
 
 $this->title = Yii::t('backend', 'Update') . ' ' . Yii::t('backend', 'Settings');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Settings'), 'url' => ['index']];
@@ -41,29 +42,44 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
                     $tabcontent .= $form->field($modelLng[$key], "[$key]item_id")->hiddenInput(['value' => $model->id])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]lng")->hiddenInput(['value' => $key])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]title")->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle")->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]description")->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]keywords")->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]address")->textarea(['maxlength' => true, 'rows' => 4]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]about_footer")->textarea(['rows' => 6]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]opening_hours")->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]opening_hours_full")->textarea(['maxlength' => true, 'rows' => 4]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]contact_info")->textarea(['rows' => 6]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]address_map")->textarea(['maxlength' => true, 'rows' => 4]);
                 } else {
                     $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]lng", ['enableClientValidation' => false])->hiddenInput(['value' => $key])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]title", ['enableClientValidation' => false])->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle", ['enableClientValidation' => false])->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]description", ['enableClientValidation' => false])->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]keywords", ['enableClientValidation' => false])->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]address", ['enableClientValidation' => false])->textarea(['maxlength' => true, 'rows' => 4]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]about_footer")->textarea(['rows' => 6]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]opening_hours")->textInput(['maxlength' => true]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]opening_hours_full")->textarea(['maxlength' => true, 'rows' => 4]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]contact_info")->textarea(['rows' => 6]);
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]address_map")->textarea(['maxlength' => true, 'rows' => 4]);
                 }
+                $tabcontent .= $form->field($modelLng[$key], "[$key]logo_b")->widget(InputFile::class, [
+                    'controller' => 'elfinder',
+                    'filter' => 'image',
+                    'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+                    'options' => ['class' => 'form-control'],
+                    'buttonOptions' => ['class' => 'btn btn-default'],
+                    'multiple' => false
+                ]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]logo_w")->widget(InputFile::class, [
+                    'controller' => 'elfinder',
+                    'filter' => 'image',
+                    'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+                    'options' => ['class' => 'form-control'],
+                    'buttonOptions' => ['class' => 'btn btn-default'],
+                    'multiple' => false
+                ]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]seotitle")->textInput(['maxlength' => true]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]description")->textInput(['maxlength' => true]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]keywords")->textInput(['maxlength' => true]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]about_footer")->textarea(['rows' => 6]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]logo_footer")->widget(InputFile::class, [
+                    'controller' => 'elfinder',
+                    'filter' => 'image',
+                    'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+                    'options' => ['class' => 'form-control'],
+                    'buttonOptions' => ['class' => 'btn btn-default'],
+                    'multiple' => false
+                ]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]opening_hours")->textInput(['maxlength' => true]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]opening_hours_full")->textarea(['maxlength' => true, 'rows' => 4]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]contact_info")->textarea(['rows' => 6]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]address")->textarea(['maxlength' => true, 'rows' => 4]);
+                $tabcontent .= $form->field($modelLng[$key], "[$key]address_map")->textarea(['maxlength' => true, 'rows' => 4]);
                 if ($count > 1) {
                     $tabcontent .= '</div>';
                 }
@@ -129,9 +145,10 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
         <div class="box">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <?= $form->field($model, 'long_map')->textInput(['maxlength' => true]) ?>
-
+                    </div>
+                    <div class="col-md-6">
                         <?= $form->field($model, 'lat_map')->textInput(['maxlength' => true]) ?>
                     </div>
                 </div>
@@ -160,6 +177,20 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
                         <?= $form->field($model, 'link_to_instagram')->textInput(['maxlength' => true]) ?>
 
                         <?= $form->field($model, 'instagram_token')->textInput(['maxlength' => true]) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h2 class="page-header"><i class="fa fa-file-code"></i> <?= Yii::t('backend', 'Custome CSS Style') ?></h2>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <?= $form->field($model, 'custom_style')->textarea(['rows' => 6]) ?>
                     </div>
                 </div>
             </div>

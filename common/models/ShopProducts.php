@@ -22,6 +22,7 @@ use Exception;
  * @property int $new [int(1)]
  * @property int $hit [int(11)]
  * @property string $rating [decimal(3,2)]
+ * @property float $weight [int(11)]
  * @property float $price [float]
  * @property float $sale [float]
  * @property int $created_at [int(11)]

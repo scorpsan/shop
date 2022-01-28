@@ -29,6 +29,7 @@ use Exception;
  * @property string $link_to_pinterest [varchar(255)]
  * @property string $link_to_twitter [varchar(255)]
  * @property string $link_to_instagram [varchar(255)]
+ * @property string $custom_style
  * @property bool $coming_soon [tinyint(1)]
  * @property bool $search_on_site [tinyint(1)]
  * @property bool $shop_on_site [tinyint(1)]

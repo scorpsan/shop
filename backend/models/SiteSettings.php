@@ -24,6 +24,7 @@ class SiteSettings extends BaseSiteSettings
             [['long_map', 'lat_map'], 'number'],
             [['coming_soon'], 'boolean'],
             [['coming_soon'], 'default', 'value' => false],
+            [['custom_style'], 'safe'],
         ];
     }
 
@@ -52,6 +53,7 @@ class SiteSettings extends BaseSiteSettings
             'link_to_pinterest' => Yii::t('backend', 'Link to Pinterest'),
             'link_to_twitter' => Yii::t('backend', 'Link to Twitter'),
             'link_to_instagram' => Yii::t('backend', 'Link to Instagram'),
+            'custom_style' => Yii::t('backend', 'Custome CSS Style'),
             'coming_soon' => Yii::t('backend', 'This Site is Coming Soon'),
             'search_on_site' => Yii::t('backend', 'Search on Site on/off'),
             'shop_on_site' => Yii::t('backend', 'Shop on Site on/off'),

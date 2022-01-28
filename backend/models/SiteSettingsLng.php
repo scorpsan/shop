@@ -17,7 +17,7 @@ class SiteSettingsLng extends BaseSiteSettingsLng
             [['lng'], 'string', 'max' => 5],
             [['title', 'seotitle', 'keywords', 'description'], 'string', 'max' => 255],
             [['about_footer', 'contact_info'], 'string'],
-            [['address', 'address_map', 'opening_hours', 'opening_hours_full'], 'string', 'max' => 255],
+            [['address', 'address_map', 'opening_hours', 'opening_hours_full', 'logo_b', 'logo_w', 'logo_footer'], 'string', 'max' => 255],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => SiteSettings::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
@@ -39,6 +39,9 @@ class SiteSettingsLng extends BaseSiteSettingsLng
             'opening_hours_full' => Yii::t('backend', 'Opening Hours Full'),
             'contact_info' => Yii::t('backend', 'Requisites'),
             'address_map' => Yii::t('backend', 'Address on Map'),
+            'logo_b' => Yii::t('backend', 'Logo Dark'),
+            'logo_w' => Yii::t('backend', 'Logo Lite'),
+            'logo_footer' => Yii::t('backend', 'Logo for Footer block'),
         ];
     }
 

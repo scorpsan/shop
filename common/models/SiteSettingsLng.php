@@ -17,6 +17,9 @@ use yii\db\ActiveRecord;
  * @property string $opening_hours_full [varchar(255)]
  * @property string $contact_info
  * @property string $address_map [varchar(255)]
+ * @property string $logo_b [varchar(255)]
+ * @property string $logo_w [varchar(255)]
+ * @property string $logo_footer [varchar(255)]
  */
 class SiteSettingsLng extends ActiveRecord
 {
