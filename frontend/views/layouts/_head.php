@@ -3,6 +3,7 @@ use yii\bootstrap4\Html;
 use yii\helpers\Url;
 use yii\web\View;
 
+$params = Yii::$app->params;
 ?>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com/">
     <link rel="dns-prefetch" href="https://www.google-analytics.com/">
@@ -40,8 +41,11 @@ use yii\web\View;
     <meta name="theme-color" content="#7fc9c4">
 
 <?= Html::csrfMetaTags() ?>
-<?php $this->head(); ?>
 <?php
+$this->head();
+
+Yii::$app->view->registerCss($params['siteSettings']->custom_style);
+
 $gt = <<< GT
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W2CL9NB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

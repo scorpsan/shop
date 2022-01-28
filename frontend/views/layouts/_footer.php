@@ -52,7 +52,7 @@ $params = Yii::$app->params;
                         <img src="/files/MTBank-color.png" alt="Payment Bank" class="footer-bank-img">
                     </div>
                 </div>
-                <div class="footer-column-2 col-xl-3 col-lg-2 col-sm-6 col-12 order-sm-1 order-md-2 mb-4">
+                <div class="footer-column-2 <?= (!empty($params['siteSettings']->translate->logo_footer)) ? 'col-xl-3 col-lg-2 col-sm-6' : 'col-xl-6 col-lg-4 col-sm-12' ?> col-12 order-sm-1 order-md-2 mb-4">
                     <?= $params['siteSettings']->translate->about_footer ?>
                 </div>
                 <div class="footer-column-3 col-xl-3 col-lg-3 col-sm-6 col-12 order-sm-2 order-md-3 mb-4">
@@ -80,9 +80,11 @@ $params = Yii::$app->params;
                         ]); ?>
                     <?php } ?>
                 </div>
+                <?php if (!empty($params['siteSettings']->translate->logo_footer)) { ?>
                 <div class="footer-column-4 banner-item2 col-xl-3 col-lg-3 col-sm-6 col-12 order-sm-4 order-md-4 d-none d-sm-block">
-                    <img src="/files/badkitty-b.png" class="img-fluid w-100" alt="<?= Yii::$app->name ?>">
+                    <?= Html::img([$params['siteSettings']->translate->logo_footer], ['alt' => Yii::$app->name, 'class' => 'img-fluid w-100']) ?>
                 </div>
+                <?php } ?>
             </div>
         </div>
     </div>

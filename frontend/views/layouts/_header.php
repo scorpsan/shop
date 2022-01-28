@@ -13,7 +13,7 @@ $params = Yii::$app->params;
 <!-- Page header-->
 <!-- BOX MOBILE MENU  -->
 <div class="box-mobile-menu">
-    <span class="box-title"><?= Html::img(['@images/logo-dark.png'], ['alt' => Yii::$app->name]) ?></span>
+    <span class="box-title"><?= (!empty($params['siteSettings']->translate->logo_b))?Html::img([$params['siteSettings']->translate->logo_b], ['alt' => Yii::$app->name]):Html::img(['@images/logo-dark.png'], ['alt' => Yii::$app->name]) ?></span>
     <a href="javascript:void(0)" class="close-menu" id="pull-closemenu">
         <i class="fas fa-times"></i>
     </a>
@@ -112,7 +112,7 @@ $params = Yii::$app->params;
             <div class="col-xl-8 col-lg-8">
                 <div class="row align-items-center">
                     <div class="col-4__header-home2 logo">
-                        <?= Html::a(Html::img(['@images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
+                        <?= Html::a((!empty($params['siteSettings']->translate->logo_w))?Html::img([$params['siteSettings']->translate->logo_w], ['alt' => Yii::$app->name]):Html::img(['@images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
                     </div>
                     <div class="col-8__header-home2 navbar-home2">
                         <ul class="nav">
@@ -124,41 +124,21 @@ $params = Yii::$app->params;
                                 <div class="submenu-header" >
                                     <div class="my-container">
                                         <div class="row">
-                                            <div class="col-3">
+                                            <div class="col-4">
                                                 <ul>
-                                                    <li><?= Html::a('Игрушки', ['/shop/category', 'categoryalias' => 'igruski'], ['title' => 'Игрушки']) ?></li>
-                                                    <li><?= Html::a('Интимная косметика', ['/shop/category', 'categoryalias' => 'intim-cosmetics'], ['title' => 'Интимная косметика']) ?></li>
-                                                    <li><?= Html::a('BDSM', ['/shop/category', 'categoryalias' => 'bdsm'], ['title' => 'BDSM']) ?></li>
-                                                    <li><?= Html::a('Эротическая одежда', ['/shop/category', 'categoryalias' => 'erotic-clothes'], ['title' => 'Эротическая одежда']) ?></li>
+                                                    <li><?= Html::a('Маленькие мишки 40-90 см', ['/shop/category', 'categoryalias' => 'malenkie-miski-40-90-sm'], ['title' => 'Маленькие мишки 40-90 см']) ?></li>
+                                                    <li><?= Html::a('Средние мишки 100-135 см', ['/shop/category', 'categoryalias' => 'srednie-miski-100-135-sm'], ['title' => 'Средние мишки 100-135 см']) ?></li>
+                                                    <li><?= Html::a('Большие мишки 140-300 см', ['/shop/category', 'categoryalias' => 'bolsie-miski-140-300-sm'], ['title' => 'Большие мишки 140-300 см']) ?></li>
                                                 </ul>
                                             </div>
-                                            <div class="col-3">
-                                                <h4>Игрушки</h4>
+                                            <div class="col-4">
                                                 <ul>
-                                                    <li><?= Html::a('Анальные украшения', ['/shop/category', 'categoryalias' => 'anal-decoration'], ['title' => 'Анальные украшения']) ?></li>
-                                                    <li><?= Html::a('Анальные игрушки', ['/shop/category', 'categoryalias' => 'anal-toys'], ['title' => 'Анальные игрушки']) ?></li>
-                                                    <li><?= Html::a('Вагинальные шарики и тренажеры', ['/shop/category', 'categoryalias' => 'vaginalnye-sariki'], ['title' => 'Вагинальные шарики и тренажеры']) ?></li>
-                                                    <li><?= Html::a('Вибраторы', ['/shop/category', 'categoryalias' => 'vibratory'], ['title' => 'Вибраторы']) ?></li>
-                                                    <li><?= Html::a('Игрушки из стекла', ['/shop/category', 'categoryalias' => 'galss-toys'], ['title' => 'Игрушки из стекла']) ?></li>
-                                                    <li><?= Html::a('Фаллоимитаторы', ['/shop/category', 'categoryalias' => 'falloimitatory'], ['title' => 'Фаллоимитаторы']) ?></li>
-                                                    <li><?= Html::a('Эрекционные кольца', ['/shop/category', 'categoryalias' => 'erectionie-kolca'], ['title' => 'Эрекционные кольца']) ?></li>
-                                                    <li><?= Html::a('Насадки на пенис', ['/shop/category', 'categoryalias' => 'nasadki-na-penis'], ['title' => 'Насадки на пенис']) ?></li>
+                                                    <li><?= Html::a('Единороги, милашки и пандочки', ['/shop/category', 'categoryalias' => 'edinorogi-milaski-i-pandocki'], ['title' => 'Единороги, милашки и пандочки']) ?></li>
                                                 </ul>
                                             </div>
-                                            <div class="col-3">
-                                                <h4>Интимная косметика</h4>
+                                            <div class="col-4">
                                                 <ul>
-                                                    <li><?= Html::a('Смазки и лубриканты', ['/shop/category', 'categoryalias' => 'smazki-i-lubrikanty'], ['title' => 'Смазки и лубриканты']) ?></li>
-                                                    <li><?= Html::a('Уход за игрушками', ['/shop/category', 'categoryalias' => 'uhod-za-igruskami'], ['title' => 'Уход за игрушками']) ?></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-3">
-                                                <h4>BDSM</h4>
-                                                <ul>
-                                                    <li><?= Html::a('Кляпы и маски', ['/shop/category', 'categoryalias' => 'gag-mask'], ['title' => 'Кляпы и маски']) ?></li>
-                                                    <li><?= Html::a('Наручники и фиксаторы', ['/shop/category', 'categoryalias' => 'narucniki-fiksatory'], ['title' => 'Наручники и фиксаторы']) ?></li>
-                                                    <li><?= Html::a('Плети, кнуты, стеки', ['/shop/category', 'categoryalias' => 'pleti-knuty-steki'], ['title' => 'Плети, кнуты, стеки']) ?></li>
-                                                    <li><?= Html::a('Ошейники, поводки', ['/shop/category', 'categoryalias' => 'osejniki-povodki'], ['title' => 'Ошейники, поводки']) ?></li>
+                                                    <li><?= Html::a('Открытки с комплиментами', ['/shop/category', 'categoryalias' => 'otkrytki-s-komplimentami'], ['title' => 'Открытки с комплиментами']) ?></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -215,7 +195,7 @@ $params = Yii::$app->params;
                 <i class="fas fa-bars js-click-megamenu"></i>
             </div>
             <div class="logo">
-                <?= Html::a(Html::img(['@images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
+                <?= Html::a((!empty($params['siteSettings']->translate->logo_w))?Html::img([$params['siteSettings']->translate->logo_w], ['alt' => Yii::$app->name]):Html::img(['@images/logo.png'], ['alt' => Yii::$app->name]), ['/page/index'], ['title' => Yii::$app->name]) ?>
             </div>
             <div class="right-box">
                 <?php if (Yii::$app->params['searchOnSite']) { ?>
