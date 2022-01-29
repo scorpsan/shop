@@ -34,7 +34,7 @@ use yii\bootstrap4\Html;
         </div>
     </div>
 <?php } ?>
-<?php if (count($brands) > 1) { ?>
+<?php if (count($brands) > 2) { ?>
     <div class="row filter-brand">
         <div class="col-12">
             <h4 class="heading-4"><?= Yii::t('frontend', 'Brands') ?></h4>
