@@ -82,7 +82,13 @@ return [
     // Section style
     'sectionStyle' => [
         'bg-white' => 'White',
-        'bg-smoke' => 'Smoke',
+        'bg-light' => 'Light',
+        'bg-secondary text-white' => 'Secondary (text white)',
+        'bg-dark text-white' => 'Dark (text white)',
+        'bg-success text-white' => 'Success (text white)',
+        'bg-danger text-white' => 'Danger (text white)',
+        'bg-warning' => 'Warning',
+        'bg-info text-white' => 'Info (text white)',
     ],
     // Text Align List
     'textAlignList' => [
