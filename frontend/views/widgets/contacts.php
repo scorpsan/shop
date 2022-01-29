@@ -163,7 +163,17 @@ use yii\helpers\Html;
     </div>
 </section>
 <?php if (Yii::$app->params['siteSettings']->long_map && Yii::$app->params['siteSettings']->lat_map && ($options['type'] == 'm' || $options['type'] == 'cm' || $options['type'] == 'fm' || $options['type'] == 'cfm')) { ?>
-<section class="section-map">
+<section class="section-map <?= $params['style'] ?>">
+    <?php if ($options['type'] == 'm' && (!empty($options['pretext']) || $params['show_title'])) { ?>
+        <div class="my-container">
+            <?php if ($params['show_title']) { ?>
+                <h3 class="h3 heading-3 font-weight-bold text-center text-capitalize"><?= $params['title'] ?></h3>
+            <?php } ?>
+            <?php if (!empty($options['pretext'])) { ?>
+                <p><?= $options['pretext'] ?></p>
+            <?php } ?>
+        </div>
+    <?php } ?>
     <div class="my-container">
         <div id="map" class="img-fluid w-100" style="height:400px;"></div>
     </div>
