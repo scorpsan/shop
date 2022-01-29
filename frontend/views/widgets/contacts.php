@@ -170,7 +170,7 @@ use yii\helpers\Html;
                 <h3 class="h3 heading-3 font-weight-bold text-center text-capitalize"><?= $params['title'] ?></h3>
             <?php } ?>
             <?php if (!empty($options['pretext'])) { ?>
-                <p><?= $options['pretext'] ?></p>
+                <p class="text-center"><?= $options['pretext'] ?></p>
             <?php } ?>
         </div>
     <?php } ?>
