@@ -3,7 +3,6 @@ namespace backend\models;
 
 use common\models\Swiper as BaseSwiper;
 use Yii;
-use yii\helpers\ArrayHelper;
 
 class Swiper extends BaseSwiper
 {
@@ -42,20 +41,6 @@ class Swiper extends BaseSwiper
     {
         SwiperSlides::deleteAll(['item_id' => $this->id]);
         return parent::beforeDelete();
-    }
-
-    public static function getOptionsList(): array
-    {
-        $options = [
-            'id' => [
-                'title' => Yii::t('backend', 'Choose slider...'),
-                'dropList' => ArrayHelper::map(self::find()->where(['published' => true])->orderBy('title')->all(), 'id', 'title')
-            ]
-        ];
-        if (isset(Yii::$app->params['widgetsList']['SwiperWidget']['options'])) {
-            $options = ArrayHelper::merge($options, Yii::$app->params['widgetsList']['SwiperWidget']['options']);
-        }
-        return $options;
     }
 
 }

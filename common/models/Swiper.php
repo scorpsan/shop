@@ -3,6 +3,7 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%swiper}}".
@@ -31,6 +32,20 @@ class Swiper extends ActiveRecord
     public function getSlides(): ActiveQuery
     {
         return $this->hasMany(SwiperSlides::class, ['item_id' => 'id'])->orderBy('sort');
+    }
+
+    public static function getOptionsList(): array
+    {
+        $options = [
+            'id' => [
+                'title' => Yii::t('backend', 'Choose slider...'),
+                'dropList' => ArrayHelper::map(self::find()->where(['published' => true])->orderBy('title')->all(), 'id', 'title')
+            ]
+        ];
+        if (isset(Yii::$app->params['widgetsList']['SwiperWidget']['options'])) {
+            $options = ArrayHelper::merge($options, Yii::$app->params['widgetsList']['SwiperWidget']['options']);
+        }
+        return $options;
     }
 
 }
