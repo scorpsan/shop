@@ -3,6 +3,7 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
+use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
