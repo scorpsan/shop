@@ -16,6 +16,7 @@ use yii\helpers\Html;
 'cfm' => 'Contacts + Form + Map',
  */
 ?>
+<?php if ($options['type'] != 'm') { ?>
 <section id="contact" class="section section-contact-us <?= $params['style'] ?>">
     <div class="my-container">
         <?php if ($options['type'] == 'f' || $options['type'] == 'fm') { ?>
@@ -162,6 +163,7 @@ use yii\helpers\Html;
         <?php } ?>
     </div>
 </section>
+<?php } ?>
 <?php if (Yii::$app->params['siteSettings']->long_map && Yii::$app->params['siteSettings']->lat_map && ($options['type'] == 'm' || $options['type'] == 'cm' || $options['type'] == 'fm' || $options['type'] == 'cfm')) { ?>
 <section class="section-map <?= $params['style'] ?>">
     <?php if ($options['type'] == 'm' && (!empty($options['pretext']) || $params['show_title'])) { ?>
