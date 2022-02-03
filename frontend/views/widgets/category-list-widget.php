@@ -5,7 +5,6 @@
  * @var $options array
  */
 
-use yii\bootstrap4\Html;
 use yii\helpers\Url;
 
 $itemClass = '';
@@ -56,7 +55,7 @@ if ($options['count'] > 0) {
                 <?php } ?>
             <?php } ?>
 
-
+<!--
             <div class="col-xl-4 col-lg-4 col-md-4">
                 <div class="banner02 relative image-effect">
                     <a href="grid-slidebar-left.html">
@@ -96,7 +95,7 @@ if ($options['count'] > 0) {
                     </div>
                 </div>
             </div>
-
+-->
         </div>
     </div>
 </section>
