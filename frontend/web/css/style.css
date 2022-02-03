@@ -18342,3 +18342,38 @@ h3 + .panel-custom-group-wrap {
 .bg-smoke {
     background-color: rgba(45, 51, 55, 0.33);
 }
+
+.category-item .category-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+}
+
+.category-item:hover .category-img {
+    -webkit-transform: scale(1.115, 1.115);
+    -ms-transform: scale(1.115, 1.115);
+    transform: scale(1.115, 1.115);
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+}
+
+.category-item .banner01 {
+    min-height: 400px;
+}
+.category-item .banner01 a {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.section-banner-v1-page2 .banner01:hover .title h3, .section-banner-v1-page2 .banner01:hover .title p {
+    color: #c90215;
+}

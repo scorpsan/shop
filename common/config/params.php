@@ -184,6 +184,23 @@ return [
                 ],
             ],
         ],
+        'CategoryListWidget' => [
+            'id' => 'CategoryListWidget',
+            'title' => 'Categories List',
+            'params' => [
+                'show_title' => true,
+                'style' => true,
+                'text_align' => false,
+                'background' => false,
+                'parallax' => false,
+            ],
+            'options' => [
+                'count' => [
+                    'title' => Yii::t('backend', 'Count Columns'),
+                    'dropList' => [1 => '1 column', 2 => '2 columns', 3 => '3 columns', 4 => '4 columns'],
+                ],
+            ],
+        ],
         'ProductsWidget' => [
             'id' => 'ProductsWidget',
             'title' => 'Products Widget',

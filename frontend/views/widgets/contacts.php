@@ -176,7 +176,7 @@ use yii\helpers\Html;
             <?php } ?>
         </div>
     <?php } ?>
-    <div class="my-map-container">
+    <div class="my-container mw-100">
         <div id="map" class="img-fluid w-100" style="height:400px;"></div>
     </div>
 </section>
