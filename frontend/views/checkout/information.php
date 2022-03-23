@@ -132,7 +132,7 @@ $user = Yii::$app->user;
                                         <?= $form->field($formInfo, 'name')->textInput(['placeholder' => $formInfo->getAttributeLabel('name') . ' *'])->hint(Yii::t('frontend', 'If you choose Postal delivery method, please enter your Full Name')) ?>
 
                                         <div class="address-fields">
-                                            <?= $form->field($formInfo, 'address')->textInput(['placeholder' => $formInfo->getAttributeLabel('address') . ' *']) ?>
+                                            <?= $form->field($formInfo, 'address')->textInput(['placeholder' => $formInfo->getAttributeLabel('address')]) ?>
 
                                             <?php /*$form->field($formInfo, 'address2')->textInput(['placeholder' => $formInfo->getAttributeLabel('address2')]) ?>
 
