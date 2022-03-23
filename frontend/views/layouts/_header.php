@@ -57,12 +57,16 @@ $params = Yii::$app->params;
             </li>
             <li class="menu-item">
                 <?= Html::a('Каталог', ['/shop/index'], ['title' => 'Каталог', 'class' => 'slide-dropdown']) ?>
+                <ul>
+                    <li><?= Html::a('Маленькие мишки 40-90 см', ['/shop/category', 'categoryalias' => 'malenkie-miski-40-90-sm'], ['title' => 'Маленькие мишки 40-90 см']) ?></li>
+                    <li><?= Html::a('Средние мишки 100-135 см', ['/shop/category', 'categoryalias' => 'srednie-miski-100-135-sm'], ['title' => 'Средние мишки 100-135 см']) ?></li>
+                    <li><?= Html::a('Большие мишки 140-300 см', ['/shop/category', 'categoryalias' => 'bolsie-miski-140-300-sm'], ['title' => 'Большие мишки 140-300 см']) ?></li>
+                    <li><?= Html::a('Единороги, милашки и пандочки', ['/shop/category', 'categoryalias' => 'edinorogi-milaski-i-pandocki'], ['title' => 'Единороги, милашки и пандочки']) ?></li>
+                    <li><?= Html::a('Открытки с комплиментами', ['/shop/category', 'categoryalias' => 'otkrytki-s-komplimentami'], ['title' => 'Открытки с комплиментами']) ?></li>
+                </ul>
             </li>
             <li class="menu-item">
-                <?= Html::a('Акции', ['/page/view', 'alias' => 'actions'], ['title' => 'Акции', 'class' => 'slide-dropdown']) ?>
-            </li>
-            <li class="menu-item">
-                <?= Html::a('Полезные статьи', ['/posts/index'], ['title' => 'Полезные статьи', 'class' => 'slide-dropdown']) ?>
+                <?= Html::a(Yii::t('frontend', 'Доставка и оплата'), ['/page/view', 'alias' => 'delivery'], ['title' => Yii::t('frontend', 'Доставка и оплата'), 'class' => 'slide-dropdown']) ?>
             </li>
             <li class="menu-item">
                 <?= Html::a('Контакты', ['/page/view', 'alias' => 'contacts'], ['title' => 'Контакты', 'class' => 'slide-dropdown']) ?>
@@ -146,10 +150,7 @@ $params = Yii::$app->params;
                                 </div>
                             </li>
                             <li class="nav-item top-nav-items">
-                                <?= Html::a(Yii::t('frontend', 'Акции'), ['/page/view', 'alias' => 'actions'], ['title' => Yii::t('frontend', 'Акции'), 'class' => 'nav-link top-nav-link']) ?>
-                            </li>
-                            <li class="nav-item top-nav-items">
-                                <?= Html::a(Yii::t('frontend', 'Полезные статьи'), ['/posts/index'], ['title' => Yii::t('frontend', 'Полезные статьи'), 'class' => 'nav-link top-nav-link']) ?>
+                                <?= Html::a(Yii::t('frontend', 'Доставка и оплата'), ['/page/view', 'alias' => 'delivery'], ['title' => Yii::t('frontend', 'Доставка и оплата'), 'class' => 'nav-link top-nav-link']) ?>
                             </li>
                             <li class="nav-item top-nav-items">
                                 <?= Html::a(Yii::t('frontend', 'Контакты'), ['/page/view', 'alias' => 'contacts'], ['title' => Yii::t('frontend', 'Контакты'), 'class' => 'nav-link top-nav-link']) ?>

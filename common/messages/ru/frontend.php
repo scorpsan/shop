@@ -57,7 +57,7 @@ return [
     'Back to My account' => 'Назад в Мой кабинет',
     'Wrong format, enter phone number in international format.' => 'Неправильный формат, введите номер телефона в международном формате.',
     'This Phone has already been taken.' => 'Этот номер телефона уже занят.',
-    'Full Name' => 'Ваше Имя',
+    'Full Name' => 'Имя',
     'Edit Profile' => 'Редактировать профиль',
     'Edit Account' => 'Редактировать аккаунт',
     'Change Password' => 'Изменить пароль',

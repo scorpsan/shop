@@ -29,7 +29,7 @@ class CheckoutForm extends Model
     {
         return [
             // email rules
-            'emailRequired' => ['email', 'required'],
+//            'emailRequired' => ['email', 'required'],
             'emailPattern' => ['email', 'email'],
             'emailLength' => ['email', 'string', 'max' => 255],
             'emailTrim' => ['email', 'trim'],
@@ -42,7 +42,7 @@ class CheckoutForm extends Model
             'nameLength' => [['name'], 'string', 'max' => 255],
             'nameTrim' => [['name'], 'filter', 'filter' => 'trim'],
             // address rules
-            [['country', 'city', 'address'], 'required'],
+//            [['country', 'city', 'address'], 'required'],
             [['country', 'region', 'district', 'city', 'address', 'address2'], 'string', 'max' => 255],
             [['postal'], 'string', 'max' => 10],
             [['shipping_method', 'payment_method'], 'integer'],

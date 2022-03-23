@@ -2381,7 +2381,7 @@ header .cart .number-home3 {
     font-family: "Roboto", sans-serif;
     font-size: 16px;
     font-weight: 400;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     position: relative;
     display: inline-block;
     transition: all .3s ease;
@@ -4268,7 +4268,7 @@ header .cart .number-home3 {
 
 .section-banner-v1-page2 .banner01 .title h3,
 .section-banner-v1-page2 .banner01 .title p {
-    color: #fff;
+    color: #000;
 }
 
 .section-banner-v1-page2 .banner02 {
@@ -15769,6 +15769,7 @@ body.mobile .col-mobile-12 {
 
 .box-mobile-menu .social-icon a {
     color: #888;
+    font-size: 1.6rem;
 }
 
 .box-mobile-menu .social-icon a:hover {

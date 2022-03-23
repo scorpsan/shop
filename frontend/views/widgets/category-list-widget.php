@@ -6,18 +6,21 @@
  */
 
 use yii\helpers\Url;
+use yii\web\View;
 
 $itemClass = '';
-if ($options['count'] > 0) {
-    if (!($options['count'] % 4)) {
-        $itemClass = 'col-xl-3';
-    } elseif (!($options['count'] % 3)) {
-        $itemClass = 'col-xl-4';
-    } elseif (!($options['count'] % 2)) {
-        $itemClass = '';
-    }
-} else {
-    $itemClass = 'col-xl-3';
+switch ($options['count']) {
+    case 1:
+        $itemClass = 'col-12';
+        break;
+    case 2:
+        $itemClass = 'col-xl-6 col-lg-6 col-md-6 col-12';
+        break;
+    case 3:
+        $itemClass = 'col-xl-4 col-lg-4 col-md-6 col-12';
+        break;
+    default:
+        $itemClass = 'col-xl-3 col-lg-3 col-md-6 col-12';
 }
 ?>
 <!-- Category List Widget -->
@@ -29,10 +32,10 @@ if ($options['count'] > 0) {
             </div>
         <?php } ?>
         <div class="row no-gutters">
-            <?php foreach ($items as $item) { ?>
+            <?php foreach ($items as $key => $item) { ?>
                 <?php if (!empty($item->translate->breadbg)) { ?>
-                    <div class="category-item col-xl-4 col-lg-4 col-md-4">
-                        <div class="banner01 relative image-effect">
+                    <div class="category-item <?= $itemClass ?>">
+                        <div class="banner banner01 relative image-effect">
                             <a href="<?= Url::to(['/shop/category', 'categoryalias' => $item->alias]) ?>" title="<?= $item->title ?>">
                                 <div class="category-img" style="background-image:url(<?= $item->translate->breadbg ?>);"></div>
                                 <div class="title absolute w-100 text-center">
@@ -43,8 +46,8 @@ if ($options['count'] > 0) {
                         </div>
                     </div>
                 <?php } else { ?>
-                    <div class="category-item col-xl-4 col-lg-4 col-md-4" style="background: #f4f4f4; overflow: hidden;">
-                        <div class="banner03 text-center relative">
+                    <div class="category-item <?= $itemClass ?>" style="background: #f4f4f4; overflow: hidden;">
+                        <div class="banner banner03 text-center relative">
                             <div class="title absolute">
                                 <h3 class="heading-3 font-weight-bold"><?= $item->title ?></h3>
                                 <p class="para-fs18">&nbsp;</p>
@@ -102,15 +105,15 @@ if ($options['count'] > 0) {
 <!-- End Category List Widget -->
 <?php
 $this->registerJs('
-    jQuery(document).ready(function(){
-        $(".section-banner-v1-page2 .category-item").each(function(){
-            var highestBox = 0;
-            $(".col-md-4 ", this).each(function(){
-                if($(this).height() > highestBox) {
-                    highestBox = $(this).height();
-                }
-            });
-            $(".col-md-4 ",this).height(highestBox);
+    $(".section-banner-v1-page2 .category-item").each(function(){
+        var highestBox = 0;
+        $(".category-item .banner", this).each(function(){
+            console.log($(this).height());
+            if($(this).height() > highestBox) {
+                highestBox = $(this).height();
+            }
         });
-    });');
+        $(".category-item .banner", this).height(highestBox);
+    });',
+    View::POS_READY);
 ?>

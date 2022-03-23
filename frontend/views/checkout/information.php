@@ -95,7 +95,7 @@ $user = Yii::$app->user;
                                 </div>
                                 <div class="section__content">
                                     <div class="fieldset">
-                                        <?= $form->field($formInfo, 'email')->input('email', ['placeholder' => $formInfo->getAttributeLabel('email') . ' *']) ?>
+                                        <?= $form->field($formInfo, 'email')->input('email', ['placeholder' => $formInfo->getAttributeLabel('email')]) ?>
 
                                         <?= $form->field($formInfo, 'phone')->widget(phoneInputWidget::class, [
                                             'preferred' => ['BY'],
@@ -134,13 +134,13 @@ $user = Yii::$app->user;
                                         <div class="address-fields">
                                             <?= $form->field($formInfo, 'address')->textInput(['placeholder' => $formInfo->getAttributeLabel('address') . ' *']) ?>
 
-                                            <?= $form->field($formInfo, 'address2')->textInput(['placeholder' => $formInfo->getAttributeLabel('address2')]) ?>
+                                            <?php /*$form->field($formInfo, 'address2')->textInput(['placeholder' => $formInfo->getAttributeLabel('address2')]) ?>
 
-                                            <?= $form->field($formInfo, 'city')->textInput(['placeholder' => $formInfo->getAttributeLabel('city') . ' *']) ?>
+                                            <?= /$form->field($formInfo, 'city')->textInput(['placeholder' => $formInfo->getAttributeLabel('city') . ' *']) ?>
 
-                                            <?= $form->field($formInfo, 'district')->textInput(['placeholder' => $formInfo->getAttributeLabel('district')]) ?>
+                                            <?= /$form->field($formInfo, 'district')->textInput(['placeholder' => $formInfo->getAttributeLabel('district')]) ?>
 
-                                            <?= $form->field($formInfo, 'region')->textInput(['placeholder' => $formInfo->getAttributeLabel('region')]) ?>
+                                            <?= /$form->field($formInfo, 'region')->textInput(['placeholder' => $formInfo->getAttributeLabel('region')]) ?>
 
                                             <?= $form->field($formInfo, 'country', [
                                                 'template' => "{label}\n<div class=\"field__input-wrapper field__input-wrapper--select\">{input}<div class=\"field__caret\">
@@ -152,7 +152,7 @@ $user = Yii::$app->user;
 
                                             <?= $form->field($formInfo, 'postal', ['options' => [
                                                 'class' => 'field--third field'
-                                            ]])->textInput(['placeholder' => $formInfo->getAttributeLabel('postal')]) ?>
+                                            ]])->textInput(['placeholder' => $formInfo->getAttributeLabel('postal')]) */ ?>
                                         </div>
                                         <?php if (!$user->isGuest) { ?>
                                             <div class="field" id="remember_me">
@@ -164,6 +164,24 @@ $user = Yii::$app->user;
                                                 </div>
                                             </div>
                                         <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section section--comment">
+                                <div class="section__header">
+                                    <h2 class="section__title" id="main-header" tabindex="-1"><?= Yii::t('frontend', 'Comment') ?></h2>
+                                </div>
+                                <div class="section__content">
+                                    <div class="fieldset">
+                                        <div class="comment-fields">
+                                            <?= $form->field($formInfo, 'note', [
+                                                'template' => "{label}\n<div class=\"field__input-wrapper\">{input}</div>\n{hint}\n{error}",
+                                                'labelOptions' => ['class' => 'field__label field__label--visible'],
+                                                'errorOptions' => ['class' => 'field__message field__message--error'],
+                                                'options' => ['class' => 'field'],
+                                                'inputOptions' => ['class' => 'field__input'],
+                                            ])->textarea() ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

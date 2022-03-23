@@ -58,6 +58,7 @@ $params = Yii::$app->params;
                 <div class="footer-column-3 col-xl-3 col-lg-3 col-sm-6 col-12 order-sm-2 order-md-3 mb-4">
                     <h3><?= Yii::t('frontend', 'Information') ?></h3>
                     <ul class="list-unstyled mb-0">
+                        <li><?= Html::a(Yii::t('frontend', 'Полезные статьи'), ['/posts/index'], ['title' => Yii::t('frontend', 'Полезные статьи')]) ?></li>
                         <li><?= Html::a(Yii::t('frontend', 'Договор'), ['/page/view', 'alias' => 'oferta'], ['title' => Yii::t('frontend', 'Договор')]) ?></li>
                         <li><?= Html::a(Yii::t('frontend', 'Упаковка товара'), ['/page/view', 'alias' => 'package'], ['title' => Yii::t('frontend', 'Упаковка товара')]) ?></li>
                         <li><?= Html::a(Yii::t('frontend', 'Доставка и оплата'), ['/page/view', 'alias' => 'delivery'], ['title' => Yii::t('frontend', 'Доставка и оплата')]) ?></li>

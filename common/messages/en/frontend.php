@@ -57,7 +57,7 @@ return [
     'Back to My account' => 'Back to My account',
     'Wrong format, enter phone number in international format.' => 'Wrong format, enter phone number in international format.',
     'This Phone has already been taken.' => 'This Phone has already been taken.',
-    'Full Name' => 'Your Name',
+    'Full Name' => 'Name',
     'Edit Profile' => 'Edit Profile',
     'Edit Account' => 'Edit Account',
     'Change Password' => 'Change Password',

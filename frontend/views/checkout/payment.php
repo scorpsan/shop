@@ -151,25 +151,6 @@ $this->title = Yii::t('frontend', 'Payment');
                                 </div>
                                 <?php } ?>
                             </div>
-
-                            <div class="section section--comment">
-                                <div class="section__header">
-                                    <h2 class="section__title" id="main-header" tabindex="-1"><?= Yii::t('frontend', 'Comment') ?></h2>
-                                </div>
-                                <div class="section__content">
-                                    <div class="fieldset">
-                                        <div class="comment-fields">
-                                            <?= $form->field($formInfo, 'note', [
-                                                'template' => "{label}\n<div class=\"field__input-wrapper\">{input}</div>\n{hint}\n{error}",
-                                                'labelOptions' => ['class' => 'field__label field__label--visible'],
-                                                'errorOptions' => ['class' => 'field__message field__message--error'],
-                                                'options' => ['class' => 'field'],
-                                                'inputOptions' => ['class' => 'field__input'],
-                                            ])->textarea() ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="step__footer">
