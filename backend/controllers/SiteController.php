@@ -9,7 +9,7 @@ class SiteController extends AppController {
     public function behaviors() {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['index', 'error', 'reset-cache'],

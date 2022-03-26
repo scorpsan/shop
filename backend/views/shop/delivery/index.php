@@ -59,6 +59,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'raw',
                         ],
                         [
+                            'attribute' => 'min_weight',
+                            'value' => function($data) {
+                                return ($data->min_weight) ? $data->min_weight : null;
+                            },
+                            'format' => 'raw',
+                        ],
+                        [
                             'attribute' => 'max_weight',
                             'value' => function($data) {
                                 return ($data->max_weight) ? $data->max_weight : null;

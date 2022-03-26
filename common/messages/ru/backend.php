@@ -146,6 +146,7 @@ return [
     'Payment Methods' => 'Способы оплаты',
     'Cost' => 'Стоимость',
     'Cost Delivery' => 'Стоимость доставки',
+    'Min Weight (gr)' => 'Мин вес (гр)',
     'Max Weight (gr)' => 'Макс вес (гр)',
     'Min Summa' => 'Мин сумма',
     'Max Summa' => 'Макс сумма',

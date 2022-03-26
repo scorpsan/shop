@@ -12,6 +12,7 @@ use Exception;
 /**
  * @property int $id [int(11)]
  * @property float $cost [float]
+ * @property int $min_weight [int(11)]
  * @property int $max_weight [int(11)]
  * @property int $min_summa [int(11)]
  * @property int $max_summa [int(11)]

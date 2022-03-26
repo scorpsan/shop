@@ -65,13 +65,16 @@ use kartik\form\ActiveForm;
         <div class="box">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <?= $form->field($model, 'min_weight')->textInput(['maxlength' => true]) ?>
+                    </div>
+                    <div class="col-md-3">
                         <?= $form->field($model, 'max_weight')->textInput(['maxlength' => true]) ?>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <?= $form->field($model, 'min_summa')->textInput(['maxlength' => true]) ?>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <?= $form->field($model, 'max_summa')->textInput(['maxlength' => true]) ?>
                     </div>
                 </div>

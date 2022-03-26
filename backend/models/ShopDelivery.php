@@ -41,7 +41,7 @@ class ShopDelivery extends BaseShopDelivery
     {
         return [
             [['cost'], 'number'],
-            [['max_weight', 'min_summa', 'max_summa'], 'integer'],
+            [['min_weight', 'max_weight', 'min_summa', 'max_summa'], 'integer'],
             [['published', 'pickup'], 'boolean'],
             [['published'], 'default', 'value' => true],
             [['pickup'], 'default', 'value' => false],
@@ -58,6 +58,7 @@ class ShopDelivery extends BaseShopDelivery
         return [
             'id' => Yii::t('backend', 'ID'),
             'cost' => Yii::t('backend', 'Cost Delivery'),
+            'min_weight' => Yii::t('backend', 'Min Weight (gr)'),
             'max_weight' => Yii::t('backend', 'Max Weight (gr)'),
             'min_summa' => Yii::t('backend', 'Min Summa'),
             'max_summa' => Yii::t('backend', 'Max Summa'),

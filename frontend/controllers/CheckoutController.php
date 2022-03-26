@@ -141,6 +141,7 @@ class CheckoutController extends AppController
         }
 
         $shippingList = ShopDelivery::find()->where(['published' => true])
+            ->andOnCondition(['or', ['or', ['min_weight' => null], ['min_weight' => 0]], ['and', ['>', 'min_weight', 0], ['<', 'min_weight', $this->weight]]])
             ->andOnCondition(['or', ['or', ['max_weight' => null], ['max_weight' => 0]], ['and', ['>', 'max_weight', 0], ['>=', 'max_weight', $this->weight]]])
             ->andOnCondition(['or', ['or', ['min_summa' => null], ['min_summa' => 0]], ['and', ['>', 'min_summa', 0], ['<', 'min_summa', $this->subtotal]]])
             ->andOnCondition(['or', ['or', ['max_summa' => null], ['max_summa' => 0]], ['and', ['>', 'max_summa', 0], ['>=', 'max_summa', $this->subtotal]]])
@@ -152,6 +153,7 @@ class CheckoutController extends AppController
             'formInfo' => $this->formInfo,
             'shipMethod' => $this->shipMethod,
             'shippingList' => $shippingList,
+            'weight' => $this->weight,
             'subtotal' => $this->subtotal,
             'total' => $this->total,
         ]);
@@ -186,6 +188,7 @@ class CheckoutController extends AppController
             'cartList' => $this->cartList,
             'formInfo' => $this->formInfo,
             'shipMethod' => $this->shipMethod,
+            'weight' => $this->weight,
             'subtotal' => $this->subtotal,
             'total' => $this->total,
         ]);
@@ -286,7 +289,7 @@ class CheckoutController extends AppController
     {
         $weight = 0;
         foreach ($this->cartList as $key => $prod) {
-            $oneWeight = (($this->productList[$key]->characteristics->weight) ? $this->productList[$key]->characteristics->weight : 0);
+            $oneWeight = (($this->productList[$key]->weight) ? $this->productList[$key]->weight : 0);
             $totalWeight = $prod['qty'] * $oneWeight;
             $weight += $totalWeight;
         }

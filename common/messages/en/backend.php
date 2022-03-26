@@ -146,6 +146,7 @@ return [
     'Payment Methods' => 'Payment Methods',
     'Cost' => 'Cost',
     'Cost Delivery' => 'Cost Delivery',
+    'Min Weight (gr)' => 'Min Weight (gr)',
     'Max Weight (gr)' => 'Max Weight (gr)',
     'Min Summa' => 'Min Summa',
     'Max Summa' => 'Max Summa',
