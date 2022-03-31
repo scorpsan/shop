@@ -5,6 +5,7 @@ use frontend\components\payments\PaymentMethod;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 use yii\httpclient\Client;
 
 class bePaidOnline implements PaymentMethod
@@ -24,7 +25,7 @@ class bePaidOnline implements PaymentMethod
         $data = [
             'checkout' => [
                 'order' => [
-                    'amount' => (int) $amount * 100,
+                    'amount' => (int) ($amount * 100),
                     'currency' => ($currency) ? $currency : Yii::$app->formatter->currencyCode,
                     'description' => Yii::t('frontend', 'Order N' . ': ' . $order_number),
                     'tracking_id' => $order_number,
@@ -42,6 +43,8 @@ class bePaidOnline implements PaymentMethod
         $response = static::gateway('/ctp/api/checkouts', $data);
 
         $answer = json_decode($response->getContent());
+
+        Yii::warning('debug',  VarDumper::dumpAsString($answer));
 
         if ($response->isOk) {
             return [
