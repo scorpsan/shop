@@ -22,6 +22,8 @@ class bePaidOnline implements PaymentMethod
 
     public static function pay($order_number, $amount, $currency = null, $urls = null): array
     {
+        Yii::warning('debug',  VarDumper::dumpAsString($amount));
+
         $data = [
             'checkout' => [
                 'order' => [
