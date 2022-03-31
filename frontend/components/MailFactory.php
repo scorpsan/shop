@@ -10,7 +10,7 @@ class MailFactory
     public static function sendOrderToUser($order): bool
     {
         if (isset($order->customer_email)) {
-            Yii::$app->queueMail->delay(3 * 60)->push(new MailSendJob([
+            Yii::$app->queueMail->delay(2 * 60)->push(new MailSendJob([
                 'view' => 'orderToUser',
                 'lng' => Yii::$app->language,
                 'fromEmail' => [Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']],
@@ -29,7 +29,7 @@ class MailFactory
 
     public static function sendOrderToAdmin($order): bool
     {
-        Yii::$app->queueMail->delay(3 * 60)->push(new MailSendJob([
+        Yii::$app->queueMail->delay(2 * 60)->push(new MailSendJob([
             'view' => 'orderToAdmin',
             'lng' => Yii::$app->language,
             'fromEmail' => [Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']],
