@@ -213,8 +213,8 @@ class bePaidOnline implements PaymentMethod
             $data['checkout']['test'] = true;
         }
 
-        $shopID = Yii::$app->params['payments']['bePaidOnline']['login'];
-        $secretKey = Yii::$app->params['payments']['bePaidOnline']['password'];
+        $shopID = Yii::$app->params['payments']['bePaidOnline']['shopId'];
+        $secretKey = Yii::$app->params['payments']['bePaidOnline']['secretKey'];
 
         $client = new Client([
             'baseUrl' => self::PROD_URL,
