@@ -22,12 +22,12 @@ class bePaidOnline implements PaymentMethod
 
     public static function pay($order_number, $amount, $currency = null, $urls = null): array
     {
-        Yii::warning('debug',  VarDumper::dumpAsString($amount));
+        $amount = $amount * 100;
 
         $data = [
             'checkout' => [
                 'order' => [
-                    'amount' => (int) ($amount * 100),
+                    'amount' => (int) ($amount),
                     'currency' => ($currency) ? $currency : Yii::$app->formatter->currencyCode,
                     'description' => Yii::t('frontend', 'Order N' . ': ' . $order_number),
                     'tracking_id' => $order_number,
