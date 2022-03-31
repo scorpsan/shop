@@ -120,6 +120,9 @@ class OrdersController extends AppController
 
             $response = $payClass::pay($order->order_number, $order->amount, $order->currency, [
                 'return_url' => Url::to(['/user/orders/pay-return', 'number' => $order->order_number], true),
+                'success_url' => Url::to(['/user/orders/pay-return', 'number' => $order->order_number], true),
+                'decline_url' => Url::to(['/user/orders/pay-cancel', 'number' => $order->order_number], true),
+                'fail_url' => Url::to(['/user/orders/pay-cancel', 'number' => $order->order_number], true),
                 'cancel_url' => Url::to(['/user/orders/pay-cancel', 'number' => $order->order_number], true),
                 'notification_url' => Url::to(['/user/orders/notification', 'number' => $order->order_number], true),
             ]);

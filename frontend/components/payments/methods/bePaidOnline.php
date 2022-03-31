@@ -27,15 +27,19 @@ class bePaidOnline implements PaymentMethod
         $data = [
             'checkout' => [
                 'order' => [
-                    'amount' => (int) ($amount),
+                    'amount' => $amount,
                     'currency' => ($currency) ? $currency : Yii::$app->formatter->currencyCode,
                     'description' => Yii::t('frontend', 'Order N' . ': ' . $order_number),
                     'tracking_id' => $order_number,
                 ],
                 'settings' => [
                     'return_url' => ArrayHelper::getValue($urls, 'return_url', Url::home(true)),
+                    'success_url' => ArrayHelper::getValue($urls, 'success_url', Url::home(true)),
+                    'decline_url' => ArrayHelper::getValue($urls, 'decline_url', Url::home(true)),
+                    'fail_url' => ArrayHelper::getValue($urls, 'fail_url', Url::home(true)),
                     'cancel_url' => ArrayHelper::getValue($urls, 'cancel_url', Url::home(true)),
                     'notification_url' => ArrayHelper::getValue($urls, 'notification_url', Url::home(true)),
+                    'auto_return' => 0,
                     'language' => Yii::$app->language,
                 ],
                 'transaction_type' => 'payment',
