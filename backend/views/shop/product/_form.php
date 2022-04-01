@@ -52,14 +52,13 @@ $("document").ready(function(){
                     }
                 }
                 if ($lang->default) {
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]item_id")->hiddenInput(['value' => $model->id])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]title");
                     $tabcontent .= $form->field($modelLng[$key], "[$key]lng")->hiddenInput(['value' => $key])->label(false);
                 } else {
-                    $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]title", ['enableClientValidation' => false]);
                     $tabcontent .= $form->field($modelLng[$key], "[$key]lng", ['enableClientValidation' => false])->hiddenInput(['value' => $key])->label(false);
                 }
+                $tabcontent .= $form->field($modelLng[$key], "[$key]item_id", ['enableClientValidation' => false])->hiddenInput(['value' => $model->id])->label(false);
                 $tabcontent .= $form->field($modelLng[$key], "[$key]short_content")->textarea(['rows' => 8]);
                 $tabcontent .= $form->field($modelLng[$key], "[$key]content")->widget(CKEditor::class, [
                     'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
