@@ -27,10 +27,18 @@ return [
             'ttr' => 5 * 60,
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => \yii\symfonymailer\Mailer::class,
+            'transport' => [
+                'scheme' => 'smtps',
+                'host' => '',
+                'username' => '',
+                'password' => '',
+                'port' => 465,
+                'dsn' => 'native://default',
+            ],
             'viewPath' => '@common/mail',
             // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
+            // 'useFileTransport' to false and configure transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
