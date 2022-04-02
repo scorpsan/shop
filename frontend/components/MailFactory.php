@@ -18,7 +18,6 @@ class MailFactory
                 'subject' => Yii::t('frontend', 'New Order'),
                 'params' => [
                     'order' => $order,
-                    'siteSettings' => Yii::$app->params['siteSettings'],
                 ],
             ]));
 
@@ -38,7 +37,6 @@ class MailFactory
             'subject' => Yii::t('frontend', 'New Order'),
             'params' => [
                 'order' => $order,
-                'siteSettings' => Yii::$app->params['siteSettings'],
             ],
         ]));
 
