@@ -8,3 +8,4 @@ Yii::setAlias('@filesroot', '@frontend/web/files');
 Yii::setAlias('@files', '/files');
 Yii::setAlias('@imagesroot', '@frontend/web/images');
 Yii::setAlias('@images', '/images');
+Yii::setAlias('@webimages', '@web/images');
