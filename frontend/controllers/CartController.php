@@ -2,7 +2,7 @@
 namespace frontend\controllers;
 
 use frontend\models\UserWishlistItems;
-use Swift_SwiftException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use yii\filters\AccessControl;
 use Da\User\Filter\AccessRuleFilter;
 use frontend\models\ShopProducts;
@@ -78,7 +78,7 @@ class CartController extends AppController
                 ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
                 ->setTo('dima.sanuk@gmail.com')
                 ->setSubject(Yii::t('frontend', 'New Test Order'))->send();
-        } catch (Swift_SwiftException $exception) {
+        } catch (TransportExceptionInterface $exception) {
             return 'Can sent mail due to the following exception'.print_r($exception);
         }
 
