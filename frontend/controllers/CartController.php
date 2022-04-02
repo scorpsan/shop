@@ -71,18 +71,6 @@ class CartController extends AppController
     {
         $this->setMeta(Yii::t('frontend', 'Your Shopping Cart'), Yii::$app->params['keywords'], Yii::$app->params['description']);
 
-        try {
-            $emailSend = Yii::$app->mailer;
-            $emailSend->setViewPath('@common/mail');
-            $emailSend->compose(['html' => 'test', 'text' => "text/test"], ['content' => null])
-                ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
-                ->setTo('dima.sanuk@gmail.com')
-                ->setSubject(Yii::t('frontend', 'New Test Order'))->send();
-        } catch (TransportExceptionInterface $exception) {
-            return 'Can sent mail due to the following exception'.print_r($exception);
-        }
-
-
         if (!Yii::$app->request->isAjax) {
             return $this->render('index', [
                 'productList' => $this->getSessionList(),
