@@ -76,7 +76,7 @@ return [
         ],
         'urlManagerForFront' => [
             'class' => 'yii\web\UrlManager',
-            'hostInfo' => 'https://badkitty.by',
+            'hostInfo' => 'https://truebear.by',
             'baseUrl' => '',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
