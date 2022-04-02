@@ -129,7 +129,7 @@ class CheckoutController extends AppController
             return $this->redirect(['/cart/index']);
         }
 
-        if (!$this->formInfo->name || /*!$this->formInfo->email ||*/ !$this->formInfo->address) {
+        if (!$this->formInfo->name/* || !$this->formInfo->email || !$this->formInfo->address*/) {
             return $this->redirect(['information']);
         }
 
@@ -165,7 +165,7 @@ class CheckoutController extends AppController
             return $this->redirect(['/cart/index']);
         }
 
-        if (!$this->formInfo->name || /*!$this->formInfo->email ||*/ !$this->formInfo->address) {
+        if (!$this->formInfo->name/* || !$this->formInfo->email || !$this->formInfo->address*/) {
             return $this->redirect(['information']);
         }
 
