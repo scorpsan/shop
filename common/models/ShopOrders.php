@@ -68,7 +68,7 @@ class ShopOrders extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['order_number', 'token', 'delivery_method_name', 'payment_method_name', 'amount', 'currency', 'customer_email', 'customer_phone', 'customer_name', 'delivery_address'], 'required'],
+            [['order_number', 'token', 'delivery_method_name', 'payment_method_name', 'amount', 'currency'/*, 'customer_email'*/, 'customer_phone', 'customer_name', 'delivery_address'], 'required'],
             [['user_id', 'delivery_method_id', 'payment_method_id'], 'integer'],
             [['delivery_cost', 'amount', 'amount_change', 'discount'], 'number'],
             [['note', 'admin_note', 'cancel_reason', 'delivery_address'], 'string'],
