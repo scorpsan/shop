@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @var array $params
  */
+
 ?>
 <?= Yii::t('frontend', 'New Order') ?>: <?= $params['order']->order_number ?>
 

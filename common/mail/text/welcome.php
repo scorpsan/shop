@@ -1,10 +1,12 @@
 <?php
+
 /**
- * @var \Da\User\Model\User  $user
- * @var \Da\User\Model\Token $token
- * @var \Da\User\Module      $module
+ * @var Da\User\Model\User  $user
+ * @var Da\User\Model\Token $token
+ * @var Da\User\Module      $module
  * @var bool                 $showPassword
  */
+
 ?>
 <?= Yii::t('usuario', 'Hello') ?>,
 

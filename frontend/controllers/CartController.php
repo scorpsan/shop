@@ -70,6 +70,15 @@ class CartController extends AppController
     {
         $this->setMeta(Yii::t('frontend', 'Your Shopping Cart'), Yii::$app->params['keywords'], Yii::$app->params['description']);
 
+        $emailSend = Yii::$app->mailer;
+        $emailSend->setViewPath('@common/mail');
+        $emailSend->compose(['html' => 'orderToUser', 'text' => "text/orderToUser"], ['content' => null, 'params' => [
+            'order' => $order,
+        ]])
+            ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+            ->setTo('dima.sanuk@gmail.com')
+            ->setSubject(Yii::t('frontend', 'New Order'))->send();
+
         if (!Yii::$app->request->isAjax) {
             return $this->render('index', [
                 'productList' => $this->getSessionList(),

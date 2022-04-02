@@ -1,7 +1,9 @@
 <?php
+
 /**
- * @var \Da\User\Model\Token $token
+ * @var Da\User\Model\Token $token
  */
+
 ?>
 <?= Yii::t('usuario', 'Hello') ?>,
 
