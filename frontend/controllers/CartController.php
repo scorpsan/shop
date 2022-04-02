@@ -2,7 +2,6 @@
 namespace frontend\controllers;
 
 use frontend\models\UserWishlistItems;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use yii\filters\AccessControl;
 use Da\User\Filter\AccessRuleFilter;
 use frontend\models\ShopProducts;
