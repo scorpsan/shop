@@ -3,9 +3,12 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/* @var $this yii\web\View view component instance */
-/* @var $message yii\mail\MessageInterface the message being composed */
-/* @var $content string main view render result */
+/**
+ * @var $this yii\web\View view component instance
+ * @var $message yii\mail\MessageInterface the message being composed
+ * @var $content string main view render result
+ * @var array $params
+ */
 
 ?>
 <?php $this->beginPage() ?>
@@ -27,7 +30,7 @@ use yii\helpers\Url;
                     <tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 100%; line-height: 1.6; margin: 0; padding: 0;">
                         <td align="center" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 100%; line-height: 1.6; margin: 0; padding: 0;">
                             <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 12px; line-height: 1.6; color: #666; font-weight: normal; margin: 0 0 10px; padding: 0;">
-                                <?= Html::a((!empty($params['siteSettings']->translate->logo_w))?Html::img(Url::home(true) . $params['siteSettings']->translate->logo_w):Html::img(Url::to('@images/logo.png', true), ['alt' => Yii::$app->name]), Url::to(['/page/index'], true), ['title' => Yii::$app->name]) ?>
+                                <?= Html::a(Html::img(Url::to(!empty($params['siteSettings']->translate->logo_w)?$params['siteSettings']->translate->logo_w:'@images/logo.png', true), ['alt' => Yii::$app->name]), Url::to(['/page/index'], true), ['title' => Yii::$app->name]) ?>
                             </p>
                         </td>
                     </tr>
