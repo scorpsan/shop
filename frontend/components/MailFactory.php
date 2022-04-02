@@ -9,7 +9,7 @@ class MailFactory
 
     public static function sendOrderToUser($order): bool
     {
-        if (isset($order->customer_email)) {
+        if (isset($order->customer_email) && $order->customer_email != '') {
             Yii::$app->queueMail->delay(2 * 60)->push(new MailSendJob([
                 'view' => 'orderToUser',
                 'lng' => Yii::$app->language,
