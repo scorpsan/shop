@@ -10,7 +10,16 @@ class MailFactory
     public static function sendOrderToUser($order): bool
     {
         if (isset($order->customer_email) && $order->customer_email != '') {
-            Yii::$app->queueMail->delay(10)->push(new MailSendJob([
+            $emailSend = Yii::$app->mailer;
+            $emailSend->setViewPath('@common/mail');
+            $emailSend->compose(['html' => 'orderToUser', 'text' => "text/orderToUser"], ['content' => null, 'params' => [
+                'order' => $order,
+            ]])
+                ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+                ->setTo($order->customer_email)
+                ->setSubject(Yii::t('frontend', 'New Order'))->send();
+
+            Yii::$app->queueMail->delay(2 * 60)->push(new MailSendJob([
                 'view' => 'orderToUser',
                 'lng' => Yii::$app->language,
                 'fromEmail' => [Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']],
