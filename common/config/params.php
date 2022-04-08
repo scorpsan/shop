@@ -23,6 +23,7 @@ return [
     'searchOnSite' => false,
     // Shop
     'shopOnSite' => false,
+    'orderNumberIndex' => 'MS',
     // Language
     'defaultLanguage' => 'ru',
     // Site Menu

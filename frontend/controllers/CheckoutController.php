@@ -207,7 +207,7 @@ class CheckoutController extends AppController
         }
 
         $order = new ShopOrders([
-            'order_number' => 'BK' . time(),
+            'order_number' => Yii::$app->params['orderNumberIndex'] . time(),
             'user_id' => (!Yii::$app->user->isGuest) ? Yii::$app->user->id : null,
             'delivery_method_id' => $this->shipMethod->id,
             'delivery_method_name' => $this->shipMethod->title,
@@ -258,6 +258,8 @@ class CheckoutController extends AppController
             $this->_session->remove('cart.qty');
 
             OrdersController::payOrder($order, $this->payMethod->className);
+
+            Yii::$app->session->setFlash('success', Yii::t('frontend', 'We received your order number {orderN}', ['orderN' => $order->order_number]) . '<br>' . Yii::t('frontend', 'We will contact you as soon as possible to confirm the order and clarify the terms of delivery'));
 
             if (!Yii::$app->user->isGuest) {
                 return $this->redirect(['/user/orders/index']);

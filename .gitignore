@@ -43,5 +43,7 @@ phpunit.phar
 /backend/web/robots.txt
 
 /frontend/web/files/brands/*
+/frontend/web/files/category/*
 /frontend/web/files/posts/*
 /frontend/web/files/products/*
+/frontend/web/files/*

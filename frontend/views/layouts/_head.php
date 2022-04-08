@@ -56,3 +56,4 @@ Yii::$app->view->on(View::EVENT_BEGIN_BODY, function () use ($gt) {
     echo $gt;
 });
 ?>
+<?= \tugmaks\Jivosite\Chat::widget(); ?>
