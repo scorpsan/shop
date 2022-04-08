@@ -12,6 +12,7 @@ use yii\web\View;
 $style = 'white'; /* '' or 'white' */
 $params = Yii::$app->params;
 ?>
+<?= \tugmaks\Jivosite\Chat::widget(); ?>
 <!-- Page Footer-->
 <footer class="footer-v1">
     <div class="footer-top border-bot">
