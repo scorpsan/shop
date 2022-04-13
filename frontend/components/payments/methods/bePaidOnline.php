@@ -27,7 +27,7 @@ class bePaidOnline implements PaymentMethod
         $data = [
             'checkout' => [
                 'order' => [
-                    'amount' => $amount,
+                    'amount' => (int)$amount,
                     'currency' => ($currency) ? $currency : Yii::$app->formatter->currencyCode,
                     'description' => Yii::t('frontend', 'Order N' . ': ' . $order_number),
                     'tracking_id' => $order_number,
