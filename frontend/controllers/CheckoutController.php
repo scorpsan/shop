@@ -60,7 +60,9 @@ class CheckoutController extends AppController
                 $this->formInfo->email = $user->email;
                 $this->formInfo->phone = $user->phone;
                 $this->formInfo->name = $user->profile->name;
-                $this->formInfo->address = $user->addresses[0]->id;
+                if (isset($user->addresses[0]->id)) {
+                    $this->formInfo->address = $user->addresses[0]->id;
+                }
             }
             if (isset($this->_session['checkInfo'])) {
                 $this->formInfo->setAttributes($this->_session['checkInfo']);
